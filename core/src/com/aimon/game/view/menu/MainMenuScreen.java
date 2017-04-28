@@ -9,6 +9,14 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 /**
  * Created by Leo on 18/04/2017.
@@ -18,12 +26,15 @@ public class MainMenuScreen extends ScreenAdapter {
 
     final AimOn game;
 
-    public Texture backgroundImage;
-    public Texture buttonReleased;
-    public Texture buttonPressed;
+
+    private Stage stage;
+    private TextureAtlas atlas;
+    private Skin skin;
+    private Table table;
+    private TextButton buttonPlay;
+    private TextButton.TextButtonStyle textButtonStyle;
 
     float buttonsRate;
-
 
     OrthographicCamera camera;
 
@@ -32,6 +43,11 @@ public class MainMenuScreen extends ScreenAdapter {
 
         loadAssets();
         camera = createCamera();
+
+        Texture buttonDown = game.getAssetManager().get("buttonDown.png");
+
+        buttonsRate = (float)buttonDown.getWidth()/buttonDown.getHeight();
+
 
     }
 
@@ -48,36 +64,84 @@ public class MainMenuScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
-        this.backgroundImage = game.getAssetManager().get("backgroundMainMenu.png", Texture.class);
-        this.buttonReleased = game.getAssetManager().get("button.png", Texture.class);
-        this.buttonPressed = game.getAssetManager().get("buttonPressed.png", Texture.class);
-        game.getBatch().setProjectionMatrix(camera.combined);
 
-        game.getBatch().begin();
-        game.getBatch().draw(backgroundImage,0,0,camera.viewportWidth,camera.viewportHeight);
-        game.getBatch().draw(buttonReleased,20,20);
+        updateBatch();
 
-        game.font.draw(game.getBatch(), "Welcome to AimOn!!! ", 100, 150);
-        game.font.draw(game.getBatch(), "Tap anywhere to begin!", 100, 100);
-        game.getBatch().end();
+        stage.act(delta);
+        stage.draw();
 
-        if (Gdx.input.justTouched()) {
-           // game.setScreen(new GameScreen(game, new MainModel(3), new MainController()));
-            dispose();
-        }
     }
 
     @Override
     public void dispose() {
 
+        stage.dispose();
+        atlas.dispose();
+        skin.dispose();
+
+    }
+
+    private void updateBatch(){
+        game.getBatch().setProjectionMatrix(camera.combined);
+
+        game.getBatch().begin();
+
+        // Draw background
+        game.getBatch().draw((Texture)game.getAssetManager().get("backgroundMainMenu.png"),0,0,camera.viewportWidth,camera.viewportHeight);
+
+        game.font.draw(game.getBatch(), "Welcome to AimOn!!! ", 100, 150);
+
+        game.getBatch().end();
     }
 
     private void loadAssets(){
 
         this.game.getAssetManager().load("backgroundMainMenu.png", Texture.class);
-        this.game.getAssetManager().load("button.png", Texture.class);
-        this.game.getAssetManager().load("buttonPressed.png", Texture.class);
+        this.game.getAssetManager().load("buttonUp.png", Texture.class);
+        this.game.getAssetManager().load("buttonDown.png", Texture.class);
+
         this.game.getAssetManager().finishLoading();
 
+    }
+
+    @Override
+    public void show(){
+        initializeButtonsConfig();
+
+        buttonPlay = new TextButton("PLAY", textButtonStyle);
+        buttonPlay.pad(20);
+        buttonPlay.addListener(new ClickListener() {
+            public void clicked(InputEvent e, float x, float y) {
+                MainModel model = new MainModel(3);
+                MainController controller = new MainController(model);
+                game.setScreen(new GameScreen(game,model,controller));
+            }
+        });
+
+        table.add(buttonPlay);
+    }
+
+    private void initializeButtonsConfig(){
+        stage = new Stage();
+
+        Gdx.input.setInputProcessor(stage);
+
+        /*black = new BitmapFont(Gdx.files.internal("font/black.fnt"));
+        white = new BitmapFont(Gdx.files.internal("font/white.fnt"));*/
+
+        atlas = new TextureAtlas("button.pack");
+        skin = new Skin(atlas);
+        table = new Table(skin);
+        table.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = skin.getDrawable("buttonUp");
+        textButtonStyle.over = skin.getDrawable("buttonOver");
+        textButtonStyle.down = skin.getDrawable("buttonDown");
+        textButtonStyle.pressedOffsetX = 1;
+        textButtonStyle.pressedOffsetY = -1;
+        textButtonStyle.font = new BitmapFont();
+
+        stage.addActor(table);
     }
 }

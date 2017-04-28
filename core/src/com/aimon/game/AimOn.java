@@ -3,6 +3,7 @@ package com.aimon.game;
 import com.aimon.game.controller.MainController;
 import com.aimon.game.model.MainModel;
 import com.aimon.game.view.game.GameScreen;
+import com.aimon.game.view.menu.MainMenuScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,9 +19,8 @@ public class AimOn extends Game {
 		batch = new SpriteBatch();
         assetManager = new AssetManager();
 		font = new BitmapFont();
-		MainModel model = new MainModel(3);
-		MainController controller = new MainController(model);
-		this.setScreen(new GameScreen(this,model,controller));
+
+		this.setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
