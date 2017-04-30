@@ -78,7 +78,7 @@ Implementation of EntityBody class to control the physics of ducks
 
 ## View
 
-	* Test input handles like zoom changes, keys, mouse scroll, etc.
+  * Test input handles like zoom changes, keys, mouse scroll, etc.
 
 ## Model
 
