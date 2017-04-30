@@ -27,9 +27,12 @@ public class MainController {
 
     private float accumulator;
 
+    private MainModel model;
     private List<DuckBody> duckBodies;
 
     public MainController(MainModel model) {
+
+        this.model = model;
 
         this.world = new World(new Vector2(0,-10), true);
         List<DuckModel> ducks = model.getDucks();
@@ -81,6 +84,9 @@ public class MainController {
         return MainController.FIELD_WIDTH;
     }
 
+    public void updateAimLocation(float x, float y){
+        model.getAim().setPosition(x, y);
+    }
     public static int getControllerHeight() {
         return MainController.FIELD_HEIGHT;
     }

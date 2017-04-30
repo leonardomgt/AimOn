@@ -78,6 +78,7 @@ public class MainMenuScreen extends ScreenAdapter {
         stage.dispose();
         atlas.dispose();
         skin.dispose();
+        buttonPlay.setDisabled(true);
 
     }
 
@@ -112,7 +113,7 @@ public class MainMenuScreen extends ScreenAdapter {
         buttonPlay.pad(20);
         buttonPlay.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                MainModel model = new MainModel(1);
+                MainModel model = new MainModel(MainController.getControllerWidth()/2, MainController.getControllerHeight()/2, 3 /*TODO nº of ducks*/);
                 MainController controller = new MainController(model);
                 game.setScreen(new GameScreen(game,model,controller));
             }
