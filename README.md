@@ -72,3 +72,26 @@ Implementation of EntityBody class to control the physics of ducks
 * Falling Duck
 
 ![alt text](https://github.com/leonardomgt/AimOn/blob/master/diagrams/falling_duck.png "Falling Duck")
+
+
+### Unit Tests List
+
+## View
+
+	* Test input handles like zoom changes, keys, mouse scroll, etc.
+
+## Model
+
+  * Test if AimModel position matches the mouse movements
+	* Test if the target (ducks) number is the same of the GameModel constructor.
+	* Test if the program interrupts when AimModel leaves the world limits.
+	* Assert that all the strategies of the targets are implemented (flying routes, speed, etc)
+
+
+## Controller
+
+	* Test if the ducks fall onto the ground upon being shot
+	* Test if the ducks don't fly over the upper limit of the world
+	* Test if the target is hit and killed when the mouse is clicked and the aim is on the target
+	* Test if target keeps alive after a failed shot
+	* Test if the game ends when all targets are shot
