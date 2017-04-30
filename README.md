@@ -67,7 +67,7 @@ Implementation of EntityBody class to control the physics of ducks
 
 * Flying Duck
 
-![alt text](https://github.com/leonardomgt/AimOn/blob/master/diagrams/flying_dyck.png "Flying Duck")
+![alt text](https://github.com/leonardomgt/AimOn/blob/master/diagrams/flying_duck.png "Flying Duck")
 
 * Falling Duck
 
