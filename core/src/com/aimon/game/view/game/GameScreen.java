@@ -2,6 +2,7 @@ package com.aimon.game.view.game;
 
 import com.aimon.game.AimOn;
 import com.aimon.game.controller.MainController;
+import com.aimon.game.controller.entities.DuckBody;
 import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.view.game.entities.AimView;
@@ -33,9 +34,9 @@ public class GameScreen extends ScreenAdapter{
     private final AimOn game;
     private final OrthographicCamera camera;
 
-    public final static float PIXEL_TO_METER = 0.7f / (375f / 9f);
+    public final static float PIXEL_TO_METER = 0.7f / (114 / 3f);
 
-    private static final float VIEWPORT_WIDTH = MainController.FIELD_WIDTH;
+    private static final float VIEWPORT_WIDTH = MainController.getControllerWidth();
 
     public static final String AIM_IMAGE = "arm-target.png";
     public static final String BACKGROUND_GAME_IMAGE = "backgroundGame.jpg";
@@ -61,8 +62,6 @@ public class GameScreen extends ScreenAdapter{
         this.loadAssets();
         this.duckView = new DuckView(game);
         this.aimView = new AimView(game);
-
-
 
         // create the camera and the SpriteBatch
         camera = new OrthographicCamera(camera_zoom *VIEWPORT_WIDTH / PIXEL_TO_METER, camera_zoom *VIEWPORT_WIDTH / PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()));
@@ -100,11 +99,9 @@ public class GameScreen extends ScreenAdapter{
         camera.position.set(model.getAim().getX()/PIXEL_TO_METER, model.getAim().getY()/PIXEL_TO_METER,0);
 
         camera.zoom = camera_zoom;
+        controller.update(delta);
         camera.update();
-
-        updateBatch();
-
-
+        updateBatch(delta);
     }
 
     private void handleInputs(float delta) {
@@ -115,30 +112,32 @@ public class GameScreen extends ScreenAdapter{
             camera_zoom -= 0.2f;
         }
 
-        controller.updateAimLocation(controller.FIELD_WIDTH/2 + Gdx.input.getX() - aimX, controller.FIELD_HEIGHT/2 + aimY - Gdx.input.getY());
+        controller.updateAimLocation( MainController.getControllerWidth()/2 + Gdx.input.getX() - aimX,  MainController.getControllerHeight()/2 + aimY - Gdx.input.getY());
     }
 
-    private void updateBatch() {
+    private void updateBatch(float delta) {
         game.getBatch().setProjectionMatrix(camera.combined);
         game.getBatch().begin();
 
         drawBackground();
-        drawEntities();
+        drawEntities(delta);
 
         game.getBatch().end();
 
     }
 
-    private void drawEntities() {
+    private void drawEntities(float delta) {
+
         List<DuckModel> ducks = model.getDucks();
         for (DuckModel duck : ducks) {
-            duckView.update(duck);
+            duckView.update(duck, delta);
             duckView.draw(game.getBatch());
         }
 
         aimView.update(model.getAim());
         aimView.draw(game.getBatch());
-
+        //this.groundView.update(this.model.getGround());
+        //this.groundView.draw(game.getBatch());
 
     }
 
@@ -151,7 +150,7 @@ public class GameScreen extends ScreenAdapter{
         background.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
 //        game.getBatch().draw(background, 0, 0, 0, 0, (int)(controller.FIELD_WIDTH / PIXEL_TO_METER), (int) (controller.FIELD_HEIGHT / PIXEL_TO_METER));
 
-        game.getBatch().draw(background, 0, 0, controller.FIELD_WIDTH / PIXEL_TO_METER, controller.FIELD_HEIGHT / PIXEL_TO_METER);
+        game.getBatch().draw(background, 0, 0, MainController.getControllerWidth() / PIXEL_TO_METER, MainController.getControllerHeight() / PIXEL_TO_METER);
     }
 }
 
