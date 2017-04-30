@@ -112,7 +112,7 @@ public class MainMenuScreen extends ScreenAdapter {
         buttonPlay.pad(20);
         buttonPlay.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                MainModel model = new MainModel(3);
+                MainModel model = new MainModel(1);
                 MainController controller = new MainController(model);
                 game.setScreen(new GameScreen(game,model,controller));
             }

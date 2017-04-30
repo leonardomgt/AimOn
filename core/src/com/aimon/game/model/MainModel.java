@@ -2,6 +2,7 @@ package com.aimon.game.model;
 
 import com.aimon.game.controller.MainController;
 import com.aimon.game.model.entities.DuckModel;
+import com.aimon.game.model.entities.GroundModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import static com.badlogic.gdx.math.MathUtils.random;
 public class MainModel {
 
     private List<DuckModel> ducks;
+    private GroundModel ground;
 
     public MainModel(int numberOfDucks) {
 
@@ -36,20 +38,23 @@ public class MainModel {
                     break;
             }
 
-
+            /*
             DuckModel currentDuck = new DuckModel(random.nextFloat() * MainController.FIELD_WIDTH,
                     random.nextFloat() * MainController.FIELD_HEIGHT,
                     (float) Math.toRadians(random.nextFloat() * 360),
                     type);
+                    */
+            DuckModel currentDuck = new DuckModel(10,10,0,type);
 
             this.ducks.add(currentDuck);
-
+            this.ground = GroundModel.getInstance();
 
         }
 
     }
 
     public List<DuckModel> getDucks() {
-        return ducks;
+        return this.ducks;
     }
+    public GroundModel getGround() { return this.ground;}
 }

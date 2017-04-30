@@ -1,8 +1,5 @@
 package com.aimon.game;
 
-import com.aimon.game.controller.MainController;
-import com.aimon.game.model.MainModel;
-import com.aimon.game.view.game.GameScreen;
 import com.aimon.game.view.menu.MainMenuScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;

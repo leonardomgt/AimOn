@@ -1,9 +1,11 @@
 package com.aimon.game.view.game.entities;
 
 import com.aimon.game.AimOn;
+import com.aimon.game.model.entities.EntityModel;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
@@ -11,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 
 public class DuckView extends EntityView{
+
+    private float stateTime;
 
     public DuckView(AimOn game) {
         super(game);
@@ -29,11 +33,27 @@ public class DuckView extends EntityView{
         }
         System.arraycopy(region[3], 0, frames, 9, 2);
 
-
-        this.animation = new Animation<TextureRegion>(.25f, frames);
-
+        this.animation = new Animation<TextureRegion>(.05f, frames);
         return new Sprite(animation.getKeyFrame(0));
 
+    }
+
+    public void draw(SpriteBatch batch) {
+
+        super.draw(batch);
+    }
+
+    @Override
+    public void update(EntityModel model, float delta) {
+
+        this.stateTime += delta;
+
+        TextureRegion tr = animation.getKeyFrame(stateTime, true);
+        if(tr != null) {
+            sprite.setRegion(tr);
+        }
+
+        super.update(model, delta);
 
     }
 
