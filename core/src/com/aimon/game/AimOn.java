@@ -36,4 +36,5 @@ public class AimOn extends Game {
     public AssetManager getAssetManager() {
         return assetManager;
     }
+
 }
