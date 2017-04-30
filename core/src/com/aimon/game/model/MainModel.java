@@ -1,6 +1,7 @@
 package com.aimon.game.model;
 
 import com.aimon.game.controller.MainController;
+import com.aimon.game.model.entities.AimModel;
 import com.aimon.game.model.entities.DuckModel;
 
 import java.util.ArrayList;
@@ -15,8 +16,11 @@ import static com.badlogic.gdx.math.MathUtils.random;
 public class MainModel {
 
     private List<DuckModel> ducks;
+    private AimModel aim;
 
-    public MainModel(int numberOfDucks) {
+    public MainModel(float aimX, float aimY, int numberOfDucks) {
+
+        this.aim = new AimModel(aimX,aimY);
 
         this.ducks = new ArrayList<DuckModel>();
 
@@ -52,4 +56,6 @@ public class MainModel {
     public List<DuckModel> getDucks() {
         return ducks;
     }
+
+    public AimModel getAim() { return aim; }
 }

@@ -21,7 +21,11 @@ public class MainController {
 
     private float accumulator;
 
+    private MainModel model;
+
     public MainController(MainModel model) {
+
+        this.model = model;
 
         this.world = new World(new Vector2(0,-10), true);
 
@@ -34,6 +38,10 @@ public class MainController {
 
         }
 
+    }
+
+    public void updateAimLocation(float x, float y){
+        model.getAim().setPosition(x, y);
     }
 
 }
