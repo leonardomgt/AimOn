@@ -62,3 +62,13 @@ Implementation of EntityBody class to control the physics of the ground
 * DuckBody
 
 Implementation of EntityBody class to control the physics of ducks
+
+### Print Screens
+
+* Flying Duck
+
+![alt text](https://github.com/leonardomgt/AimOn/blob/master/diagrams/flying_dyck.png "Flying Duck")
+
+* Falling Duck
+
+![alt text](https://github.com/leonardomgt/AimOn/blob/master/diagrams/falling_duck.png "Falling Duck")
