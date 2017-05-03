@@ -46,8 +46,8 @@ public class MainModel {
             }
 
 
-            DuckModel currentDuck = new DuckModel(MathUtils.random(0,15),
-                    MathUtils.random(0,10),
+            DuckModel currentDuck = new DuckModel(MathUtils.random(0,MainController.getControllerWidth()),
+                    MathUtils.random(0,MainController.getControllerHeight()),
                     0,
                     DuckModel.DuckType.DEWEY);
 

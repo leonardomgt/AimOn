@@ -59,7 +59,7 @@ public class DuckModel extends EntityModel{
     }
 
     public void setObjectiveY(float objectiveY) {
-        objectiveY = objectiveY >= 2f ? objectiveY : 2f;
+        objectiveY = objectiveY >= 3f ? objectiveY : 3f;
         this.objectiveY = objectiveY;
     }
 

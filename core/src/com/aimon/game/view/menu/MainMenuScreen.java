@@ -6,11 +6,13 @@ import com.aimon.game.model.MainModel;
 import com.aimon.game.view.game.GameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -25,6 +27,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class MainMenuScreen extends ScreenAdapter {
 
     final AimOn game;
+
+    final String BACKGROUND_MAIN_MENU = "backgroundMainMenu2.jpg";
+    final String DUCK_MAIN_MENU = "duck.png";
+    final String HUNTER_MAIN_MENU = "hunter.png";
+
+    float duckRatio;
+    float hunterRatio;
+
+
+    BitmapFont fontTitle;
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
@@ -40,8 +52,18 @@ public class MainMenuScreen extends ScreenAdapter {
         this.game = game;
         loadAssets();
         camera = createCamera();
-        Texture buttonDown = game.getAssetManager().get("buttonDown.png");
-        buttonsRate = (float)buttonDown.getWidth()/buttonDown.getHeight();
+
+        initializeFontConfig();
+
+    }
+
+    private void initializeFontConfig() {
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Pinewood.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 60;
+        fontTitle = generator.generateFont(parameter); // font size 60 pixels
+        generator.dispose();
     }
 
     private OrthographicCamera createCamera() {
@@ -75,16 +97,27 @@ public class MainMenuScreen extends ScreenAdapter {
         game.getBatch().begin();
 
         // Draw background
-        game.getBatch().draw((Texture)game.getAssetManager().get("backgroundMainMenu.png"),0,0,camera.viewportWidth,camera.viewportHeight);
-        game.font.draw(game.getBatch(), "Welcome to AimOn!!! ", 100, 150);
+        game.getBatch().draw((Texture)game.getAssetManager().get(BACKGROUND_MAIN_MENU),0,0,camera.viewportWidth,camera.viewportHeight);
+        game.getBatch().draw((Texture)game.getAssetManager().get(DUCK_MAIN_MENU), 730, 100, 285, 200);
+        game.getBatch().draw((Texture)game.getAssetManager().get(HUNTER_MAIN_MENU), 50, 50, 388, 300);
+
+        // Draw Title
+        fontTitle.setColor(Color.ORANGE);
+        fontTitle.draw(game.getBatch(), "AimOn", 150, 500);
+
         game.getBatch().end();
     }
 
     private void loadAssets(){
 
-        this.game.getAssetManager().load("backgroundMainMenu.png", Texture.class);
-        this.game.getAssetManager().load("buttonUp.png", Texture.class);
-        this.game.getAssetManager().load("buttonDown.png", Texture.class);
+        this.game.getAssetManager().load(BACKGROUND_MAIN_MENU, Texture.class);
+        this.game.getAssetManager().load(DUCK_MAIN_MENU, Texture.class);
+        this.game.getAssetManager().load(HUNTER_MAIN_MENU, Texture.class);
+
+        /*Texture duck = this.game.getAssetManager().get(DUCK_MAIN_MENU);
+
+        duckRatio = duck.getWidth()/duck.getHeight();*/
+
         this.game.getAssetManager().finishLoading();
 
     }
@@ -94,6 +127,7 @@ public class MainMenuScreen extends ScreenAdapter {
         initializeButtonsConfig();
         buttonPlay = new TextButton("PLAY", textButtonStyle);
         buttonPlay.pad(20);
+        //buttonPlay.getLabel().setFontScale(2, 2);
         buttonPlay.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
                 MainMenuScreen.this.game.setGameScreen();
@@ -122,7 +156,8 @@ public class MainMenuScreen extends ScreenAdapter {
         textButtonStyle.down = skin.getDrawable("buttonDown");
         textButtonStyle.pressedOffsetX = 1;
         textButtonStyle.pressedOffsetY = -1;
-        textButtonStyle.font = new BitmapFont();
+        textButtonStyle.font = fontTitle;
+        textButtonStyle.fontColor = Color.WHITE;
 
         stage.addActor(table);
     }

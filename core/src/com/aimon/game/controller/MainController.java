@@ -25,9 +25,9 @@ public class MainController {
 
     private boolean tmpFlag = true;
 
-    private static final int FIELD_HEIGHT = 100;
+    private static final int FIELD_HEIGHT = 18;
 
-    private static final int FIELD_WIDTH = 200;
+    private static final int FIELD_WIDTH = 32;
 
     private final World world;
 

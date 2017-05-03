@@ -36,9 +36,9 @@ public class GameScreen extends ScreenAdapter{
     private final AimOn game;
     private final OrthographicCamera camera;
 
-    public final static float PIXEL_TO_METER = 0.7f / (114 / 3f);
-
-    public static final float VIEWPORT_WIDTH = 30;
+    public final static float PIXEL_TO_METER = .85f / (114 / 3f);
+    public static final float VIEWPORT_WIDTH = 32;
+    public static final float  VIEWPORT_HEIGHT = VIEWPORT_WIDTH*((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
 
     public static final String AIM_IMAGE = "arm-target.png";
     public static final String BACKGROUND_GAME_IMAGE = "backgroundGame.jpg";
@@ -57,7 +57,6 @@ public class GameScreen extends ScreenAdapter{
 
     private Stage stage = new Stage();
 
-
     public GameScreen(AimOn game, MainModel model, MainController controller) {
 
         Gdx.input.setInputProcessor(stage);
@@ -70,7 +69,8 @@ public class GameScreen extends ScreenAdapter{
         //this.aimView = new AimView(game);
 
         // create the camera and the SpriteBatch
-        camera = new OrthographicCamera(camera_zoom *VIEWPORT_WIDTH / PIXEL_TO_METER, camera_zoom *VIEWPORT_WIDTH / PIXEL_TO_METER * ((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()));
+
+        camera = new OrthographicCamera(camera_zoom *VIEWPORT_WIDTH / PIXEL_TO_METER, camera_zoom *VIEWPORT_HEIGHT / PIXEL_TO_METER);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
@@ -145,14 +145,12 @@ public class GameScreen extends ScreenAdapter{
 
     private void drawBackground() {
 
-        game.getBatch().draw((Texture)game.getAssetManager().get("backgroundGame.jpg"),0,0,camera.viewportWidth,camera.viewportHeight);
+        //game.getBatch().draw((Texture)game.getAssetManager().get("backgroundGame.jpg"),0,0,camera.viewportWidth,camera.viewportHeight);
 
-        /*
-        Texture background = game.getAssetManager().get("backgroundGame.jpg", Texture.class);
+        Texture background = game.getAssetManager().get(BACKGROUND_GAME_IMAGE, Texture.class);
         background.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
-        game.getBatch().draw(background, 0, 0, 0, 0, (int)(controller.FIELD_WIDTH / PIXEL_TO_METER), (int) (controller.FIELD_HEIGHT / PIXEL_TO_METER));
+        //game.getBatch().draw(background, 0, 0, 0, 0, (int)(controller.FIELD_WIDTH / PIXEL_TO_METER), (int) (controller.FIELD_HEIGHT / PIXEL_TO_METER));
         game.getBatch().draw(background, 0, 0, MainController.getControllerWidth() / PIXEL_TO_METER, MainController.getControllerHeight() / PIXEL_TO_METER);
-        */
     }
 
 }
