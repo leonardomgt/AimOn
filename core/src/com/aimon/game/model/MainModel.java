@@ -4,11 +4,13 @@ import com.aimon.game.controller.MainController;
 import com.aimon.game.model.entities.AimModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.model.entities.GroundModel;
+import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.badlogic.gdx.math.MathUtils.random;
+import static com.aimon.game.view.game.GameScreen.VIEWPORT_WIDTH;
 
 /**
  * Created by joaofurriel on 28/04/17.
@@ -23,7 +25,6 @@ public class MainModel {
     public MainModel(float aimX, float aimY, int numberOfDucks) {
 
         this.aim = new AimModel(aimX,aimY);
-
         this.ducks = new ArrayList<DuckModel>();
 
         for (int i = 0; i < numberOfDucks; i++) {
@@ -42,13 +43,14 @@ public class MainModel {
                     break;
             }
 
-            /*
-            DuckModel currentDuck = new DuckModel(random.nextFloat() * MainController.FIELD_WIDTH,
-                    random.nextFloat() * MainController.FIELD_HEIGHT,
-                    (float) Math.toRadians(random.nextFloat() * 360),
-                    type);
-                    */
-            DuckModel currentDuck = new DuckModel(10,10,0,type);
+
+            DuckModel currentDuck = new DuckModel(MathUtils.random(0,MainController.getControllerWidth()),
+                    MathUtils.random(0,MainController.getControllerHeight()),
+                    0,
+                    DuckModel.DuckType.DEWEY);
+
+
+            //DuckModel currentDuck = new DuckModel(18,7,0,type);
 
             this.ducks.add(currentDuck);
             this.ground = GroundModel.getInstance();

@@ -8,18 +8,27 @@ import com.aimon.game.model.MainModel;
 
 public class DuckModel extends EntityModel{
 
+    public enum DuckDirection {UP, RIGHT, LEFT, DOWN};
+
+    public enum DuckState{GO_UP, GO_DOWN, FLOAT_UP, FLOAT_DOWN, DEAD}
+
     public enum DuckType {LOUIE, HUEY, DEWEY};
     public enum Life{DEAD, ALIVE};
-
     private DuckType type;
-
     private Life life;
+    private DuckDirection direction;
+    private float objectiveY;
+    protected DuckState state;
+
 
     public DuckModel(float x, float y, float rotation, DuckType type) {
 
         super(x,y,rotation);
         this.type = type;
         this.life = Life.ALIVE;
+        this.direction = DuckDirection.RIGHT;
+        this.objectiveY = y;
+        this.state = DuckState.FLOAT_UP;
 
     }
 
@@ -37,4 +46,28 @@ public class DuckModel extends EntityModel{
         return this.life == Life.ALIVE;
     }
 
+    public DuckDirection getDirection() {
+        return direction;
+    }
+
+    public void setDirection(DuckDirection direction) {
+        this.direction = direction;
+    }
+
+    public float getObjectiveY() {
+        return objectiveY;
+    }
+
+    public void setObjectiveY(float objectiveY) {
+        objectiveY = objectiveY >= 3f ? objectiveY : 3f;
+        this.objectiveY = objectiveY;
+    }
+
+    public DuckState getState() {
+        return state;
+    }
+
+    public void setState(DuckState state) {
+        this.state = state;
+    }
 }
