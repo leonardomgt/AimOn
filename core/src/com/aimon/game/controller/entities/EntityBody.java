@@ -1,6 +1,7 @@
 package com.aimon.game.controller.entities;
 
 import com.aimon.game.model.entities.EntityModel;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -48,15 +49,38 @@ public abstract class EntityBody {
         body.setTransform(x, y, angle);
     }
 
-    public void applyForceToCenter(float forceX, float forceY, boolean awake) {
-        body.applyForceToCenter(forceX, forceY, awake);
+    public void applyForceToCenter(float forceX, float forceY) {
+        body.setLinearVelocity(0,0);
+        body.applyForceToCenter(forceX, forceY, true);
+    }
+
+    public void applyVerticalForceToCenter(float force) {
+        body.setLinearVelocity(this.body.getLinearVelocity().x,0);
+        body.applyForceToCenter(0, force, true);
+    }
+
+    public void applyHorizontalForceToCenter(float force) {
+        body.setLinearVelocity(0,this.body.getLinearVelocity().y);
+        body.applyForceToCenter(force, 0,true);
+    }
+
+
+    
+    public void rotate(float deegres) {
+        this.model.setRotation(this.model.getRotation() + deegres * MathUtils.PI/180);
+        this.body.setTransform(this.body.getPosition().x, this.body.getPosition().y, this.model.getRotation());
+    }
+
+    public void setRotation(float deegres) {
+        this.model.setRotation(deegres * MathUtils.PI/180);
+        this.body.setTransform(this.body.getPosition().x, this.body.getPosition().y, this.model.getRotation());
     }
 
     public Object getUserData() {
         return body.getUserData();
     }
 
-    final void createFixture(Body body, float[] vertexes, int width, int height, float density, float friction, float restitution) {
+    final void createFixture(Body body, float[] vertexes, int width, int height, float density, float friction, float restitution, short category, short ignoreCategories) {
         // Transform pixels into meters, center and invert the y-coordinate
         for (int i = 0; i < vertexes.length; i++) {
             if (i % 2 == 0) vertexes[i] -= width / 2;   // center the vertex x-coordinate
@@ -76,6 +100,8 @@ public abstract class EntityBody {
         fixtureDef.density = density;
         fixtureDef.friction = friction;
         fixtureDef.restitution = restitution;
+        fixtureDef.filter.categoryBits = category;
+        fixtureDef.filter.maskBits = ignoreCategories;
 
         body.createFixture(fixtureDef);
 

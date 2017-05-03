@@ -25,30 +25,23 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 public class MainMenuScreen extends ScreenAdapter {
 
     final AimOn game;
-
-
     private Stage stage;
     private TextureAtlas atlas;
     private Skin skin;
     private Table table;
     private TextButton buttonPlay;
     private TextButton.TextButtonStyle textButtonStyle;
-
     float buttonsRate;
 
     OrthographicCamera camera;
 
     public MainMenuScreen(AimOn game) {
-        this.game = game;
 
+        this.game = game;
         loadAssets();
         camera = createCamera();
-
         Texture buttonDown = game.getAssetManager().get("buttonDown.png");
-
         buttonsRate = (float)buttonDown.getWidth()/buttonDown.getHeight();
-
-
     }
 
     private OrthographicCamera createCamera() {
@@ -62,11 +55,8 @@ public class MainMenuScreen extends ScreenAdapter {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         camera.update();
-
         updateBatch();
-
         stage.act(delta);
         stage.draw();
 
@@ -74,24 +64,19 @@ public class MainMenuScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-
         stage.dispose();
         atlas.dispose();
         skin.dispose();
-        buttonPlay.setDisabled(true);
-
+        buttonPlay.clearListeners();
     }
 
     private void updateBatch(){
         game.getBatch().setProjectionMatrix(camera.combined);
-
         game.getBatch().begin();
 
         // Draw background
         game.getBatch().draw((Texture)game.getAssetManager().get("backgroundMainMenu.png"),0,0,camera.viewportWidth,camera.viewportHeight);
-
         game.font.draw(game.getBatch(), "Welcome to AimOn!!! ", 100, 150);
-
         game.getBatch().end();
     }
 
@@ -100,7 +85,6 @@ public class MainMenuScreen extends ScreenAdapter {
         this.game.getAssetManager().load("backgroundMainMenu.png", Texture.class);
         this.game.getAssetManager().load("buttonUp.png", Texture.class);
         this.game.getAssetManager().load("buttonDown.png", Texture.class);
-
         this.game.getAssetManager().finishLoading();
 
     }
@@ -108,19 +92,16 @@ public class MainMenuScreen extends ScreenAdapter {
     @Override
     public void show(){
         initializeButtonsConfig();
-
         buttonPlay = new TextButton("PLAY", textButtonStyle);
         buttonPlay.pad(20);
         buttonPlay.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                MainModel model = new MainModel(MainController.getControllerWidth()/2, MainController.getControllerHeight()/2, 3 /*TODO nº of ducks*/);
-                MainController controller = new MainController(model);
-                game.setScreen(new GameScreen(game,model,controller));
+                MainMenuScreen.this.game.setGameScreen();
             }
         });
-
         table.add(buttonPlay);
     }
+
 
     private void initializeButtonsConfig(){
         stage = new Stage();
@@ -146,3 +127,4 @@ public class MainMenuScreen extends ScreenAdapter {
         stage.addActor(table);
     }
 }
+

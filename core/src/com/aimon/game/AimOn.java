@@ -1,7 +1,11 @@
 package com.aimon.game;
 
+import com.aimon.game.controller.MainController;
+import com.aimon.game.model.MainModel;
+import com.aimon.game.view.game.GameScreen;
 import com.aimon.game.view.menu.MainMenuScreen;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,22 +15,42 @@ public class AimOn extends Game {
     private AssetManager assetManager;
 	public BitmapFont font;
 
+	private ScreenAdapter menuScreen;
+	private ScreenAdapter gameScreen;
+	private MainModel mainModel;
+	private MainController mainController;
+
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
         assetManager = new AssetManager();
 		font = new BitmapFont();
+		this.mainModel = new MainModel(MainController.getControllerWidth()/2, MainController.getControllerHeight()/2, 30);
+		this.mainController = new MainController(this.mainModel);
+		this.menuScreen = new MainMenuScreen(this);
+		this.gameScreen = new GameScreen(this, this.mainModel, this.mainController);
+		this.setMenuScreen();
+	}
 
-		this.setScreen(new MainMenuScreen(this));
+	public void setMenuScreen() {
+		this.setScreen(menuScreen);
+	}
+
+	public void setGameScreen() {
+		this.setScreen(gameScreen);
 	}
 
 	@Override
-	public void render () {super.render();}
+	public void render () {
+		super.render();
+	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
 		font.dispose();
+		assetManager.dispose();
 	}
 
     public SpriteBatch getBatch() {
@@ -36,5 +60,6 @@ public class AimOn extends Game {
     public AssetManager getAssetManager() {
         return assetManager;
     }
+
 
 }

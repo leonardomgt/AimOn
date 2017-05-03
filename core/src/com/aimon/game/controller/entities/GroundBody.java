@@ -11,6 +11,9 @@ import com.badlogic.gdx.physics.box2d.World;
 public class GroundBody extends EntityBody {
 
     private static GroundBody instance;
+    private final short GROUND_CATEGORY = 0x0002;
+    private final short COLLIDE_EVERYTHING = 0xFF;
+
 
     public static GroundBody getInstance(World world, GroundModel model) {
 
@@ -21,7 +24,7 @@ public class GroundBody extends EntityBody {
 
         super(world,groundModel);
         this.body.setType(BodyDef.BodyType.StaticBody);
-        createFixture(body, new float[]{0,0, 2896,0, 2896,115, 0,115}, 2896 , 115 , 0.0f, 0.0f,0.0f);
+        createFixture(body, new float[]{0,0, 2896,0, 2896,115, 0,115}, 2896 , 115 , 0.0f, 0.0f,0.0f, GROUND_CATEGORY, COLLIDE_EVERYTHING);
 
     }
 }
