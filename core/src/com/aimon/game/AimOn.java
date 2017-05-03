@@ -11,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class AimOn extends Game {
+
+	private static final int NUMBER_OF_DUCKS = 50;
+
 	private SpriteBatch batch;
     private AssetManager assetManager;
 	public BitmapFont font;
@@ -26,7 +29,7 @@ public class AimOn extends Game {
 		batch = new SpriteBatch();
         assetManager = new AssetManager();
 		font = new BitmapFont();
-		this.mainModel = new MainModel(MainController.getControllerWidth()/2, MainController.getControllerHeight()/2, 30);
+		this.mainModel = new MainModel(MainController.getControllerWidth()/2, MainController.getControllerHeight()/2, NUMBER_OF_DUCKS);
 		this.mainController = new MainController(this.mainModel);
 		this.menuScreen = new MainMenuScreen(this);
 		this.gameScreen = new GameScreen(this, this.mainModel, this.mainController);

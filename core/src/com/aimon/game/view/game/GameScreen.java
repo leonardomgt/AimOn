@@ -38,16 +38,14 @@ public class GameScreen extends ScreenAdapter{
 
     public final static float PIXEL_TO_METER = 0.7f / (114 / 3f);
 
-    public static final float VIEWPORT_WIDTH = 20;
+    public static final float VIEWPORT_WIDTH = 30;
 
     public static final String AIM_IMAGE = "arm-target.png";
     public static final String BACKGROUND_GAME_IMAGE = "backgroundGame.jpg";
     public static final String DEWEY_SPRITE_RIGHT = "dewey_right.png";
     public static final String DEWEY_SPRITE_LEFT = "dewey_left.png";
 
-
     private static float camera_zoom = 1f;
-
 
     private final MainController controller;
 
@@ -136,7 +134,7 @@ public class GameScreen extends ScreenAdapter{
 
         List<DuckModel> ducks = model.getDucks();
         for (DuckModel duck : ducks) {
-            duckView.update(duck, delta);
+            duckView.update(duck, delta, model.getNumberOfDucks());
             duckView.draw(game.getBatch());
         }
 

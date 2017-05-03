@@ -32,13 +32,13 @@ public class DuckView extends EntityView{
         TextureRegion[][] region = TextureRegion.split(textureRight, textureRight.getWidth()/3, textureRight.getHeight());
         TextureRegion[] framesRight = new TextureRegion[3];
         System.arraycopy(region[0], 0, framesRight, 0, 3);
-        this.animation_right = new Animation<TextureRegion>(.3f, framesRight);
+        this.animation_right = new Animation<TextureRegion>(1/6f, framesRight);
 
         Texture textureLeft = game.getAssetManager().get("dewey_left.png", Texture.class);
         TextureRegion[][] regionLeft = TextureRegion.split(textureLeft, textureLeft.getWidth()/3, textureLeft.getHeight());
         TextureRegion[] framesLeft = new TextureRegion[3];
         System.arraycopy(regionLeft[0], 0, framesLeft, 0, 3);
-        this.animation_left = new Animation<TextureRegion>(.3f, framesLeft);
+        this.animation_left = new Animation<TextureRegion>(1/6f, framesLeft);
 
         return new Sprite(animation_right.getKeyFrame(0));
 
@@ -50,7 +50,7 @@ public class DuckView extends EntityView{
     }
 
 
-    public void update(DuckModel model, float delta) {
+    public void update(DuckModel model, float delta, int numberOfDucks) {
 
         this.stateTime += delta;
         TextureRegion tr = null;
@@ -58,17 +58,17 @@ public class DuckView extends EntityView{
         if(model.getState() != DuckModel.DuckState.FLOAT_DOWN && model.getState() != DuckModel.DuckState.GO_DOWN) {
             switch (model.getDirection()) {
                 case RIGHT:
-                    tr = animation_right.getKeyFrame(stateTime, true);
+                    tr = animation_right.getKeyFrame(stateTime/numberOfDucks, true);
                     break;
                 case LEFT:
-                    tr = animation_left.getKeyFrame(stateTime, true);
+                    tr = animation_left.getKeyFrame(stateTime/numberOfDucks, true);
                     break;
             }
         }
         else {
             switch (model.getDirection()) {
                 case RIGHT:
-                    tr = animation_right.getKeyFrame(0.9f, false);
+                    tr = animation_right.getKeyFrame(3/6f, false);
                     break;
                 case LEFT:
                     tr = animation_left.getKeyFrame(0f, false);

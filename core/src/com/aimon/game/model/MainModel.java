@@ -21,10 +21,12 @@ public class MainModel {
     private List<DuckModel> ducks;
     private AimModel aim;
     private GroundModel ground;
+    private int numberOfDucks;
 
     public MainModel(float aimX, float aimY, int numberOfDucks) {
 
         this.aim = new AimModel(aimX,aimY);
+        this.numberOfDucks = numberOfDucks;
         this.ducks = new ArrayList<DuckModel>();
 
         for (int i = 0; i < numberOfDucks; i++) {
@@ -57,6 +59,10 @@ public class MainModel {
 
         }
 
+    }
+
+    public int getNumberOfDucks() {
+        return numberOfDucks;
     }
 
     public List<DuckModel> getDucks() {
