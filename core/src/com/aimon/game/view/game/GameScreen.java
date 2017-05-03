@@ -146,7 +146,7 @@ public class GameScreen extends ScreenAdapter{
         //game.getBatch().draw((Texture)game.getAssetManager().get("backgroundGame.jpg"),0,0,camera.viewportWidth,camera.viewportHeight);
 
 
-        Texture background = game.getAssetManager().get("backgroundGame.jpg", Texture.class);
+        Texture background = game.getAssetManager().get(BACKGROUND_GAME_IMAGE, Texture.class);
         background.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
 //        game.getBatch().draw(background, 0, 0, 0, 0, (int)(controller.FIELD_WIDTH / PIXEL_TO_METER), (int) (controller.FIELD_HEIGHT / PIXEL_TO_METER));
 

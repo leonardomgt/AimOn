@@ -17,6 +17,7 @@ public class AimOn extends Game {
         assetManager = new AssetManager();
 		font = new BitmapFont();
 
+
 		this.setScreen(new MainMenuScreen(this));
 	}
 
