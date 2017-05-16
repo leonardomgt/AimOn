@@ -1,17 +1,13 @@
 package com.aimon.game.model.entities;
 
-import com.aimon.game.model.MainModel;
-
 /**
  * Created by joaofurriel on 28/04/17.
  */
 
-public class DuckModel extends EntityModel{
+public class DuckModel extends EntityModel implements Comparable<DuckModel>{
 
-    public enum DuckDirection {UP, RIGHT, LEFT, DOWN};
-
-    public enum DuckState{GO_UP, GO_DOWN, FLOAT_UP, FLOAT_DOWN, DEAD}
-
+    public enum DuckDirection {RIGHT, LEFT};
+    public enum DuckState{GO_UP, GO_DOWN, FLOAT_UP, FLOAT_DOWN, DEAD, SHOT}
     public enum DuckType {LOUIE, HUEY, DEWEY};
     public enum Life{DEAD, ALIVE};
     private DuckType type;
@@ -19,9 +15,14 @@ public class DuckModel extends EntityModel{
     private DuckDirection direction;
     private float objectiveY;
     protected DuckState state;
+    private float depthFactor = 1;
+    private float depth;
+
+    private float lifeTime = 0;
+    private float deadMoment;
 
 
-    public DuckModel(float x, float y, float rotation, DuckType type) {
+    public DuckModel(float x, float y, float rotation, DuckType type, float depth) {
 
         super(x,y,rotation);
         this.type = type;
@@ -29,7 +30,13 @@ public class DuckModel extends EntityModel{
         this.direction = DuckDirection.RIGHT;
         this.objectiveY = y;
         this.state = DuckState.FLOAT_UP;
+        this.depthFactor = 10/depth;
+        this.depth = depth;
 
+    }
+
+    public void updateLifeTime(float delta) {
+        this.lifeTime += delta;
     }
 
     public DuckType getType() {
@@ -38,12 +45,18 @@ public class DuckModel extends EntityModel{
 
     public void kill() {
 
-        this.life = Life.DEAD;
+        if(this.isAlive()) {
+            this.life = Life.DEAD;
+            this.setState(DuckState.SHOT);
+            this.deadMoment = this.lifeTime;
+            this.setRotation(0);
+
+        }
 
     }
 
     public boolean isAlive() {
-        return this.life == Life.ALIVE;
+        return this.state != DuckState.DEAD && this.state != DuckState.SHOT;
     }
 
     public DuckDirection getDirection() {
@@ -69,5 +82,30 @@ public class DuckModel extends EntityModel{
 
     public void setState(DuckState state) {
         this.state = state;
+    }
+
+    public Life getLife() {
+        return life;
+    }
+
+    public float getDepthFactor() {
+        return depthFactor;
+    }
+
+    public float getDepth() {
+        return depth;
+    }
+
+    @Override
+    public int compareTo(DuckModel duckModel) {
+        return (int)(duckModel.depth * 1000 - this.depth * 1000);
+    }
+
+    public float getLifeTime() {
+        return lifeTime;
+    }
+
+    public float getDeadMoment() {
+        return deadMoment;
     }
 }

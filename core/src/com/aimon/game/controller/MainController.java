@@ -23,7 +23,8 @@ public class MainController {
 
     private final short CATEGORY_GROUND = 0x0002;
 
-    private boolean tmpFlag = true;
+    private boolean tmpFlag = false;
+    private float totalTimeTmp = 0;
 
     private static final int FIELD_HEIGHT = 18;
 
@@ -62,33 +63,33 @@ public class MainController {
             accumulator -= 1/60f;
         }
 
+        totalTimeTmp += delta;
+
         for (DuckBody duck : duckBodies) {
             DuckModel model = (DuckModel) duck.getModel();
-            if(model.isAlive()) {
-                duck.updateDuckState();
-
-                int rand = MathUtils.random(0,100);
-
-                    if(rand < 8) {
-                        duck.changeDirection();
-                    }
-
-                    if(rand < 10) {
-                        duck.goUp(1);
-                    }
-                    if(rand > 90) {
-                        duck.goDown(1);
-                    }
-
+            duck.updateDuckState(delta);
+            if(totalTimeTmp > 5 && model.isAlive()) {
+                this.tmpFlag = true;
             }
 
-            if (tmpFlag) {
-                //duck.goUp(3.0f);
+            if(tmpFlag) {
+                model.kill();
                 this.tmpFlag = false;
             }
+            int rand = MathUtils.random(0,100);
+
+            if(rand < 5) {
+                duck.changeDirection();
+            }
+
+            if(rand < 2) {
+                duck.goUp(1);
+            }
+            if(rand > 95) {
+                duck.goDown(1);
+            }
+
         }
-
-
 
 
         Array<Body> bodies = new Array<Body>();
@@ -99,6 +100,7 @@ public class MainController {
             ((EntityModel) body.getUserData()).setPosition(body.getPosition().x, body.getPosition().y);
             ((EntityModel) body.getUserData()).setRotation(body.getAngle());
         }
+
 
     }
 
