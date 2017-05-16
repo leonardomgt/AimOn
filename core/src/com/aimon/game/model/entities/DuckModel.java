@@ -24,7 +24,7 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
     }
 
     public enum DuckDirection {RIGHT, LEFT};
-    public enum DuckState{GO_UP, GO_DOWN, FLOAT_UP, FLOAT_DOWN, DEAD, SHOT}
+    public enum DuckState{GO_UP, GO_DOWN, FLOAT_UP, FLOAT_DOWN, FALLING, SHOT, DEAD}
 
     public enum Life{DEAD, ALIVE};
     private DuckType type;
@@ -63,7 +63,6 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
     public void kill() {
 
         if(this.isAlive()) {
-            System.out.println("MORRI!");
             this.life = Life.DEAD;
             this.setState(DuckState.SHOT);
             this.deadMoment = this.lifeTime;
@@ -74,7 +73,7 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
     }
 
     public boolean isAlive() {
-        return this.state != DuckState.DEAD && this.state != DuckState.SHOT;
+        return this.state != DuckState.FALLING && this.state != DuckState.SHOT && this.state != DuckState.DEAD;
     }
 
     public DuckDirection getDirection() {

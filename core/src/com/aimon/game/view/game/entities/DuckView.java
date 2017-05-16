@@ -105,7 +105,7 @@ public class DuckView extends EntityView {
 
         else {
 
-            tr = model.getState() == DuckModel.DuckState.DEAD ? animationDead.getKeyFrame(0f, true) : animationShot.getKeyFrame(0f, true);
+            tr = model.getState() == DuckModel.DuckState.FALLING || model.getState() == DuckModel.DuckState.DEAD ? animationDead.getKeyFrame(0f, true) : animationShot.getKeyFrame(0f, true);
 
         }
 

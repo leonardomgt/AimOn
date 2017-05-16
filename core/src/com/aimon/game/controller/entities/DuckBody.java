@@ -5,7 +5,6 @@ import com.aimon.game.controller.entities.behaviors.DuckBehavior;
 import com.aimon.game.controller.entities.behaviors.HueyBehavior;
 import com.aimon.game.controller.entities.behaviors.LouieBehavior;
 import com.aimon.game.model.entities.DuckModel;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 
 import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
@@ -103,12 +102,12 @@ public class DuckBody extends EntityBody{
                 System.out.println(dm.getLifeTime() - dm.getDeadMoment());
 
                 if (dm.getLifeTime() - dm.getDeadMoment() > 0.5) {
-                    dm.setState(DuckModel.DuckState.DEAD);
+                    dm.setState(DuckModel.DuckState.FALLING);
                 }
                 this.setRotation(0);
                 break;
 
-            case DEAD:
+            case FALLING:
                 this.applyForceToCenter(0,-20f);
                 break;
 
@@ -136,7 +135,7 @@ public class DuckBody extends EntityBody{
 
         DuckModel dm = (DuckModel) this.model;
 
-        if(dm.getState() != DuckModel.DuckState.GO_UP && dm.getState() != DuckModel.DuckState.GO_DOWN && dm.getState() != DuckModel.DuckState.DEAD) {
+        if(dm.getState() != DuckModel.DuckState.GO_UP && dm.getState() != DuckModel.DuckState.GO_DOWN && dm.getState() != DuckModel.DuckState.FALLING) {
             dm.setState(DuckModel.DuckState.GO_UP);
             this.applyVerticalForceToCenter(8f);
             dm.setObjectiveY(dm.getY() + height);
@@ -147,7 +146,7 @@ public class DuckBody extends EntityBody{
     public void goDown(float height) {
 
         DuckModel dm = (DuckModel) this.model;
-        if(dm.getState() != DuckModel.DuckState.GO_DOWN && dm.getState() != DuckModel.DuckState.GO_UP && dm.getState() != DuckModel.DuckState.DEAD) {
+        if(dm.getState() != DuckModel.DuckState.GO_DOWN && dm.getState() != DuckModel.DuckState.GO_UP && dm.getState() != DuckModel.DuckState.FALLING) {
             dm.setState(DuckModel.DuckState.GO_DOWN);
 
             if(((DuckModel) this.model).getDirection() == DuckModel.DuckDirection.RIGHT) {

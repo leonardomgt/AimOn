@@ -8,6 +8,10 @@ import com.aimon.game.model.entities.EntityModel;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
@@ -19,9 +23,6 @@ import java.util.List;
  */
 
 public class MainController {
-
-
-    private final short CATEGORY_GROUND = 0x0002;
 
     //TODO: Temp
     private boolean tmpFlag = false;
@@ -45,6 +46,41 @@ public class MainController {
         this.world = new World(new Vector2(0,0), true);
         List<DuckModel> ducks = model.getDucks();
         duckBodies = new ArrayList<DuckBody>();
+
+        this.world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                Body bodyA = contact.getFixtureA().getBody();
+                Body bodyB = contact.getFixtureB().getBody();
+
+                char body = bodyA.getUserData() instanceof  DuckModel ? 'a' : 'b';
+                DuckModel duckModel;
+                Body duckBody;
+
+                if (body == 'a') {
+                    duckModel = (DuckModel) bodyA.getUserData();
+                    duckBody = bodyA;
+
+                }
+                else {
+                    duckModel = (DuckModel) bodyB.getUserData();
+                    duckBody = bodyB;
+                }
+
+                duckModel.setState(DuckModel.DuckState.DEAD);
+
+
+            }
+
+            @Override
+            public void endContact(Contact contact) {}
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {}
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {}
+        });
 
         for (DuckModel duck : ducks) {
             duckBodies.add(new DuckBody(world, duck));
@@ -70,24 +106,35 @@ public class MainController {
         for (DuckBody duck : duckBodies) {
             DuckModel model = (DuckModel) duck.getModel();
 
-            duck.updateDuckState(delta);
+            if (model.getState() != DuckModel.DuckState.DEAD) {
 
-            if(model.isAlive()){
-                duck.getBehavior().update(delta);
+                System.out.println("Não está morto");
+
+                duck.updateDuckState(delta);
+
+                if(model.isAlive()){
+                    duck.getBehavior().update(delta);
+                }
+
+                if(totalTimeTmp > 3) {
+                    this.tmpFlag = true;
+                }
+
+                if(tmpFlag) {
+                    model.kill();
+                    this.tmpFlag = false;
+                }
+
             }
 
-            if(totalTimeTmp > 5) {
-                this.tmpFlag = true;
-            }
+            else {
 
-            if(tmpFlag) {
-                model.kill();
-                this.tmpFlag = false;
-            }
+                duck.changeVelocity(0,0);
+                duck.setRotation(-90);
 
+            }
 
         }
-
 
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
