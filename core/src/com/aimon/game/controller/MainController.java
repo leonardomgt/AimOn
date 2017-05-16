@@ -20,17 +20,18 @@ import java.util.List;
 
 public class MainController {
 
-
-    private final short CATEGORY_GROUND = 0x0002;
-
     //TODO: Temp
     private boolean tmpFlag = false;
     private float totalTimeTmp = 0;
 
 
-    private static final int FIELD_HEIGHT = 18;
+    /*private static final int FIELD_HEIGHT = 18;
 
-    private static final int FIELD_WIDTH = 32;
+    private static final int FIELD_WIDTH = 32;*/
+
+    private static final int FIELD_HEIGHT = 30;
+
+    private static final int FIELD_WIDTH = 50;
 
     private final World world;
 
@@ -76,14 +77,14 @@ public class MainController {
                 duck.getBehavior().update(delta);
             }
 
-            if(totalTimeTmp > 5) {
+            /*if(totalTimeTmp > 5) {
                 this.tmpFlag = true;
             }
 
             if(tmpFlag) {
                 model.kill();
                 this.tmpFlag = false;
-            }
+            }*/
 
 
         }
@@ -111,5 +112,16 @@ public class MainController {
 
     public void updateAimLocation(float x, float y){
         model.getAim().setPosition(x, y);
+    }
+
+    public void shotFired(float x, float y) {
+
+        for (DuckBody duck : duckBodies) {
+            DuckModel model = (DuckModel) duck.getModel();
+
+            if (duck.isInRange(x, y)) {
+                model.kill();
+            }
+        }
     }
 }

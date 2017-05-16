@@ -63,7 +63,6 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
     public void kill() {
 
         if(this.isAlive()) {
-            System.out.println("MORRI!");
             this.life = Life.DEAD;
             this.setState(DuckState.SHOT);
             this.deadMoment = this.lifeTime;

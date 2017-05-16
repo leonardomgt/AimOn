@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -43,7 +44,7 @@ public class GameScreen extends ScreenAdapter{
     public static final float VIEWPORT_WIDTH = 32;
     public static final float  VIEWPORT_HEIGHT = VIEWPORT_WIDTH*((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
 
-    public static final String AIM_IMAGE = "arm-target.png";
+    public static final String AIM_IMAGE = "arm-cross.png";
     public static final String BACKGROUND_GAME_IMAGE = "backgroundGame.jpg";
     private static final String DEWEY_SPRITE_RIGHT = "dewey_right.png";
     private static final String DEWEY_SPRITE_LEFT = "dewey_left.png";
@@ -63,17 +64,17 @@ public class GameScreen extends ScreenAdapter{
 
     private final MainController controller;
 
-    //private final DuckView louieView;
     private final DuckView hueyView;
     private final DuckView deweyView;
     private final DuckView louieView;
 
-    //private final AimView aimView;
+    private final AimView aimView;
 
     private final MainModel model;
     private int aimX, aimY;
 
     private Stage stage = new Stage();
+    private Vector3 aimPosition = new Vector3();
 
     public GameScreen(AimOn game, MainModel model, MainController controller) {
 
@@ -82,29 +83,28 @@ public class GameScreen extends ScreenAdapter{
         this.game = game;
         this.model = model;
         this.controller = controller;
+
         this.loadAssets();
-        //this.louieView = new DuckView(game, DuckModel.DuckType.LOUIE);
-        this.hueyView = new DuckView(game, DuckModel.DuckType.HUEY);
+
         this.deweyView = new DuckView(game, DuckModel.DuckType.DEWEY);
+        this.hueyView = new DuckView(game, DuckModel.DuckType.HUEY);
         this.louieView = new DuckView(game, DuckModel.DuckType.LOUIE);
-        //this.aimView = new AimView(game);
+        this.aimView = new AimView(game);
 
         // create the camera and the SpriteBatch
 
         camera = new OrthographicCamera(camera_zoom *VIEWPORT_WIDTH / PIXEL_TO_METER, camera_zoom *VIEWPORT_HEIGHT / PIXEL_TO_METER);
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        //camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        camera.position.set(50  / PIXEL_TO_METER / 2f, 30 / PIXEL_TO_METER / 2f, 0);
         camera.update();
 
-        //initializeMousePosition();
+        initializeMousePosition();
     }
 
     private void initializeMousePosition() {
 
-
         this.aimX = Gdx.input.getX();
         this.aimY = Gdx.input.getY();
-        Gdx.input.setCursorCatched(true);
-
     }
 
     private void loadAssets(){
@@ -137,24 +137,40 @@ public class GameScreen extends ScreenAdapter{
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //handleInputs(delta);
+        updateAim();
+
+        handleInputs(delta);
+
+        controller.update(delta);
+        camera.update();
+
+
+        updateBatch(delta);
+
         //camera.position.set(model.getAim().getX()/PIXEL_TO_METER, model.getAim().getY()/PIXEL_TO_METER,0);
 
         //camera.zoom = camera_zoom;
-        controller.update(delta);
-        camera.update();
-        updateBatch(delta);
+    }
+
+    private void updateAim() {
+        this.aimPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+        camera.unproject(this.aimPosition);
+        this.aimPosition.set(aimPosition.x * PIXEL_TO_METER, aimPosition.y*PIXEL_TO_METER, 0);
+
+        controller.updateAimLocation(this.aimPosition.x,this.aimPosition.y);
     }
 
     private void handleInputs(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.O)) {
+        /*if (Gdx.input.isKeyPressed(Input.Keys.O)) {
             camera_zoom += 0.2f;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.P)) {
             camera_zoom -= 0.2f;
-        }
+        }*/
 
-        controller.updateAimLocation( MainController.getControllerWidth()/2 + Gdx.input.getX() - aimX,  MainController.getControllerHeight()/2 + aimY - Gdx.input.getY());
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+            controller.shotFired(this.aimPosition.x, this.aimPosition.y);
+        }
     }
 
     private void updateBatch(float delta) {
@@ -189,8 +205,8 @@ public class GameScreen extends ScreenAdapter{
 
         }
 
-        //aimView.update(model.getAim());
-        //aimView.draw(game.getBatch());
+        aimView.update(model.getAim());
+        aimView.draw(game.getBatch());
 
     }
 

@@ -5,6 +5,7 @@ import com.aimon.game.model.MainModel;
 import com.aimon.game.view.game.GameScreen;
 import com.aimon.game.view.menu.MainMenuScreen;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class AimOn extends Game {
 
-	private static final int NUMBER_OF_DUCKS = 10;
+	private static final int NUMBER_OF_DUCKS = 400;
 
 	private SpriteBatch batch;
     private AssetManager assetManager;
@@ -42,6 +43,7 @@ public class AimOn extends Game {
 
 	public void setGameScreen() {
 		this.setScreen(gameScreen);
+		Gdx.input.setCursorCatched(true);
 	}
 
 	@Override

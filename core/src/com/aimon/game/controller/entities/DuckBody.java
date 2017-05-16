@@ -97,11 +97,6 @@ public class DuckBody extends EntityBody{
             case SHOT:
                 this.applyForceToCenter(0,0);
 
-                System.out.println("DEBUG:");
-                System.out.println(dm.getLifeTime());
-                System.out.println(dm.getDeadMoment());
-                System.out.println(dm.getLifeTime() - dm.getDeadMoment());
-
                 if (dm.getLifeTime() - dm.getDeadMoment() > 0.5) {
                     dm.setState(DuckModel.DuckState.DEAD);
                 }
@@ -176,6 +171,16 @@ public class DuckBody extends EntityBody{
     }
 
 
+    public boolean isInRange(float x, float y) {
 
+        if(x > this.getX() && x < this.getX() + this.width){
 
+            if(y > this.getY() && y < this.getY() + this.height){
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
