@@ -95,7 +95,7 @@ public class GameScreen extends ScreenAdapter{
 
         camera = new OrthographicCamera(camera_zoom *VIEWPORT_WIDTH / PIXEL_TO_METER, camera_zoom *VIEWPORT_HEIGHT / PIXEL_TO_METER);
         //camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-        camera.position.set(50  / PIXEL_TO_METER / 2f, 30 / PIXEL_TO_METER / 2f, 0);
+        camera.position.set(50  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
         initializeMousePosition();

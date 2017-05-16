@@ -51,7 +51,7 @@ public class MainModel {
                     10,
                     0,
                     type,
-                    MathUtils.random(5.0f,15.0f));
+                    MathUtils.random(8.0f,8.0f));
 
 
             //DuckModel currentDuck = new DuckModel(18,7,0,type);
