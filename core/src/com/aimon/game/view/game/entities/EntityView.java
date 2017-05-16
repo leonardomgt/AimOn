@@ -35,7 +35,6 @@ public abstract class EntityView {
 
     public abstract Sprite createSprite(AimOn game);
 
-
     public void update(EntityModel model) {
 
         sprite.setCenter(model.getX() / PIXEL_TO_METER, model.getY() / PIXEL_TO_METER);

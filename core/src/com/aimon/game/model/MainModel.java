@@ -7,10 +7,10 @@ import com.aimon.game.model.entities.GroundModel;
 import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.badlogic.gdx.math.MathUtils.random;
-import static com.aimon.game.view.game.GameScreen.VIEWPORT_WIDTH;
 
 /**
  * Created by joaofurriel on 28/04/17.
@@ -47,10 +47,11 @@ public class MainModel {
             }
 
 
-            DuckModel currentDuck = new DuckModel(MathUtils.random(0,MainController.getControllerWidth()),
-                    MathUtils.random(0,MainController.getControllerHeight()),
+            DuckModel currentDuck = new DuckModel(20,
+                    10,
                     0,
-                    type);
+                    type,
+                    MathUtils.random(5.0f,15.0f));
 
 
             //DuckModel currentDuck = new DuckModel(18,7,0,type);
@@ -59,6 +60,7 @@ public class MainModel {
             this.ground = GroundModel.getInstance();
 
         }
+        Collections.sort(this.ducks);
 
     }
 

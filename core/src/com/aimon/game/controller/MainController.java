@@ -20,6 +20,14 @@ import java.util.List;
 
 public class MainController {
 
+
+    private final short CATEGORY_GROUND = 0x0002;
+
+    //TODO: Temp
+    private boolean tmpFlag = false;
+    private float totalTimeTmp = 0;
+
+
     private static final int FIELD_HEIGHT = 18;
 
     private static final int FIELD_WIDTH = 32;
@@ -57,17 +65,28 @@ public class MainController {
             accumulator -= 1/60f;
         }
 
+        totalTimeTmp += delta;
+
         for (DuckBody duck : duckBodies) {
             DuckModel model = (DuckModel) duck.getModel();
-            if(model.isAlive()) {
-                duck.updateDuckState();
 
+            duck.updateDuckState(delta);
+
+            if(model.isAlive()){
                 duck.getBehavior().update(delta);
-
             }
+
+            if(totalTimeTmp > 5) {
+                this.tmpFlag = true;
+            }
+
+            if(tmpFlag) {
+                model.kill();
+                this.tmpFlag = false;
+            }
+
+
         }
-
-
 
 
         Array<Body> bodies = new Array<Body>();
@@ -78,6 +97,7 @@ public class MainController {
             ((EntityModel) body.getUserData()).setPosition(body.getPosition().x, body.getPosition().y);
             ((EntityModel) body.getUserData()).setRotation(body.getAngle());
         }
+
 
     }
 

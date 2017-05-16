@@ -24,7 +24,7 @@ public class GroundBody extends EntityBody {
 
         super(world,groundModel);
         this.body.setType(BodyDef.BodyType.StaticBody);
-        createFixture(body, new float[]{0,0, 2896,0, 2896,115, 0,115}, 2896 , 115 , 0.0f, 0.0f,0.0f, GROUND_CATEGORY, COLLIDE_EVERYTHING);
+        createFixture(body, new float[]{0,0, 2896,0, 2896,115, 0,115}, 2896 , 115 , 0.0f, 5.0f,0.0f, GROUND_CATEGORY, COLLIDE_EVERYTHING);
 
     }
 }

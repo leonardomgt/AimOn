@@ -22,6 +22,8 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import sun.applet.Main;
@@ -43,15 +45,19 @@ public class GameScreen extends ScreenAdapter{
 
     public static final String AIM_IMAGE = "arm-target.png";
     public static final String BACKGROUND_GAME_IMAGE = "backgroundGame.jpg";
-    public static final String DEWEY_SPRITE_RIGHT = "dewey_right.png";
-    public static final String DEWEY_SPRITE_LEFT = "dewey_left.png";
+    private static final String DEWEY_SPRITE_RIGHT = "dewey_right.png";
+    private static final String DEWEY_SPRITE_LEFT = "dewey_left.png";
     private static final String HUEY_SPRITE_RIGHT = "huey_right.png";
     private static final String HUEY_SPRITE_LEFT = "huey_left.png";
     private static final String LOUIE_SPRITE_RIGHT = "louie_right.png";
     private static final String LOUIE_SPRITE_LEFT = "louie_left.png";
 
-
-
+    public static final String DEWEY_DEAD = "dewey_dead.png";
+    public static final String DEWEY_SHOT = "dewey_shot.png";
+    public static final String HUEY_DEAD = "huey_dead.png";
+    public static final String HUEY_SHOT = "huey_shot.png";
+    public static final String LOUIE_DEAD = "louie_dead.png";
+    public static final String LOUIE_SHOT = "louie_shot.png";
 
     private static float camera_zoom = 1f;
 
@@ -104,12 +110,23 @@ public class GameScreen extends ScreenAdapter{
     private void loadAssets(){
 
         this.game.getAssetManager().load(AIM_IMAGE, Texture.class);
+
         this.game.getAssetManager().load(DEWEY_SPRITE_RIGHT, Texture.class);
         this.game.getAssetManager().load(DEWEY_SPRITE_LEFT, Texture.class);
+
         this.game.getAssetManager().load(HUEY_SPRITE_RIGHT, Texture.class);
         this.game.getAssetManager().load(HUEY_SPRITE_LEFT, Texture.class);
+
         this.game.getAssetManager().load(LOUIE_SPRITE_RIGHT, Texture.class);
         this.game.getAssetManager().load(LOUIE_SPRITE_LEFT, Texture.class);
+
+        this.game.getAssetManager().load(DEWEY_DEAD, Texture.class);
+        this.game.getAssetManager().load(DEWEY_SHOT, Texture.class);
+        this.game.getAssetManager().load(HUEY_DEAD, Texture.class);
+        this.game.getAssetManager().load(HUEY_SHOT, Texture.class);
+        this.game.getAssetManager().load(LOUIE_DEAD, Texture.class);
+        this.game.getAssetManager().load(LOUIE_SHOT, Texture.class);
+
         this.game.getAssetManager().load(BACKGROUND_GAME_IMAGE, Texture.class);
         this.game.getAssetManager().finishLoading();
 
@@ -151,8 +168,9 @@ public class GameScreen extends ScreenAdapter{
 
     private void drawEntities(float delta) {
 
-        // TODO: Algoritmo do pintor
         List<DuckModel> ducks = model.getDucks();
+
+
         for (DuckModel duck : ducks) {
             DuckView duckView;
             switch (duck.getType()){
