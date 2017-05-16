@@ -22,8 +22,10 @@ public abstract class EntityView {
      */
 
     Sprite sprite;
+    protected Object argument;
 
-    EntityView(AimOn game) {
+    EntityView(AimOn game, Object arg) {
+        this.argument = arg;
         this.sprite = createSprite(game);
     }
 

@@ -18,8 +18,8 @@ public class DuckView extends EntityView{
 
     private float stateTime;
 
-    public DuckView(AimOn game) {
-        super(game);
+    public DuckView(AimOn game, DuckModel.DuckType type) {
+        super(game, type);
     }
 
     private Animation<TextureRegion> animation_right;
@@ -27,14 +27,15 @@ public class DuckView extends EntityView{
 
     public Sprite createSprite(AimOn game) {
 
-        Texture textureRight = game.getAssetManager().get("dewey_right.png", Texture.class);
-        //Texture textureRight = game.getAssetManager().get(model.geType().getName() + "_right.png", Texture.class);
+        //Texture textureRight = game.getAssetManager().get("dewey_right.png", Texture.class);
+        Texture textureRight = game.getAssetManager().get(((DuckModel.DuckType) argument).getName() + "_right.png", Texture.class);
+
         TextureRegion[][] region = TextureRegion.split(textureRight, textureRight.getWidth()/3, textureRight.getHeight());
         TextureRegion[] framesRight = new TextureRegion[3];
         System.arraycopy(region[0], 0, framesRight, 0, 3);
         this.animation_right = new Animation<TextureRegion>(0.1f, framesRight);
 
-        Texture textureLeft = game.getAssetManager().get("dewey_left.png", Texture.class);
+        Texture textureLeft = game.getAssetManager().get(((DuckModel.DuckType) argument).getName() + "_left.png", Texture.class);
         TextureRegion[][] regionLeft = TextureRegion.split(textureLeft, textureLeft.getWidth()/3, textureLeft.getHeight());
         TextureRegion[] framesLeft = new TextureRegion[3];
         System.arraycopy(regionLeft[0], 0, framesLeft, 0, 3);

@@ -12,6 +12,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -44,12 +45,23 @@ public class GameScreen extends ScreenAdapter{
     public static final String BACKGROUND_GAME_IMAGE = "backgroundGame.jpg";
     public static final String DEWEY_SPRITE_RIGHT = "dewey_right.png";
     public static final String DEWEY_SPRITE_LEFT = "dewey_left.png";
+    private static final String HUEY_SPRITE_RIGHT = "huey_right.png";
+    private static final String HUEY_SPRITE_LEFT = "huey_left.png";
+    private static final String LOUIE_SPRITE_RIGHT = "louie_right.png";
+    private static final String LOUIE_SPRITE_LEFT = "louie_left.png";
+
+
+
 
     private static float camera_zoom = 1f;
 
     private final MainController controller;
 
-    private final DuckView duckView;
+    //private final DuckView louieView;
+    private final DuckView hueyView;
+    private final DuckView deweyView;
+    private final DuckView louieView;
+
     //private final AimView aimView;
 
     private final MainModel model;
@@ -65,7 +77,10 @@ public class GameScreen extends ScreenAdapter{
         this.model = model;
         this.controller = controller;
         this.loadAssets();
-        this.duckView = new DuckView(game);
+        //this.louieView = new DuckView(game, DuckModel.DuckType.LOUIE);
+        this.hueyView = new DuckView(game, DuckModel.DuckType.HUEY);
+        this.deweyView = new DuckView(game, DuckModel.DuckType.DEWEY);
+        this.louieView = new DuckView(game, DuckModel.DuckType.LOUIE);
         //this.aimView = new AimView(game);
 
         // create the camera and the SpriteBatch
@@ -91,6 +106,10 @@ public class GameScreen extends ScreenAdapter{
         this.game.getAssetManager().load(AIM_IMAGE, Texture.class);
         this.game.getAssetManager().load(DEWEY_SPRITE_RIGHT, Texture.class);
         this.game.getAssetManager().load(DEWEY_SPRITE_LEFT, Texture.class);
+        this.game.getAssetManager().load(HUEY_SPRITE_RIGHT, Texture.class);
+        this.game.getAssetManager().load(HUEY_SPRITE_LEFT, Texture.class);
+        this.game.getAssetManager().load(LOUIE_SPRITE_RIGHT, Texture.class);
+        this.game.getAssetManager().load(LOUIE_SPRITE_LEFT, Texture.class);
         this.game.getAssetManager().load(BACKGROUND_GAME_IMAGE, Texture.class);
         this.game.getAssetManager().finishLoading();
 
@@ -132,10 +151,24 @@ public class GameScreen extends ScreenAdapter{
 
     private void drawEntities(float delta) {
 
+        // TODO: Algoritmo do pintor
         List<DuckModel> ducks = model.getDucks();
         for (DuckModel duck : ducks) {
+            DuckView duckView;
+            switch (duck.getType()){
+                case DEWEY:
+                    duckView = deweyView; break;
+                case HUEY:
+                    duckView = hueyView; break;
+                case LOUIE:
+                    duckView = louieView; break;
+                default:
+                    duckView = null;
+            }
+
             duckView.update(duck, delta, model.getNumberOfDucks());
             duckView.draw(game.getBatch());
+
         }
 
         //aimView.update(model.getAim());

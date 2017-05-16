@@ -12,7 +12,22 @@ public class DuckModel extends EntityModel{
 
     public enum DuckState{GO_UP, GO_DOWN, FLOAT_UP, FLOAT_DOWN, DEAD}
 
-    public enum DuckType {LOUIE, HUEY, DEWEY};
+    public enum DuckType {
+
+        LOUIE, HUEY, DEWEY;
+
+        private String name;
+
+        static {
+            LOUIE.name = "louie";
+            HUEY.name = "huey";
+            DEWEY.name = "dewey";
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
     public enum Life{DEAD, ALIVE};
     private DuckType type;
     private Life life;

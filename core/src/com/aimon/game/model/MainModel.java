@@ -31,8 +31,8 @@ public class MainModel {
 
         for (int i = 0; i < numberOfDucks; i++) {
 
-            DuckModel.DuckType type = DuckModel.DuckType.DEWEY;
-            int t = random.nextInt(2);
+            DuckModel.DuckType type;
+            int t = random.nextInt(3);
             switch (t) {
                 case 0:
                     type = DuckModel.DuckType.DEWEY;
@@ -41,6 +41,7 @@ public class MainModel {
                     type = DuckModel.DuckType.LOUIE;
                     break;
                 case 2:
+                default:
                     type = DuckModel.DuckType.HUEY;
                     break;
             }
@@ -49,7 +50,7 @@ public class MainModel {
             DuckModel currentDuck = new DuckModel(MathUtils.random(0,MainController.getControllerWidth()),
                     MathUtils.random(0,MainController.getControllerHeight()),
                     0,
-                    DuckModel.DuckType.DEWEY);
+                    type);
 
 
             //DuckModel currentDuck = new DuckModel(18,7,0,type);

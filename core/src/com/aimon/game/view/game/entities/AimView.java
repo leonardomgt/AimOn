@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 public class AimView extends EntityView {
 
     public AimView(AimOn game) {
-        super(game);
+        super(game, null);
 
     }
 

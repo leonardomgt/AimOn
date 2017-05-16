@@ -20,11 +20,6 @@ import java.util.List;
 
 public class MainController {
 
-
-    private final short CATEGORY_GROUND = 0x0002;
-
-    private boolean tmpFlag = true;
-
     private static final int FIELD_HEIGHT = 18;
 
     private static final int FIELD_WIDTH = 32;
@@ -67,24 +62,8 @@ public class MainController {
             if(model.isAlive()) {
                 duck.updateDuckState();
 
-                int rand = MathUtils.random(0,100);
+                duck.getBehavior().update(delta);
 
-                    if(rand < 8) {
-                        duck.changeDirection();
-                    }
-
-                    if(rand < 10) {
-                        duck.goUp(1);
-                    }
-                    if(rand > 90) {
-                        duck.goDown(1);
-                    }
-
-            }
-
-            if (tmpFlag) {
-                //duck.goUp(3.0f);
-                this.tmpFlag = false;
             }
         }
 

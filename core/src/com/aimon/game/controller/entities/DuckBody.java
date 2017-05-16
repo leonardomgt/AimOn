@@ -1,5 +1,9 @@
 package com.aimon.game.controller.entities;
 
+import com.aimon.game.controller.entities.behaviors.DeweyBehavior;
+import com.aimon.game.controller.entities.behaviors.DuckBehavior;
+import com.aimon.game.controller.entities.behaviors.HueyBehavior;
+import com.aimon.game.controller.entities.behaviors.LouieBehavior;
 import com.aimon.game.model.entities.DuckModel;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -15,6 +19,7 @@ public class DuckBody extends EntityBody{
     private final short DUCK_CATEGORY = 0x0001;
     private final short IGNORE_DUCKS = ~DUCK_CATEGORY;
 
+    private DuckBehavior behavior;
 
     private float mass;
     private float width;
@@ -37,6 +42,17 @@ public class DuckBody extends EntityBody{
         this.body.setLinearVelocity(-2,0);
         model.setDirection(DuckModel.DuckDirection.LEFT);
 
+        switch (model.getType()){
+            case DEWEY:
+                this.behavior = new DeweyBehavior(this);
+                break;
+            case HUEY:
+                this.behavior = new HueyBehavior(this);
+                break;
+            case LOUIE:
+                this.behavior = new LouieBehavior(this);
+                break;
+        }
     }
 
     public void updateDuckState() {
@@ -121,6 +137,16 @@ public class DuckBody extends EntityBody{
 
     }
 
+
+    public DuckBehavior getBehavior() {
+        return behavior;
+    }
+
+    public void changeVelocity(float x, float y){
+
+        // TODO: Depht factor
+        this.body.setLinearVelocity(x, y);
+    }
 
 
 }
