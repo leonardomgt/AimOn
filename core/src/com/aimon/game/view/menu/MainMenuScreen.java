@@ -140,8 +140,6 @@ public class MainMenuScreen extends ScreenAdapter {
     private void initializeButtonsConfig(){
         stage = new Stage();
 
-        System.out.println("SET STAGE");
-
         /*black = new BitmapFont(Gdx.files.internal("font/black.fnt"));
         white = new BitmapFont(Gdx.files.internal("font/white.fnt"));*/
 

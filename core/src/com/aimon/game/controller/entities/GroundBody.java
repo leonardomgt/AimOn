@@ -1,8 +1,14 @@
 package com.aimon.game.controller.entities;
 
+import com.aimon.game.controller.MainController;
 import com.aimon.game.model.entities.GroundModel;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+
+import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
 
 /**
  * Created by joaofurriel on 29/04/17.
@@ -24,7 +30,23 @@ public class GroundBody extends EntityBody {
 
         super(world,groundModel);
         this.body.setType(BodyDef.BodyType.StaticBody);
-        createFixture(body, new float[]{0,0, 2896,0, 2896,80, 0,80}, 2896 , 80 , 0.0f, 5.0f,0.0f, GROUND_CATEGORY, COLLIDE_EVERYTHING);
+
+        float groundWidthPixels = MainController.getControllerWidth();
+        float groundHeightPixels = MainController.getControllerGroundHeight();
+
+        EdgeShape groundShape = new EdgeShape();
+        groundShape.set(0.0f, groundHeightPixels, groundWidthPixels, groundHeightPixels);
+        FixtureDef groundFixture = new FixtureDef();
+
+        groundFixture.shape = groundShape;
+
+        groundFixture.density = 0.0f;
+        groundFixture.friction = 5.0f;
+        groundFixture.restitution = 0.0f;
+        groundFixture.filter.categoryBits = GROUND_CATEGORY;
+        groundFixture.filter.maskBits = COLLIDE_EVERYTHING;
+
+        this.body.createFixture(groundFixture);
 
     }
 }

@@ -179,14 +179,4 @@ public class DuckBody extends EntityBody{
 
         return false;
     }
-
-    // TODO: Temporary
-
-    public float getWidth() {
-        return width;
-    }
-
-    public float getHeight() {
-        return height;
-    }
 }

@@ -30,6 +30,8 @@ public class GameScreen extends ScreenAdapter {
 
     private final AimOn game;
     private final OrthographicCamera camera;
+    private final Matrix4 debugMatrix;
+    private final Box2DDebugRenderer debugRenderer;
 
     public final static float PIXEL_TO_METER = .85f / (114 / 3f);
     public static final float VIEWPORT_WIDTH = 32;
@@ -62,8 +64,6 @@ public class GameScreen extends ScreenAdapter {
     private final AimView aimView;
 
     private final MainModel model;
-    private final Matrix4 debugMatrix;
-    private final Box2DDebugRenderer debugRenderer;
     private int aimX, aimY;
 
     private Stage stage = new Stage();

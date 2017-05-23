@@ -25,8 +25,9 @@ import java.util.List;
 public class MainController {
 
     private static final int FIELD_HEIGHT = 22;
-
     private static final int FIELD_WIDTH = 50;
+    private static final float GROUND_HEIGHT = 1.3f;
+
 
     private final World world;
 
@@ -89,7 +90,7 @@ public class MainController {
                 duck.updateDuckState(delta);
 
                 if(model.isAlive()){
-                    //duck.getBehavior().update(delta);
+                    duck.getBehavior().update(delta);
                     verifyLimits(duck);
                 }
 
@@ -98,7 +99,7 @@ public class MainController {
             else {
 
                 duck.changeVelocity(0,0);
-                duck.setRotation(-90);
+                duck.setRotation(90);
 
             }
 
@@ -123,27 +124,20 @@ public class MainController {
         return MainController.FIELD_HEIGHT;
     }
 
+    public static float getControllerGroundHeight() {
+        return MainController.GROUND_HEIGHT;
+    }
+
     public void updateAimLocation(float x, float y){
         model.getAim().setPosition(x, y);
     }
 
     public void shotFired(float x, float y) {
 
-        System.out.println("AIM");
-        System.out.println("X: " + x + "\n" + "Y: " + y);
-
         for (DuckBody duck : duckBodies) {
             DuckModel model = (DuckModel) duck.getModel();
 
             if (duck.isInRange(x, y)) {
-                System.out.println("DUCK");
-                System.out.println("X: " + model.getX() + "\n" + "Y: " + model.getY());
-
-                System.out.println("BODY");
-                System.out.println("X: " + duck.getX() + "\n" + "Y: " + duck.getY());
-
-                System.out.println("BODY DIMENSIONS");
-                System.out.println("Width: " + duck.getWidth() + "\n" + "Height: " + duck.getHeight());
 
                 model.kill();
             }
