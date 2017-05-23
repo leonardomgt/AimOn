@@ -108,7 +108,13 @@ public abstract class EntityBody {
         polygon.dispose();
     }
 
+    public Body getBody() {
+        return body;
+    }
+
     public EntityModel getModel() {
         return model;
     }
 }
+
+

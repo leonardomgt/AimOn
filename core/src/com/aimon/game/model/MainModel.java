@@ -4,6 +4,7 @@ import com.aimon.game.controller.MainController;
 import com.aimon.game.model.entities.AimModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.model.entities.GroundModel;
+import com.aimon.game.view.game.GameScreen;
 import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
@@ -40,21 +41,32 @@ public class MainModel {
                 case 1:
                     type = DuckModel.DuckType.LOUIE;
                     break;
-                case 2:
                 default:
                     type = DuckModel.DuckType.HUEY;
                     break;
+
+
+            }
+            t = random.nextInt(3);
+            float x;
+            float y;
+            switch (t) {
+                case 0: //nasce à esquerda
+                    x = MathUtils.random(0.0f, MainController.getControllerWidth()/2 - GameScreen.VIEWPORT_WIDTH/2 - 1);
+                    y = MathUtils.random(0.0f, MainController.getControllerHeight());
+                    break;
+                case 1: //nasce à direita
+                    x = MathUtils.random(MainController.getControllerWidth()/2 + GameScreen.VIEWPORT_WIDTH/2 + 1, MainController.getControllerWidth());
+                    y = MathUtils.random(0.0f, MainController.getControllerHeight());
+                    break;
+                default: //nasce em cima
+                    x = MathUtils.random(0.0f, MainController.getControllerWidth());
+                    y = MathUtils.random(GameScreen.VIEWPORT_HEIGHT + 1, MainController.getControllerHeight());
+                    break;
             }
 
+            DuckModel currentDuck = new DuckModel(x,y, 0, type, MathUtils.random(7.0f,45.0f));
 
-            DuckModel currentDuck = new DuckModel(20,
-                    10,
-                    0,
-                    type,
-                    MathUtils.random(8.0f,8.0f));
-
-
-            //DuckModel currentDuck = new DuckModel(18,7,0,type);
 
             this.ducks.add(currentDuck);
             this.ground = GroundModel.getInstance();

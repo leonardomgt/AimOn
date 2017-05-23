@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class AimOn extends Game {
 
-	private static final int NUMBER_OF_DUCKS = 400;
+	private static final int NUMBER_OF_DUCKS = 250;
 
 	private SpriteBatch batch;
     private AssetManager assetManager;

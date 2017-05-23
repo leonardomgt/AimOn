@@ -2,37 +2,25 @@ package com.aimon.game.view.game;
 
 import com.aimon.game.AimOn;
 import com.aimon.game.controller.MainController;
-import com.aimon.game.controller.entities.DuckBody;
 import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.view.game.entities.AimView;
 import com.aimon.game.view.game.entities.DuckView;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.assets.AssetDescriptor;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import sun.applet.Main;
 
 /**
  * Created by Leo on 18/04/2017.
  */
-
 
 
 public class GameScreen extends ScreenAdapter{
@@ -95,7 +83,7 @@ public class GameScreen extends ScreenAdapter{
 
         camera = new OrthographicCamera(camera_zoom *VIEWPORT_WIDTH / PIXEL_TO_METER, camera_zoom *VIEWPORT_HEIGHT / PIXEL_TO_METER);
         //camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
-        camera.position.set(50  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
+        camera.position.set(MainController.getControllerWidth()  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
         initializeMousePosition();

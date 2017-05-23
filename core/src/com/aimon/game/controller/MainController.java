@@ -24,16 +24,7 @@ import java.util.List;
 
 public class MainController {
 
-    //TODO: Temp
-    private boolean tmpFlag = false;
-    private float totalTimeTmp = 0;
-
-
-    /*private static final int FIELD_HEIGHT = 18;
-
-    private static final int FIELD_WIDTH = 32;*/
-
-    private static final int FIELD_HEIGHT = 30;
+    private static final int FIELD_HEIGHT = 22;
 
     private static final int FIELD_WIDTH = 50;
 
@@ -56,23 +47,8 @@ public class MainController {
             public void beginContact(Contact contact) {
                 Body bodyA = contact.getFixtureA().getBody();
                 Body bodyB = contact.getFixtureB().getBody();
-
-                char body = bodyA.getUserData() instanceof  DuckModel ? 'a' : 'b';
-                DuckModel duckModel;
-                Body duckBody;
-
-                if (body == 'a') {
-                    duckModel = (DuckModel) bodyA.getUserData();
-                    duckBody = bodyA;
-
-                }
-                else {
-                    duckModel = (DuckModel) bodyB.getUserData();
-                    duckBody = bodyB;
-                }
-
+                DuckModel duckModel = bodyA.getUserData() instanceof  DuckModel ? (DuckModel) bodyA.getUserData() : (DuckModel) bodyB.getUserData();
                 duckModel.setState(DuckModel.DuckState.DEAD);
-
 
             }
 
@@ -105,8 +81,6 @@ public class MainController {
             accumulator -= 1/60f;
         }
 
-        totalTimeTmp += delta;
-
         for (DuckBody duck : duckBodies) {
             DuckModel model = (DuckModel) duck.getModel();
 
@@ -116,6 +90,7 @@ public class MainController {
 
                 if(model.isAlive()){
                     duck.getBehavior().update(delta);
+                    verifyLimits(duck);
                 }
 
             }
@@ -138,7 +113,6 @@ public class MainController {
             ((EntityModel) body.getUserData()).setRotation(body.getAngle());
         }
 
-
     }
 
     public static int getControllerWidth() {
@@ -155,6 +129,8 @@ public class MainController {
 
     public void shotFired(float x, float y) {
 
+        System.out.println("X: " + x + "\n" + "Y: " + y);
+
         for (DuckBody duck : duckBodies) {
             DuckModel model = (DuckModel) duck.getModel();
 
@@ -162,5 +138,21 @@ public class MainController {
                 model.kill();
             }
         }
+    }
+
+    private void verifyLimits(DuckBody duck) {
+
+        if (duck.getBody().getPosition().x < 0) {
+            duck.setTransform(FIELD_WIDTH, duck.getBody().getPosition().y, duck.getAngle());
+
+        }
+        if (duck.getBody().getPosition().x > FIELD_WIDTH) {
+            duck.setTransform(0, duck.getBody().getPosition().y, duck.getAngle());
+        }
+
+        if (duck.getBody().getPosition().y > FIELD_HEIGHT) {
+            duck.goDown(FIELD_HEIGHT-5);
+        }
+
     }
 }

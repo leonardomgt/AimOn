@@ -24,19 +24,15 @@ public class DuckView extends EntityView {
     private Animation<TextureRegion> animationLeft;
     private Animation<TextureRegion> animationDead;
     private Animation<TextureRegion> animationShot;
-    private Sprite spriteDead;
-    private Sprite spriteShot;
     private Texture textureShot;
     private Texture textureDead;
 
 
-    private boolean setShot = true;
-    private boolean setDead = true;
+
 
 
     public Sprite createSprite(AimOn game) {
 
-        //Texture textureRight = game.getAssetManager().get("dewey_right.png", Texture.class);
         Texture textureRight = game.getAssetManager().get(((DuckModel.DuckType) argument).getName() + "_right.png", Texture.class);
 
         TextureRegion[][] region = TextureRegion.split(textureRight, textureRight.getWidth()/3, textureRight.getHeight());
@@ -56,14 +52,12 @@ public class DuckView extends EntityView {
         TextureRegion[] framesDead = new TextureRegion[1];
         System.arraycopy(regionDead[0], 0, framesDead, 0, 1);
         this.animationDead = new Animation<TextureRegion>(0.1f, framesDead);
-        this.spriteDead = new Sprite(textureDead, textureDead.getWidth(), textureDead.getHeight());
 
         textureShot = game.getAssetManager().get(((DuckModel.DuckType) argument).getName() + "_shot.png", Texture.class);
         TextureRegion[][] regionShot = TextureRegion.split(textureShot, textureShot.getWidth(), textureShot.getHeight());
         TextureRegion[] framesShot = new TextureRegion[1];
         System.arraycopy(regionShot[0], 0, framesShot, 0, 1);
         this.animationShot = new Animation<TextureRegion>(0.1f, framesShot);
-        this.spriteShot = new Sprite(textureShot, textureShot.getWidth(), textureShot.getHeight());
 
         return new Sprite(animationRight.getKeyFrame(0));
 
