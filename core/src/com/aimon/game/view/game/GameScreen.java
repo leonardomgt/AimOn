@@ -12,7 +12,9 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.List;
@@ -27,6 +29,8 @@ public class GameScreen extends ScreenAdapter{
 
     private final AimOn game;
     private final OrthographicCamera camera;
+    private final Matrix4 debugMatrix;
+    private final Box2DDebugRenderer debugRenderer;
 
     public final static float PIXEL_TO_METER = .85f / (114 / 3f);
     public static final float VIEWPORT_WIDTH = 32;
@@ -86,6 +90,10 @@ public class GameScreen extends ScreenAdapter{
         camera.position.set(MainController.getControllerWidth()  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
+        this.debugMatrix = new Matrix4(this.camera.combined);
+        debugMatrix.scale(1/PIXEL_TO_METER, 1/PIXEL_TO_METER, 1f);
+        this.debugRenderer = new Box2DDebugRenderer();
+
         initializeMousePosition();
     }
 
@@ -138,6 +146,8 @@ public class GameScreen extends ScreenAdapter{
         //camera.position.set(model.getAim().getX()/PIXEL_TO_METER, model.getAim().getY()/PIXEL_TO_METER,0);
 
         //camera.zoom = camera_zoom;
+
+        //debugRenderer.render(controller.getWorld(), debugMatrix);
     }
 
     private void updateAim() {

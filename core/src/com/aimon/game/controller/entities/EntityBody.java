@@ -83,6 +83,7 @@ public abstract class EntityBody {
     final void createFixture(Body body, float[] vertexes, int width, int height, float density, float friction, float restitution, short category, short ignoreCategories) {
         // Transform pixels into meters, center and invert the y-coordinate
         for (int i = 0; i < vertexes.length; i++) {
+
             if (i % 2 == 0) vertexes[i] -= width / 2;   // center the vertex x-coordinate
             if (i % 2 != 0) vertexes[i] -= height / 2;  // center the vertex y-coordinate
 

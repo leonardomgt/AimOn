@@ -53,11 +53,11 @@ public class MainModel {
             switch (t) {
                 case 0: //nasce à esquerda
                     x = MathUtils.random(0.0f, MainController.getControllerWidth()/2 - GameScreen.VIEWPORT_WIDTH/2 - 1);
-                    y = MathUtils.random(0.0f, MainController.getControllerHeight());
+                    y = MathUtils.random(MainController.getControllerGroundHeight(), MainController.getControllerHeight());
                     break;
                 case 1: //nasce à direita
                     x = MathUtils.random(MainController.getControllerWidth()/2 + GameScreen.VIEWPORT_WIDTH/2 + 1, MainController.getControllerWidth());
-                    y = MathUtils.random(0.0f, MainController.getControllerHeight());
+                    y = MathUtils.random(MainController.getControllerGroundHeight(), MainController.getControllerHeight());
                     break;
                 default: //nasce em cima
                     x = MathUtils.random(0.0f, MainController.getControllerWidth());

@@ -25,8 +25,9 @@ import java.util.List;
 public class MainController {
 
     private static final int FIELD_HEIGHT = 22;
-
     private static final int FIELD_WIDTH = 50;
+    private static final float GROUND_HEIGHT = 1.3f;
+
 
     private final World world;
 
@@ -98,7 +99,7 @@ public class MainController {
             else {
 
                 duck.changeVelocity(0,0);
-                duck.setRotation(-90);
+                duck.setRotation(90);
 
             }
 
@@ -121,6 +122,10 @@ public class MainController {
 
     public static int getControllerHeight() {
         return MainController.FIELD_HEIGHT;
+    }
+
+    public static float getControllerGroundHeight() {
+        return MainController.GROUND_HEIGHT;
     }
 
     public void updateAimLocation(float x, float y){
