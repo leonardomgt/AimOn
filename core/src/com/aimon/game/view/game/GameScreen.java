@@ -8,11 +8,14 @@ import com.aimon.game.view.game.entities.AimView;
 import com.aimon.game.view.game.entities.DuckView;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.List;
@@ -23,7 +26,7 @@ import java.util.List;
  */
 
 
-public class GameScreen extends ScreenAdapter{
+public class GameScreen extends ScreenAdapter {
 
     private final AimOn game;
     private final OrthographicCamera camera;
@@ -59,14 +62,18 @@ public class GameScreen extends ScreenAdapter{
     private final AimView aimView;
 
     private final MainModel model;
+    private final Matrix4 debugMatrix;
+    private final Box2DDebugRenderer debugRenderer;
     private int aimX, aimY;
 
     private Stage stage = new Stage();
     private Vector3 aimPosition = new Vector3();
 
+    private InputProcessor gameInputProcessor = new GameInputProcessor(this);
+
     public GameScreen(AimOn game, MainModel model, MainController controller) {
 
-        Gdx.input.setInputProcessor(stage);
+//        Gdx.input.setInputProcessor(stage);
 
         this.game = game;
         this.model = model;
@@ -85,6 +92,10 @@ public class GameScreen extends ScreenAdapter{
         //camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.position.set(MainController.getControllerWidth()  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
+
+        this.debugMatrix = new Matrix4(this.camera.combined);
+        debugMatrix.scale(1/PIXEL_TO_METER, 1/PIXEL_TO_METER, 1f);
+        this.debugRenderer = new Box2DDebugRenderer();
 
         initializeMousePosition();
     }
@@ -122,6 +133,7 @@ public class GameScreen extends ScreenAdapter{
 
     @Override
     public void render(float delta) {
+
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -135,9 +147,10 @@ public class GameScreen extends ScreenAdapter{
 
         updateBatch(delta);
 
+        debugRenderer.render(controller.getWorld(), debugMatrix);
         //camera.position.set(model.getAim().getX()/PIXEL_TO_METER, model.getAim().getY()/PIXEL_TO_METER,0);
 
-        //camera.zoom = camera_zoom;
+        camera.zoom = camera_zoom;
     }
 
     private void updateAim() {
@@ -156,9 +169,24 @@ public class GameScreen extends ScreenAdapter{
             camera_zoom -= 0.2f;
         }*/
 
-        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+        /*if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
             controller.shotFired(this.aimPosition.x, this.aimPosition.y);
         }
+
+        if(Gdx.input.isTouched(Input.Buttons.RIGHT)){
+            changeZoom();
+        }*/
+    }
+
+    public Vector3 getAimPosition() {
+        return aimPosition;
+    }
+
+    public void changeZoom() {
+
+        if(camera_zoom == 1) camera_zoom = 1.2f;
+
+        else camera_zoom = 1;
     }
 
     private void updateBatch(float delta) {
@@ -208,5 +236,12 @@ public class GameScreen extends ScreenAdapter{
         game.getBatch().draw(background, 0, 0, MainController.getControllerWidth() / PIXEL_TO_METER, MainController.getControllerHeight() / PIXEL_TO_METER);
     }
 
+    public MainController getController() {
+        return controller;
+    }
+
+    public void setInputProcessor(){
+        Gdx.input.setInputProcessor(this.gameInputProcessor);
+    }
 }
 

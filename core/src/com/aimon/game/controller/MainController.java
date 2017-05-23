@@ -89,7 +89,7 @@ public class MainController {
                 duck.updateDuckState(delta);
 
                 if(model.isAlive()){
-                    duck.getBehavior().update(delta);
+                    //duck.getBehavior().update(delta);
                     verifyLimits(duck);
                 }
 
@@ -129,12 +129,22 @@ public class MainController {
 
     public void shotFired(float x, float y) {
 
+        System.out.println("AIM");
         System.out.println("X: " + x + "\n" + "Y: " + y);
 
         for (DuckBody duck : duckBodies) {
             DuckModel model = (DuckModel) duck.getModel();
 
             if (duck.isInRange(x, y)) {
+                System.out.println("DUCK");
+                System.out.println("X: " + model.getX() + "\n" + "Y: " + model.getY());
+
+                System.out.println("BODY");
+                System.out.println("X: " + duck.getX() + "\n" + "Y: " + duck.getY());
+
+                System.out.println("BODY DIMENSIONS");
+                System.out.println("Width: " + duck.getWidth() + "\n" + "Height: " + duck.getHeight());
+
                 model.kill();
             }
         }

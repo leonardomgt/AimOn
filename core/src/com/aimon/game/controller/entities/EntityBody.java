@@ -71,8 +71,8 @@ public abstract class EntityBody {
         this.body.setTransform(this.body.getPosition().x, this.body.getPosition().y, this.model.getRotation());
     }
 
-    public void setRotation(float deegres) {
-        this.model.setRotation(deegres * MathUtils.PI/180);
+    public void setRotation(float degrees) {
+        this.model.setRotation(degrees * MathUtils.PI/180);
         this.body.setTransform(this.body.getPosition().x, this.body.getPosition().y, this.model.getRotation());
     }
 

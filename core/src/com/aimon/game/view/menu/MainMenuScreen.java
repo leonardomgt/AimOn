@@ -140,7 +140,7 @@ public class MainMenuScreen extends ScreenAdapter {
     private void initializeButtonsConfig(){
         stage = new Stage();
 
-        Gdx.input.setInputProcessor(stage);
+        System.out.println("SET STAGE");
 
         /*black = new BitmapFont(Gdx.files.internal("font/black.fnt"));
         white = new BitmapFont(Gdx.files.internal("font/white.fnt"));*/
@@ -160,6 +160,10 @@ public class MainMenuScreen extends ScreenAdapter {
         textButtonStyle.fontColor = Color.WHITE;
 
         stage.addActor(table);
+    }
+
+    public void setInputProcessor(){
+        Gdx.input.setInputProcessor(stage);
     }
 }
 

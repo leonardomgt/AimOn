@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class AimOn extends Game {
 
-	private static final int NUMBER_OF_DUCKS = 250;
+	private static final int NUMBER_OF_DUCKS = 15;
 
 	private SpriteBatch batch;
     private AssetManager assetManager;
@@ -39,10 +39,13 @@ public class AimOn extends Game {
 
 	public void setMenuScreen() {
 		this.setScreen(menuScreen);
+		((MainMenuScreen) this.menuScreen).setInputProcessor();
+
 	}
 
 	public void setGameScreen() {
 		this.setScreen(gameScreen);
+		((GameScreen) this.gameScreen).setInputProcessor();
 		Gdx.input.setCursorCatched(true);
 	}
 

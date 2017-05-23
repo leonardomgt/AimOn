@@ -16,33 +16,30 @@ import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
 public class DuckBody extends EntityBody{
 
     private static final float THRESHOLD = 0.1f;
+    private static final float DUCK_MASS = 0.05f;
     private final short DUCK_CATEGORY = 0x0001;
     private final short IGNORE_DUCKS = ~DUCK_CATEGORY;
 
     private DuckBehavior behavior;
 
-    private float mass;
     private float width;
     private float height;
-    private float deadMoment;
-    private float deadTime;
 
     public DuckBody(World world, DuckModel model) {
         super(world,model);
 
-        this.width = 114/3 * PIXEL_TO_METER * 10/model.getDepthFactor();
-        this.height = 38 * PIXEL_TO_METER * 10/model.getDepthFactor();
+        this.width = 114/3 * PIXEL_TO_METER * model.getDepthFactor();
+        this.height = 38 * PIXEL_TO_METER * model.getDepthFactor();
 
-        float density = this.width * this.height * model.getDepth() / 10000;
+        float density = DUCK_MASS / (float)Math.pow(this.width * this.height, 1.5f);
 
-        this.mass = this.width * this.height * (density * model.getDepthFactor());
         float friction = 0.4f, restitution = .2f;
-        int width = (int) (114/3f * model.getDepthFactor());
-        int height = (int) (38 * model.getDepthFactor());
+        int widthPixels = Math.round(this.width/PIXEL_TO_METER);
+        int heightPixels = Math.round(this.height/PIXEL_TO_METER);
 
         createFixture(body, new float[]{
-                0,0, width,0, width,height, 0,height
-        }, width, height, density, friction, restitution, DUCK_CATEGORY, IGNORE_DUCKS);
+                0,0, widthPixels,0, widthPixels,heightPixels, 0,heightPixels
+        }, widthPixels , heightPixels, density, friction, restitution, DUCK_CATEGORY, IGNORE_DUCKS);
 
         this.body.setLinearVelocity(-2*model.getDepthFactor(),0);
         model.setDirection(DuckModel.DuckDirection.LEFT);
@@ -172,14 +169,24 @@ public class DuckBody extends EntityBody{
 
     public boolean isInRange(float x, float y) {
 
-        if(x > this.getX() && x < this.getX() + this.width){
+        if(x > this.getX() - this.width/2f && x < this.getX() + this.width/2f){
 
-            if(y > this.getY() && y < this.getY() + this.height){
+            if(y > this.getY() - this.height/2f && y < this.getY() + this.height/2f){
 
                 return true;
             }
         }
 
         return false;
+    }
+
+    // TODO: Temporary
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 }

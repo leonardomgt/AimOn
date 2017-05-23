@@ -19,6 +19,9 @@ import static com.badlogic.gdx.math.MathUtils.random;
 
 public class MainModel {
 
+    public static final float DUCKS_MIN_DEPTH = 5.0f;
+    public static final float DUCKS_MAX_DEPTH = 15f;
+
     private List<DuckModel> ducks;
     private AimModel aim;
     private GroundModel ground;
@@ -65,7 +68,7 @@ public class MainModel {
                     break;
             }
 
-            DuckModel currentDuck = new DuckModel(x,y, 0, type, MathUtils.random(7.0f,45.0f));
+            DuckModel currentDuck = new DuckModel(x,y, 0, type, MathUtils.random(DUCKS_MIN_DEPTH,DUCKS_MAX_DEPTH));
 
 
             this.ducks.add(currentDuck);
