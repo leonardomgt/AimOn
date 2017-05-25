@@ -10,10 +10,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -30,11 +32,11 @@ public class GameScreen extends ScreenAdapter {
 
     private final AimOn game;
     private final OrthographicCamera camera;
-    private final Matrix4 debugMatrix;
-    private final Box2DDebugRenderer debugRenderer;
+    private Matrix4 debugMatrix;
+    private Box2DDebugRenderer debugRenderer;
 
     public final static float PIXEL_TO_METER = .85f / (114 / 3f);
-    public static final float VIEWPORT_WIDTH = 32;
+    public static final float VIEWPORT_WIDTH = 22.5f;
     public static final float  VIEWPORT_HEIGHT = VIEWPORT_WIDTH*((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
 
     public static final String AIM_IMAGE = "arm-cross.png";
@@ -53,6 +55,8 @@ public class GameScreen extends ScreenAdapter {
     public static final String LOUIE_DEAD = "louie_dead.png";
     public static final String LOUIE_SHOT = "louie_shot.png";
 
+    private static final String SHOT = "shotgun.wav";
+
     private static float camera_zoom = 1f;
 
     private final MainController controller;
@@ -70,6 +74,8 @@ public class GameScreen extends ScreenAdapter {
     private Vector3 aimPosition = new Vector3();
 
     private InputProcessor gameInputProcessor = new GameInputProcessor(this);
+
+    private final Sound shotSoundEffect;
 
     public GameScreen(AimOn game, MainModel model, MainController controller) {
 
@@ -91,11 +97,15 @@ public class GameScreen extends ScreenAdapter {
         camera = new OrthographicCamera(camera_zoom *VIEWPORT_WIDTH / PIXEL_TO_METER, camera_zoom *VIEWPORT_HEIGHT / PIXEL_TO_METER);
         //camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.position.set(MainController.getControllerWidth()  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
+        System.out.println("camera x: " + camera.position.x + "camera y:" + camera.position.y);
+        System.out.println("camera largura: " + camera.viewportWidth + "camera altura:" + camera.viewportHeight);
         camera.update();
 
         this.debugMatrix = new Matrix4(this.camera.combined);
         debugMatrix.scale(1/PIXEL_TO_METER, 1/PIXEL_TO_METER, 1f);
         this.debugRenderer = new Box2DDebugRenderer();
+
+        this.shotSoundEffect = this.game.getAssetManager().get(SHOT);
 
         initializeMousePosition();
     }
@@ -127,6 +137,8 @@ public class GameScreen extends ScreenAdapter {
         this.game.getAssetManager().load(LOUIE_SHOT, Texture.class);
 
         this.game.getAssetManager().load(BACKGROUND_GAME_IMAGE, Texture.class);
+        this.game.getAssetManager().load(SHOT, Sound.class);
+
         this.game.getAssetManager().finishLoading();
 
     }
@@ -137,56 +149,72 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        updateAim();
-
-        handleInputs(delta);
+        //updateAim();
 
         controller.update(delta);
-        camera.update();
 
 
         updateBatch(delta);
 
-        debugRenderer.render(controller.getWorld(), debugMatrix);
-        //camera.position.set(model.getAim().getX()/PIXEL_TO_METER, model.getAim().getY()/PIXEL_TO_METER,0);
+        //debugRenderer.render(controller.getWorld(), debugMatrix);
+
+
+        updateAim();
 
         camera.zoom = camera_zoom;
+
+        camera.update();
+
+
+
     }
 
     private void updateAim() {
+
         this.aimPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         camera.unproject(this.aimPosition);
+
         this.aimPosition.set(aimPosition.x * PIXEL_TO_METER, aimPosition.y*PIXEL_TO_METER, 0);
-
         controller.updateAimLocation(this.aimPosition.x,this.aimPosition.y);
-    }
 
-    private void handleInputs(float delta) {
-        /*if (Gdx.input.isKeyPressed(Input.Keys.O)) {
-            camera_zoom += 0.2f;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.P)) {
-            camera_zoom -= 0.2f;
-        }*/
 
-        /*if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
-            controller.shotFired(this.aimPosition.x, this.aimPosition.y);
+        if(camera_zoom == 0.5f) {
+            System.out.println("   aimPosition" + this.aimPosition);
+            //this.camera.position.set(aimPosition.x /PIXEL_TO_METER , aimPosition.y /PIXEL_TO_METER ,0);
+
         }
 
-        if(Gdx.input.isTouched(Input.Buttons.RIGHT)){
-            changeZoom();
-        }*/
     }
 
     public Vector3 getAimPosition() {
+        System.out.println("x: " + aimPosition.x + "y:" + aimPosition.y);
         return aimPosition;
     }
 
     public void changeZoom() {
 
-        if(camera_zoom == 1) camera_zoom = 1.2f;
+        if(camera_zoom == 1) {
 
-        else camera_zoom = 1;
+            System.out.println("   Camera: " + this.camera.position);
+
+
+            this.camera.position.set(aimPosition.x /PIXEL_TO_METER, aimPosition.y /PIXEL_TO_METER,0);
+            camera_zoom = 0.5f;
+
+            camera.update();
+
+            Vector2 aimPositionScreen = new Vector2(-camera_zoom*(Gdx.input.getX() - Gdx.graphics.getWidth()/2f), -camera_zoom*(Gdx.graphics.getHeight()/2f - Gdx.input.getY()));
+
+            this.camera.translate(aimPositionScreen.x, aimPositionScreen.y);
+
+        }
+
+        else {
+            camera_zoom = 1;
+            camera.position.set(MainController.getControllerWidth()  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
+        }
+
+
     }
 
     private void updateBatch(float delta) {
@@ -221,6 +249,7 @@ public class GameScreen extends ScreenAdapter {
 
         }
 
+        aimView.setAimZoom(camera_zoom);
         aimView.update(model.getAim());
         aimView.draw(game.getBatch());
 
@@ -228,11 +257,8 @@ public class GameScreen extends ScreenAdapter {
 
     private void drawBackground() {
 
-        //game.getBatch().draw((Texture)game.getAssetManager().get("backgroundGame.jpg"),0,0,camera.viewportWidth,camera.viewportHeight);
-
         Texture background = game.getAssetManager().get(BACKGROUND_GAME_IMAGE, Texture.class);
         background.setWrap(Texture.TextureWrap.ClampToEdge, Texture.TextureWrap.ClampToEdge);
-        //game.getBatch().draw(background, 0, 0, 0, 0, (int)(controller.FIELD_WIDTH / PIXEL_TO_METER), (int) (controller.FIELD_HEIGHT / PIXEL_TO_METER));
         game.getBatch().draw(background, 0, 0, MainController.getControllerWidth() / PIXEL_TO_METER, MainController.getControllerHeight() / PIXEL_TO_METER);
     }
 
@@ -242,6 +268,11 @@ public class GameScreen extends ScreenAdapter {
 
     public void setInputProcessor(){
         Gdx.input.setInputProcessor(this.gameInputProcessor);
+    }
+
+    public void shot() {
+        this.controller.shotFired(this.aimPosition.x, this.aimPosition.y);
+        this.shotSoundEffect.play();
     }
 }
 

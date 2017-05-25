@@ -19,8 +19,8 @@ import static com.badlogic.gdx.math.MathUtils.random;
 
 public class MainModel {
 
-    public static final float DUCKS_MIN_DEPTH = 5.0f;
-    public static final float DUCKS_MAX_DEPTH = 15f;
+    public static final float DUCKS_MIN_DEPTH = 7.5f;
+    public static final float DUCKS_MAX_DEPTH = 30.0f;
 
     private List<DuckModel> ducks;
     private AimModel aim;

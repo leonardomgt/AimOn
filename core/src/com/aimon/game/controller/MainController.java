@@ -5,6 +5,7 @@ import com.aimon.game.controller.entities.GroundBody;
 import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.model.entities.EntityModel;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -24,8 +25,11 @@ import java.util.List;
 
 public class MainController {
 
-    private static final int FIELD_HEIGHT = 22;
-    private static final int FIELD_WIDTH = 50;
+
+    private static final float FIELD_WIDTH = 25;
+    private static final float FIELD_HEIGHT = FIELD_WIDTH*((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
+
+
     private static final float GROUND_HEIGHT = 1.3f;
 
 
@@ -116,11 +120,11 @@ public class MainController {
 
     }
 
-    public static int getControllerWidth() {
+    public static float getControllerWidth() {
         return MainController.FIELD_WIDTH;
     }
 
-    public static int getControllerHeight() {
+    public static float getControllerHeight() {
         return MainController.FIELD_HEIGHT;
     }
 
@@ -133,6 +137,8 @@ public class MainController {
     }
 
     public void shotFired(float x, float y) {
+
+
 
         for (DuckBody duck : duckBodies) {
             DuckModel model = (DuckModel) duck.getModel();
