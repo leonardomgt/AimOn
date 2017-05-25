@@ -2,6 +2,7 @@ package com.aimon.game.controller;
 
 import com.aimon.game.controller.entities.DuckBody;
 import com.aimon.game.controller.entities.GroundBody;
+import com.aimon.game.controller.entities.GunController;
 import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.model.entities.EntityModel;
@@ -39,13 +40,18 @@ public class MainController {
 
     private MainModel model;
     private List<DuckBody> duckBodies;
+    private GunController gunController;
 
     public MainController(MainModel model) {
+
+        System.out.println("Altura do mundo: " + FIELD_HEIGHT);
+
 
         this.model = model;
         this.world = new World(new Vector2(0,0), true);
         List<DuckModel> ducks = model.getDucks();
         duckBodies = new ArrayList<DuckBody>();
+        this.gunController = new GunController(this.model.getGunModel());
 
         this.world.setContactListener(new ContactListener() {
             @Override
@@ -91,12 +97,13 @@ public class MainController {
 
             if (model.getState() != DuckModel.DuckState.DEAD) {
 
-                duck.updateDuckState(delta);
 
                 if(model.isAlive()){
                     duck.getBehavior().update(delta);
                     verifyLimits(duck);
                 }
+
+                duck.updateDuckState(delta);
 
             }
 
@@ -118,6 +125,8 @@ public class MainController {
             ((EntityModel) body.getUserData()).setRotation(body.getAngle());
         }
 
+        this.gunController.updateStatus(delta);
+
     }
 
     public static float getControllerWidth() {
@@ -136,18 +145,25 @@ public class MainController {
         model.getAim().setPosition(x, y);
     }
 
-    public void shotFired(float x, float y) {
+    public boolean fireGun(float x, float y) {
 
+        if (this.gunController.fire()) {
 
+            for (DuckBody duck : duckBodies) {
+                DuckModel model = (DuckModel) duck.getModel();
 
-        for (DuckBody duck : duckBodies) {
-            DuckModel model = (DuckModel) duck.getModel();
+                if (duck.isInRange(x, y)) {
 
-            if (duck.isInRange(x, y)) {
-
-                model.kill();
+                    model.kill();
+                }
             }
+            return true;
         }
+        return false;
+    }
+
+    public int reloadGun() {
+        return this.gunController.reload(6);
     }
 
     private void verifyLimits(DuckBody duck) {
@@ -162,6 +178,7 @@ public class MainController {
 
         if (duck.getBody().getPosition().y > FIELD_HEIGHT) {
             duck.goDown(FIELD_HEIGHT-5);
+            System.out.println("Acima do Mundo");
         }
 
     }

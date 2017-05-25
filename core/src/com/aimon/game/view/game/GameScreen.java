@@ -7,7 +7,6 @@ import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.view.game.entities.AimView;
 import com.aimon.game.view.game.entities.DuckView;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
@@ -56,6 +55,9 @@ public class GameScreen extends ScreenAdapter {
     public static final String LOUIE_SHOT = "louie_shot.png";
 
     private static final String SHOT = "shotgun.wav";
+    private static final String RELOAD_BULLET = "load_bullet.wav";
+    private static final String SLIDE_GUN = "slide_gun.wav";
+    private static final String EMPTY_GUN = "empty_gun.wav";
 
     private static float camera_zoom = 1f;
 
@@ -76,6 +78,9 @@ public class GameScreen extends ScreenAdapter {
     private InputProcessor gameInputProcessor = new GameInputProcessor(this);
 
     private final Sound shotSoundEffect;
+    private final Sound reloadBulletSoundEffect;
+    private final Sound slideGunSoundEffect;
+    private final Sound emptyGunSoundEffect;
 
     public GameScreen(AimOn game, MainModel model, MainController controller) {
 
@@ -106,8 +111,13 @@ public class GameScreen extends ScreenAdapter {
         this.debugRenderer = new Box2DDebugRenderer();
 
         this.shotSoundEffect = this.game.getAssetManager().get(SHOT);
+        this.reloadBulletSoundEffect = this.game.getAssetManager().get(RELOAD_BULLET);
+        this.slideGunSoundEffect = this.game.getAssetManager().get(SLIDE_GUN);
+        this.emptyGunSoundEffect = this.game.getAssetManager().get(EMPTY_GUN);
 
         initializeMousePosition();
+
+        System.out.println("Altura da camara:" + VIEWPORT_HEIGHT);
     }
 
     private void initializeMousePosition() {
@@ -138,6 +148,9 @@ public class GameScreen extends ScreenAdapter {
 
         this.game.getAssetManager().load(BACKGROUND_GAME_IMAGE, Texture.class);
         this.game.getAssetManager().load(SHOT, Sound.class);
+        this.game.getAssetManager().load(RELOAD_BULLET, Sound.class);
+        this.game.getAssetManager().load(SLIDE_GUN, Sound.class);
+        this.game.getAssetManager().load(EMPTY_GUN, Sound.class);
 
         this.game.getAssetManager().finishLoading();
 
@@ -149,23 +162,14 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //updateAim();
-
         controller.update(delta);
-
-
         updateBatch(delta);
 
-        //debugRenderer.render(controller.getWorld(), debugMatrix);
-
+        debugRenderer.render(controller.getWorld(), debugMatrix);
 
         updateAim();
-
         camera.zoom = camera_zoom;
-
         camera.update();
-
-
 
     }
 
@@ -176,13 +180,6 @@ public class GameScreen extends ScreenAdapter {
 
         this.aimPosition.set(aimPosition.x * PIXEL_TO_METER, aimPosition.y*PIXEL_TO_METER, 0);
         controller.updateAimLocation(this.aimPosition.x,this.aimPosition.y);
-
-
-        if(camera_zoom == 0.5f) {
-            System.out.println("   aimPosition" + this.aimPosition);
-            //this.camera.position.set(aimPosition.x /PIXEL_TO_METER , aimPosition.y /PIXEL_TO_METER ,0);
-
-        }
 
     }
 
@@ -271,8 +268,64 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void shot() {
-        this.controller.shotFired(this.aimPosition.x, this.aimPosition.y);
-        this.shotSoundEffect.play();
+
+        if (this.controller.fireGun(this.aimPosition.x, this.aimPosition.y))
+            this.shotSoundEffect.play();
+        else
+            if(this.model.getGunModel().getNumberOfShots() == 0)
+                this.emptyGunSoundEffect.play();
+
+
     }
+
+    public void reloadGun() {
+
+        int numberOfBulletsToReload = this.controller.reloadGun();
+
+        if(numberOfBulletsToReload > 0) {
+
+            long delay = (long)(this.model.getGunModel().getReloadBulletDelay() * 1000) ;
+
+            System.out.println(delay);
+
+            Thread reloadSoundThread = new Thread(new PlaySoundInThread(numberOfBulletsToReload, delay));
+            reloadSoundThread.start();
+            //this.slideGunSoundEffect.play();
+
+        }
+
+
+
+    }
+
+    private class PlaySoundInThread extends Thread{
+
+        private int times;
+        private long duration;
+
+        public PlaySoundInThread(int times, long duration) {
+
+            this.times = times;
+            this.duration = duration;
+            System.out.println(this.times);
+        }
+
+        @Override
+        public void run() {
+            for (int i = 0; i < times; i++) {
+
+                try {
+                    reloadBulletSoundEffect.play();
+                    System.out.println(duration);
+                    Thread.sleep(this.duration);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            slideGunSoundEffect.play();
+        }
+    }
+
 }
 

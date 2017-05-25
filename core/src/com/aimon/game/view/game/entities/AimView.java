@@ -25,7 +25,6 @@ public class AimView extends EntityView {
     public Sprite createSprite(AimOn game) {
 
         Texture texture = game.getAssetManager().get(GameScreen.AIM_IMAGE, Texture.class);
-
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
 
     }

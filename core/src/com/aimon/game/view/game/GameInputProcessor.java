@@ -19,6 +19,11 @@ public class GameInputProcessor extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
 
+        switch (keycode) {
+            case Input.Keys.R:
+                this.gameScreen.reloadGun();
+        }
+
         return super.keyDown(keycode);
     }
 

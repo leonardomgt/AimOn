@@ -4,6 +4,7 @@ import com.aimon.game.controller.MainController;
 import com.aimon.game.model.entities.AimModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.model.entities.GroundModel;
+import com.aimon.game.model.entities.GunModel;
 import com.aimon.game.view.game.GameScreen;
 import com.badlogic.gdx.math.MathUtils;
 
@@ -24,6 +25,7 @@ public class MainModel {
 
     private List<DuckModel> ducks;
     private AimModel aim;
+    private GunModel gunModel;
     private GroundModel ground;
     private int numberOfDucks;
 
@@ -32,6 +34,7 @@ public class MainModel {
         this.aim = new AimModel(aimX,aimY);
         this.numberOfDucks = numberOfDucks;
         this.ducks = new ArrayList<DuckModel>();
+        this.gunModel = new GunModel(6,.5f,.5f,3);
 
         for (int i = 0; i < numberOfDucks; i++) {
 
@@ -89,4 +92,8 @@ public class MainModel {
 
     public AimModel getAim() { return aim; }
     public GroundModel getGround() { return this.ground;}
+
+    public GunModel getGunModel() {
+        return gunModel;
+    }
 }
