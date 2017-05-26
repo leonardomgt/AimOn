@@ -28,9 +28,6 @@ public class DuckView extends EntityView {
     private Texture textureDead;
 
 
-
-
-
     public Sprite createSprite(AimOn game) {
 
         Texture textureRight = game.getAssetManager().get(((DuckModel.DuckType) argument).getName() + "_right.png", Texture.class);

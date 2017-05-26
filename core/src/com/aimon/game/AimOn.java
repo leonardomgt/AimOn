@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class AimOn extends Game {
 
-	private static final int NUMBER_OF_DUCKS = 15;
+	private static final int NUMBER_OF_DUCKS = 40;
 
 	private SpriteBatch batch;
     private AssetManager assetManager;

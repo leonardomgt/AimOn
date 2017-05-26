@@ -2,9 +2,11 @@ package com.aimon.game.controller;
 
 import com.aimon.game.controller.entities.DuckBody;
 import com.aimon.game.controller.entities.GroundBody;
+import com.aimon.game.controller.entities.GunController;
 import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.model.entities.EntityModel;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -24,8 +26,11 @@ import java.util.List;
 
 public class MainController {
 
-    private static final int FIELD_HEIGHT = 22;
-    private static final int FIELD_WIDTH = 50;
+
+    private static final float FIELD_WIDTH = 25;
+    private static final float FIELD_HEIGHT = FIELD_WIDTH*((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
+
+
     private static final float GROUND_HEIGHT = 1.3f;
 
 
@@ -35,13 +40,18 @@ public class MainController {
 
     private MainModel model;
     private List<DuckBody> duckBodies;
+    private GunController gunController;
 
     public MainController(MainModel model) {
+
+        System.out.println("Altura do mundo: " + FIELD_HEIGHT);
+
 
         this.model = model;
         this.world = new World(new Vector2(0,0), true);
         List<DuckModel> ducks = model.getDucks();
         duckBodies = new ArrayList<DuckBody>();
+        this.gunController = new GunController(this.model.getGunModel());
 
         this.world.setContactListener(new ContactListener() {
             @Override
@@ -87,12 +97,12 @@ public class MainController {
 
             if (model.getState() != DuckModel.DuckState.DEAD) {
 
-                duck.updateDuckState(delta);
-
                 if(model.isAlive()){
                     duck.getBehavior().update(delta);
-                    verifyLimits(duck);
+
                 }
+
+                duck.updateDuckState(delta);
 
             }
 
@@ -114,13 +124,15 @@ public class MainController {
             ((EntityModel) body.getUserData()).setRotation(body.getAngle());
         }
 
+        this.gunController.updateStatus(delta);
+
     }
 
-    public static int getControllerWidth() {
+    public static float getControllerWidth() {
         return MainController.FIELD_WIDTH;
     }
 
-    public static int getControllerHeight() {
+    public static float getControllerHeight() {
         return MainController.FIELD_HEIGHT;
     }
 
@@ -132,31 +144,24 @@ public class MainController {
         model.getAim().setPosition(x, y);
     }
 
-    public void shotFired(float x, float y) {
+    public boolean fireGun(float x, float y) {
 
-        for (DuckBody duck : duckBodies) {
-            DuckModel model = (DuckModel) duck.getModel();
+        if (this.gunController.fire()) {
 
-            if (duck.isInRange(x, y)) {
+            for (DuckBody duck : duckBodies) {
+                DuckModel model = (DuckModel) duck.getModel();
 
-                model.kill();
+                if (duck.isInRange(x, y)) {
+
+                    model.kill();
+                }
             }
+            return true;
         }
+        return false;
     }
 
-    private void verifyLimits(DuckBody duck) {
-
-        if (duck.getBody().getPosition().x < 0) {
-            duck.setTransform(FIELD_WIDTH, duck.getBody().getPosition().y, duck.getAngle());
-
-        }
-        if (duck.getBody().getPosition().x > FIELD_WIDTH) {
-            duck.setTransform(0, duck.getBody().getPosition().y, duck.getAngle());
-        }
-
-        if (duck.getBody().getPosition().y > FIELD_HEIGHT) {
-            duck.goDown(FIELD_HEIGHT-5);
-        }
-
+    public int reloadGun() {
+        return this.gunController.reload(6);
     }
 }

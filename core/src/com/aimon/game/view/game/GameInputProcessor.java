@@ -2,8 +2,7 @@ package com.aimon.game.view.game;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.InputProcessor;
+
 
 /**
  * Created by Leo on 23/05/2017.
@@ -19,6 +18,12 @@ public class GameInputProcessor extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
+
+        switch (keycode) {
+            case Input.Keys.R:
+                this.gameScreen.reloadGun();
+        }
+
         return super.keyDown(keycode);
     }
 
@@ -26,7 +31,8 @@ public class GameInputProcessor extends InputAdapter {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         switch (button){
             case Input.Buttons.LEFT:
-                this.gameScreen.getController().shotFired(this.gameScreen.getAimPosition().x, this.gameScreen.getAimPosition().y);
+                this.gameScreen.shot();
+
                 return true;
 
             case Input.Buttons.RIGHT:
