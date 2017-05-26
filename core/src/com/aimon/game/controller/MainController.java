@@ -97,10 +97,9 @@ public class MainController {
 
             if (model.getState() != DuckModel.DuckState.DEAD) {
 
-
                 if(model.isAlive()){
                     duck.getBehavior().update(delta);
-                    verifyLimits(duck);
+
                 }
 
                 duck.updateDuckState(delta);
@@ -164,22 +163,5 @@ public class MainController {
 
     public int reloadGun() {
         return this.gunController.reload(6);
-    }
-
-    private void verifyLimits(DuckBody duck) {
-
-        if (duck.getBody().getPosition().x < 0) {
-            duck.setTransform(FIELD_WIDTH, duck.getBody().getPosition().y, duck.getAngle());
-
-        }
-        if (duck.getBody().getPosition().x > FIELD_WIDTH) {
-            duck.setTransform(0, duck.getBody().getPosition().y, duck.getAngle());
-        }
-
-        if (duck.getBody().getPosition().y > FIELD_HEIGHT) {
-            duck.goDown(FIELD_HEIGHT-5);
-            System.out.println("Acima do Mundo");
-        }
-
     }
 }

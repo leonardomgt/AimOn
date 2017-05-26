@@ -7,33 +7,33 @@ import com.badlogic.gdx.math.MathUtils;
  * Created by Leo on 16/05/2017.
  */
 
-public class LouieBehavior implements DuckBehavior {
-    DuckBody duck;
+public class LouieBehavior extends DuckBehavior {
 
     public LouieBehavior(DuckBody duck){
-        this.duck = duck;
+        super(duck);
         this.duck.changeVelocity(-6, 0);
     }
 
-    @Override
-    public void setDuck(DuckBody duck){
-        this.duck = duck;
-    }
 
     @Override
     public void update(float delta) {
 
-        int rand = MathUtils.random(0,100);
+        if (!super.verifyLimits()) {
 
-        if(rand < 8) {
-            duck.changeDirection();
+            int rand = MathUtils.random(0,100);
+
+            if(rand < 8) {
+               duck.changeDirection();
+            }
+
+            if(rand < 10) {
+                duck.goUp(5);
+            }
+            if(rand > 90) {
+               duck.goDown(5);
+            }
+
         }
 
-        if(rand < 10) {
-            duck.goUp(5);
-        }
-        if(rand > 90) {
-            duck.goDown(5);
-        }
     }
 }

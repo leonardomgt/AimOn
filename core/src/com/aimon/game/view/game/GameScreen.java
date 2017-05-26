@@ -165,7 +165,7 @@ public class GameScreen extends ScreenAdapter {
         controller.update(delta);
         updateBatch(delta);
 
-        debugRenderer.render(controller.getWorld(), debugMatrix);
+        //debugRenderer.render(controller.getWorld(), debugMatrix);
 
         updateAim();
         camera.zoom = camera_zoom;
@@ -275,10 +275,38 @@ public class GameScreen extends ScreenAdapter {
             if(this.model.getGunModel().getNumberOfShots() == 0)
                 this.emptyGunSoundEffect.play();
 
-
     }
 
     public void reloadGun() {
+
+        class PlaySoundInThread extends Thread{
+
+            private int times;
+            private long duration;
+
+            public PlaySoundInThread(int times, long duration) {
+
+                this.times = times;
+                this.duration = duration;
+                System.out.println(this.times);
+            }
+
+            @Override
+            public void run() {
+                for (int i = 0; i < times; i++) {
+
+                    try {
+                        reloadBulletSoundEffect.play();
+                        System.out.println(duration);
+                        Thread.sleep(this.duration);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                slideGunSoundEffect.play();
+            }
+        }
 
         int numberOfBulletsToReload = this.controller.reloadGun();
 
@@ -290,42 +318,12 @@ public class GameScreen extends ScreenAdapter {
 
             Thread reloadSoundThread = new Thread(new PlaySoundInThread(numberOfBulletsToReload, delay));
             reloadSoundThread.start();
-            //this.slideGunSoundEffect.play();
 
         }
-
-
 
     }
 
-    private class PlaySoundInThread extends Thread{
 
-        private int times;
-        private long duration;
-
-        public PlaySoundInThread(int times, long duration) {
-
-            this.times = times;
-            this.duration = duration;
-            System.out.println(this.times);
-        }
-
-        @Override
-        public void run() {
-            for (int i = 0; i < times; i++) {
-
-                try {
-                    reloadBulletSoundEffect.play();
-                    System.out.println(duration);
-                    Thread.sleep(this.duration);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            slideGunSoundEffect.play();
-        }
-    }
 
 }
 

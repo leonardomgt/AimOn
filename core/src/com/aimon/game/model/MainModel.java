@@ -21,7 +21,7 @@ import static com.badlogic.gdx.math.MathUtils.random;
 public class MainModel {
 
     public static final float DUCKS_MIN_DEPTH = 7.5f;
-    public static final float DUCKS_MAX_DEPTH = 30.0f;
+    public static final float DUCKS_MAX_DEPTH = 30f;
 
     private List<DuckModel> ducks;
     private AimModel aim;
@@ -59,11 +59,11 @@ public class MainModel {
             switch (t) {
                 case 0: //nasce à esquerda
                     x = MathUtils.random(0.0f, MainController.getControllerWidth()/2 - GameScreen.VIEWPORT_WIDTH/2 - 1);
-                    y = MathUtils.random(MainController.getControllerGroundHeight(), MainController.getControllerHeight());
+                    y = MathUtils.random(MainController.getControllerGroundHeight() + 5, MainController.getControllerHeight());
                     break;
                 case 1: //nasce à direita
                     x = MathUtils.random(MainController.getControllerWidth()/2 + GameScreen.VIEWPORT_WIDTH/2 + 1, MainController.getControllerWidth());
-                    y = MathUtils.random(MainController.getControllerGroundHeight(), MainController.getControllerHeight());
+                    y = MathUtils.random(MainController.getControllerGroundHeight() + 5, MainController.getControllerHeight());
                     break;
                 default: //nasce em cima
                     x = MathUtils.random(0.0f, MainController.getControllerWidth());

@@ -1,5 +1,6 @@
 package com.aimon.game.controller.entities;
 
+import com.aimon.game.controller.MainController;
 import com.aimon.game.controller.entities.behaviors.DeweyBehavior;
 import com.aimon.game.controller.entities.behaviors.DuckBehavior;
 import com.aimon.game.controller.entities.behaviors.HueyBehavior;
@@ -41,7 +42,7 @@ public class DuckBody extends EntityBody{
                 0,0, widthPixels,0, widthPixels,heightPixels, 0,heightPixels
         }, widthPixels , heightPixels, density, friction, restitution, DUCK_CATEGORY, IGNORE_DUCKS);
 
-        this.body.setLinearVelocity(-2*model.getDepthFactor(),0);
+        this.body.setLinearVelocity(-2*model.getDepthFactor(),-2);
         model.setDirection(DuckModel.DuckDirection.LEFT);
 
         switch (model.getType()){
@@ -64,14 +65,14 @@ public class DuckBody extends EntityBody{
 
         switch (dm.getState()) {
             case GO_UP:
-                if(dm.getY() > dm.getObjectiveY() + THRESHOLD) {
+                if((dm.getY() > dm.getObjectiveY() + THRESHOLD) || (dm.getY() >= MainController.getControllerHeight() - this.height/2)) {
                     dm.setState(DuckModel.DuckState.FLOAT_DOWN);
                     this.applyVerticalForceToCenter(-4f);
                 }
                 break;
 
             case GO_DOWN:
-                if(dm.getY() < dm.getObjectiveY() - THRESHOLD) {
+                if((dm.getY() < dm.getObjectiveY() - THRESHOLD) || (dm.getY() <= MainController.getControllerGroundHeight() + this.height*+1)) {
                     dm.setState(DuckModel.DuckState.FLOAT_UP);
                     this.applyVerticalForceToCenter(4f);
                     this.setRotation(0);
@@ -178,5 +179,13 @@ public class DuckBody extends EntityBody{
         }
 
         return false;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 }
