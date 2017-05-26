@@ -6,17 +6,24 @@ import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.view.game.entities.AimView;
 import com.aimon.game.view.game.entities.DuckView;
+import com.aimon.game.view.menu.MainMenuButtons;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.util.List;
 
@@ -66,14 +73,15 @@ public class GameScreen extends ScreenAdapter {
     private final MainModel model;
     private int aimX, aimY;
 
-    private Stage stage = new Stage();
+    private ImageButton buttonHome;
     private Vector3 aimPosition = new Vector3();
 
+    private InputMultiplexer gameMultiplexer = new InputMultiplexer();
+
     private InputProcessor gameInputProcessor = new GameInputProcessor(this);
+    private Stage gameStage = new Stage();
 
     public GameScreen(AimOn game, MainModel model, MainController controller) {
-
-//        Gdx.input.setInputProcessor(stage);
 
         this.game = game;
         this.model = model;
@@ -98,6 +106,32 @@ public class GameScreen extends ScreenAdapter {
         this.debugRenderer = new Box2DDebugRenderer();
 
         initializeMousePosition();
+        initializeUIElements();
+
+        gameMultiplexer.addProcessor(gameInputProcessor);
+        gameMultiplexer.addProcessor(gameStage);
+    }
+
+    private void initializeUIElements() {
+
+        // Home Button
+        buttonHome = new ImageButton(game.getSkin());
+        buttonHome.setSize(buttonHome.getHeight()/1.2f,buttonHome.getHeight()/1.2f);
+
+        ImageButton.ImageButtonStyle homeStyle = new ImageButton.ImageButtonStyle(buttonHome.getStyle());
+        buttonHome.setStyle(homeStyle);
+
+        buttonHome.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("home.png"))));
+        buttonHome.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("home.png"))));
+        buttonHome.getStyle().up = buttonHome.getSkin().getDrawable("button-small");
+        buttonHome.getStyle().down = buttonHome.getSkin().getDrawable("button-small-down");
+        buttonHome.setPosition(0, Gdx.graphics.getHeight()-buttonHome.getHeight());
+        buttonHome.addListener(new ClickListener() {
+            public void clicked(InputEvent e, float x, float y) {
+                game.setMenuScreen();
+            }
+        });
+        gameStage.addActor(buttonHome);
     }
 
     private void initializeMousePosition() {
@@ -139,8 +173,6 @@ public class GameScreen extends ScreenAdapter {
 
         updateAim();
 
-        handleInputs(delta);
-
         controller.update(delta);
         camera.update();
 
@@ -148,9 +180,11 @@ public class GameScreen extends ScreenAdapter {
         updateBatch(delta);
 
         debugRenderer.render(controller.getWorld(), debugMatrix);
-        //camera.position.set(model.getAim().getX()/PIXEL_TO_METER, model.getAim().getY()/PIXEL_TO_METER,0);
 
         camera.zoom = camera_zoom;
+
+        gameStage.act(delta);
+        gameStage.draw();
     }
 
     private void updateAim() {
@@ -161,22 +195,6 @@ public class GameScreen extends ScreenAdapter {
         controller.updateAimLocation(this.aimPosition.x,this.aimPosition.y);
     }
 
-    private void handleInputs(float delta) {
-        /*if (Gdx.input.isKeyPressed(Input.Keys.O)) {
-            camera_zoom += 0.2f;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.P)) {
-            camera_zoom -= 0.2f;
-        }*/
-
-        /*if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
-            controller.shotFired(this.aimPosition.x, this.aimPosition.y);
-        }
-
-        if(Gdx.input.isTouched(Input.Buttons.RIGHT)){
-            changeZoom();
-        }*/
-    }
 
     public Vector3 getAimPosition() {
         return aimPosition;
@@ -241,7 +259,8 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void setInputProcessor(){
-        Gdx.input.setInputProcessor(this.gameInputProcessor);
+
+        Gdx.input.setInputProcessor(this.gameMultiplexer);
     }
 }
 

@@ -19,13 +19,11 @@ public class GameInputProcessor extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
-        System.out.println(keycode);
         return super.keyDown(keycode);
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
         switch (button){
             case Input.Buttons.LEFT:
                 this.gameScreen.getController().shotFired(this.gameScreen.getAimPosition().x, this.gameScreen.getAimPosition().y);

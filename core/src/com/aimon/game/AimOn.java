@@ -10,6 +10,8 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class AimOn extends Game {
 
@@ -23,17 +25,22 @@ public class AimOn extends Game {
 	private ScreenAdapter gameScreen;
 	private MainModel mainModel;
 	private MainController mainController;
+	public BitmapFont pineWoodFont;
 
+    private Skin skin;
 
-	@Override
+    @Override
 	public void create () {
 		batch = new SpriteBatch();
         assetManager = new AssetManager();
 		font = new BitmapFont();
+		initializeUIConfig();
+
 		this.mainModel = new MainModel(MainController.getControllerWidth()/2, MainController.getControllerHeight()/2, NUMBER_OF_DUCKS);
 		this.mainController = new MainController(this.mainModel);
 		this.menuScreen = new MainMenuScreen(this);
 		this.gameScreen = new GameScreen(this, this.mainModel, this.mainController);
+
 		this.setMenuScreen();
 	}
 
@@ -46,7 +53,7 @@ public class AimOn extends Game {
 	public void setGameScreen() {
 		this.setScreen(gameScreen);
 		((GameScreen) this.gameScreen).setInputProcessor();
-		Gdx.input.setCursorCatched(true);
+		//Gdx.input.setCursorCatched(true);
 	}
 
 	@Override
@@ -69,5 +76,19 @@ public class AimOn extends Game {
         return assetManager;
     }
 
+	private void initializeUIConfig() {
 
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Pinewood.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 60;
+		pineWoodFont = generator.generateFont(parameter); // font size 60 pixels
+		generator.dispose();
+
+        skin = new Skin(Gdx.files.internal("glassy/glassy-ui.json"));
+
+    }
+
+    public Skin getSkin() {
+        return skin;
+    }
 }
