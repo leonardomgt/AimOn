@@ -9,7 +9,7 @@ public class GunModel extends EntityModel {
     public enum GunState {IDLE, FIRING, RELOADING};
 
     private int capacity;
-    private int numberOfShots;
+    private int numberOfBullets;
     private float shotDelay;
     private float lastShotMoment = 0;
     private float reloadBulletDelay;
@@ -25,13 +25,13 @@ public class GunModel extends EntityModel {
         super(0,0,0f);
         this.capacity = capacity;
         this.shotDelay = shotDelay;
-        this.numberOfShots = numberOfShots;
+        this.numberOfBullets = numberOfShots;
         this.reloadBulletDelay = reloadBulletDelay;
 
     }
 
-    public void setNumberOfShots(int numberOfShots) {
-        this.numberOfShots = numberOfShots;
+    public void setNumberOfBullets(int numberOfBullets) {
+        this.numberOfBullets = numberOfBullets;
     }
 
     public void setState(GunState state) {
@@ -50,8 +50,8 @@ public class GunModel extends EntityModel {
         return shotDelay;
     }
 
-    public int getNumberOfShots() {
-        return numberOfShots;
+    public int getNumberOfBullets() {
+        return numberOfBullets;
     }
 
     public GunState getState() {
@@ -88,5 +88,9 @@ public class GunModel extends EntityModel {
 
     public void setReloadedBullets(int reloadedBullets) {
         this.reloadedBullets = reloadedBullets;
+    }
+
+    public int getEmptySpaces() {
+        return this.capacity - this.numberOfBullets;
     }
 }

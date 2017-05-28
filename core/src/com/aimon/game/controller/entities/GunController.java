@@ -1,7 +1,6 @@
 package com.aimon.game.controller.entities;
 
 import com.aimon.game.model.entities.GunModel;
-import com.badlogic.gdx.math.MathUtils;
 
 /**
  * Created by joaofurriel on 25/05/17.
@@ -17,10 +16,10 @@ public class GunController {
 
     public boolean fire() {
 
-        if (model.getState() == GunModel.GunState.IDLE && model.getNumberOfShots() > 0) {
+        if (model.getState() == GunModel.GunState.IDLE && model.getNumberOfBullets() > 0) {
 
             this.model.setLastShotMoment(this.model.getGunLifeTime());
-            this.model.setNumberOfShots(this.model.getNumberOfShots()-1);
+            this.model.setNumberOfBullets(this.model.getNumberOfBullets()-1);
             this.model.setState(GunModel.GunState.FIRING);
             return true;
 
@@ -28,19 +27,17 @@ public class GunController {
         return false;
     }
 
-    public int reload(int numberOfShots) {
+    public int reload(int numberOfBullets) {
 
-        int emptySpaces = this.model.getCapacity() - this.model.getNumberOfShots();
+        if (model.getState() == GunModel.GunState.IDLE /*&& this.model.getEmptySpaces() > 0*/) {
 
-        if (model.getState() == GunModel.GunState.IDLE && emptySpaces > 0) {
+            this.model.setReloadedBullets(Math.min(this.model.getEmptySpaces(), numberOfBullets));
 
-            this.model.setReloadedBullets(Math.min(emptySpaces, numberOfShots));
-
-            this.model.setNumberOfShots(this.model.getNumberOfShots() + numberOfShots);
+            this.model.setNumberOfBullets(this.model.getNumberOfBullets() + numberOfBullets);
             this.model.setLastReloadMoment(this.model.getGunLifeTime());
             this.model.setState(GunModel.GunState.RELOADING);
-            if (this.model.getNumberOfShots() > this.model.getCapacity())
-                this.model.setNumberOfShots(this.model.getCapacity());
+            if (this.model.getNumberOfBullets() > this.model.getCapacity())
+                this.model.setNumberOfBullets(this.model.getCapacity());
             return this.model.getReloadedBullets();
         }
 
@@ -68,5 +65,9 @@ public class GunController {
                 break;
         }
 
+    }
+
+    public GunModel getModel() {
+        return model;
     }
 }

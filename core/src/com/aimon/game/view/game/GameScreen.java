@@ -6,7 +6,7 @@ import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.view.game.entities.AimView;
 import com.aimon.game.view.game.entities.DuckView;
-import com.aimon.game.view.menu.MainMenuButtons;
+import com.aimon.game.view.game.entities.GameStatusView;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -22,7 +22,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -54,6 +53,7 @@ public class GameScreen extends ScreenAdapter {
     private static final String HUEY_SPRITE_LEFT = "huey_left.png";
     private static final String LOUIE_SPRITE_RIGHT = "louie_right.png";
     private static final String LOUIE_SPRITE_LEFT = "louie_left.png";
+    public static final String ALIVE_DUCK = "alive_duck.png";
 
     public static final String DEWEY_DEAD = "dewey_dead.png";
     public static final String DEWEY_SHOT = "dewey_shot.png";
@@ -61,11 +61,16 @@ public class GameScreen extends ScreenAdapter {
     public static final String HUEY_SHOT = "huey_shot.png";
     public static final String LOUIE_DEAD = "louie_dead.png";
     public static final String LOUIE_SHOT = "louie_shot.png";
+    public static final String BULLET_BOX = "bullet_box.png";
+    public static final String AMMO = "ammo.png";
+    public static final String AMMO_EMPTY = "ammo_empty.png";
+    public static final String MISSED_SHOT = "missed.png";
 
     private static final String SHOT = "shotgun.wav";
     private static final String RELOAD_BULLET = "load_bullet.wav";
     private static final String SLIDE_GUN = "slide_gun.wav";
     private static final String EMPTY_GUN = "empty_gun.wav";
+
 
     private static float camera_zoom = 1f;
 
@@ -74,6 +79,8 @@ public class GameScreen extends ScreenAdapter {
     private final DuckView hueyView;
     private final DuckView deweyView;
     private final DuckView louieView;
+
+    private final GameStatusView gameStatusView;
 
     private final AimView aimView;
 
@@ -93,6 +100,7 @@ public class GameScreen extends ScreenAdapter {
     private final Sound slideGunSoundEffect;
     private final Sound emptyGunSoundEffect;
 
+
     public GameScreen(AimOn game, MainModel model, MainController controller) {
 
         this.game = game;
@@ -105,6 +113,7 @@ public class GameScreen extends ScreenAdapter {
         this.hueyView = new DuckView(game, DuckModel.DuckType.HUEY);
         this.louieView = new DuckView(game, DuckModel.DuckType.LOUIE);
         this.aimView = new AimView(game);
+        this.gameStatusView = new GameStatusView(game, model.getPlayerModel());
 
         // create the camera and the SpriteBatch
 
@@ -178,12 +187,19 @@ public class GameScreen extends ScreenAdapter {
         this.game.getAssetManager().load(HUEY_SHOT, Texture.class);
         this.game.getAssetManager().load(LOUIE_DEAD, Texture.class);
         this.game.getAssetManager().load(LOUIE_SHOT, Texture.class);
+        this.game.getAssetManager().load(ALIVE_DUCK, Texture.class);
 
         this.game.getAssetManager().load(BACKGROUND_GAME_IMAGE, Texture.class);
+
         this.game.getAssetManager().load(SHOT, Sound.class);
         this.game.getAssetManager().load(RELOAD_BULLET, Sound.class);
         this.game.getAssetManager().load(SLIDE_GUN, Sound.class);
         this.game.getAssetManager().load(EMPTY_GUN, Sound.class);
+
+        this.game.getAssetManager().load(BULLET_BOX, Texture.class);
+        this.game.getAssetManager().load(AMMO, Texture.class);
+        this.game.getAssetManager().load(AMMO_EMPTY, Texture.class);
+        this.game.getAssetManager().load(MISSED_SHOT, Texture.class);
 
         this.game.getAssetManager().finishLoading();
 
@@ -285,6 +301,8 @@ public class GameScreen extends ScreenAdapter {
         aimView.setAimZoom(camera_zoom);
         aimView.update(model.getAim());
         aimView.draw(game.getBatch());
+        gameStatusView.update(model.getPlayerModel());
+        gameStatusView.draw(game.getBatch());
 
     }
 
@@ -306,10 +324,13 @@ public class GameScreen extends ScreenAdapter {
 
     public void shot() {
 
-        if (this.controller.fireGun(this.aimPosition.x, this.aimPosition.y))
+        if (this.controller.fireGun(this.aimPosition.x, this.aimPosition.y)){
             this.shotSoundEffect.play();
+            gameStatusView.spendBullet();
+        }
+
         else
-            if(this.model.getGunModel().getNumberOfShots() == 0)
+            if(this.model.getPlayerModel().getGun().getNumberOfBullets() == 0)
                 this.emptyGunSoundEffect.play();
 
     }
@@ -320,12 +341,17 @@ public class GameScreen extends ScreenAdapter {
 
             private int times;
             private long duration;
+            private int oldBulletsBox;
+            private int oldBulletsGun;
 
-            public PlaySoundInThread(int times, long duration) {
 
+            public PlaySoundInThread(int times, long duration, int oldBulletsBox, int oldBulletsGun) {
+
+                this.oldBulletsBox = oldBulletsBox;
                 this.times = times;
                 this.duration = duration;
-                System.out.println(this.times);
+                this.oldBulletsGun = oldBulletsGun;
+
             }
 
             @Override
@@ -334,7 +360,8 @@ public class GameScreen extends ScreenAdapter {
 
                     try {
                         reloadBulletSoundEffect.play();
-                        System.out.println(duration);
+                        gameStatusView.setPlayerBulletsString(--oldBulletsBox);
+                        gameStatusView.setGunBullets(++oldBulletsGun);
                         Thread.sleep(this.duration);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -345,22 +372,21 @@ public class GameScreen extends ScreenAdapter {
             }
         }
 
+        int oldBulletsBox = this.model.getPlayerModel().getNumberOfBullets();
+        int oldBulletsGun = this.model.getPlayerModel().getGun().getNumberOfBullets();
         int numberOfBulletsToReload = this.controller.reloadGun();
 
         if(numberOfBulletsToReload > 0) {
 
-            long delay = (long)(this.model.getGunModel().getReloadBulletDelay() * 1000) ;
+            long delay = (long)(this.model.getPlayerModel().getGun().getReloadBulletDelay() * 1000) ;
 
             System.out.println(delay);
 
-            Thread reloadSoundThread = new Thread(new PlaySoundInThread(numberOfBulletsToReload, delay));
+            Thread reloadSoundThread = new Thread(new PlaySoundInThread(numberOfBulletsToReload, delay, oldBulletsBox, oldBulletsGun));
             reloadSoundThread.start();
 
         }
 
     }
 
-
-
 }
-
