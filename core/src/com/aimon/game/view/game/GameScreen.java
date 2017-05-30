@@ -7,11 +7,11 @@ import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.view.game.entities.AimView;
 import com.aimon.game.view.game.entities.DuckView;
 import com.aimon.game.view.game.entities.GameStatusView;
+import com.aimon.game.view.game.inputprocessors.*;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -66,10 +66,7 @@ public class GameScreen extends ScreenAdapter {
     public static final String AMMO_EMPTY = "ammo_empty.png";
     public static final String MISSED_SHOT = "missed.png";
 
-    private static final String SHOT = "shotgun.wav";
-    private static final String RELOAD_BULLET = "load_bullet.wav";
-    private static final String SLIDE_GUN = "slide_gun.wav";
-    private static final String EMPTY_GUN = "empty_gun.wav";
+
 
 
     private static float camera_zoom = 1f;
@@ -85,20 +82,16 @@ public class GameScreen extends ScreenAdapter {
     private final AimView aimView;
 
     private final MainModel model;
-    private int aimX, aimY;
 
-    private ImageButton buttonHome;
-    private Vector3 aimPosition = new Vector3();
+    private Vector3 aimPosition;
 
     private InputMultiplexer gameMultiplexer = new InputMultiplexer();
 
-    private InputProcessor gameInputProcessor = new GameInputProcessor(this);
+    private GameInputProcessor gameInputProcessor;
     private Stage gameStage = new Stage();
-
-    private final Sound shotSoundEffect;
-    private final Sound reloadBulletSoundEffect;
-    private final Sound slideGunSoundEffect;
-    private final Sound emptyGunSoundEffect;
+    private ImageButton buttonHome;
+    private ImageButton buttonReload;
+    private ImageButton buttonFire;
 
 
     public GameScreen(AimOn game, MainModel model, MainController controller) {
@@ -106,6 +99,17 @@ public class GameScreen extends ScreenAdapter {
         this.game = game;
         this.model = model;
         this.controller = controller;
+
+        this.aimPosition = new Vector3(model.getAim().getX(), model.getAim().getY(), 0);
+
+        switch (Gdx.app.getType()){
+            case Android:
+                this.gameInputProcessor = new AndroidInputProcessor(this); break;
+            case Desktop:
+            default:
+                this.gameInputProcessor = new DesktopInputProcessor(this); break;
+
+        }
 
         this.loadAssets();
 
@@ -128,16 +132,11 @@ public class GameScreen extends ScreenAdapter {
         debugMatrix.scale(1/PIXEL_TO_METER, 1/PIXEL_TO_METER, 1f);
         this.debugRenderer = new Box2DDebugRenderer();
 
-        this.shotSoundEffect = this.game.getAssetManager().get(SHOT);
-        this.reloadBulletSoundEffect = this.game.getAssetManager().get(RELOAD_BULLET);
-        this.slideGunSoundEffect = this.game.getAssetManager().get(SLIDE_GUN);
-        this.emptyGunSoundEffect = this.game.getAssetManager().get(EMPTY_GUN);
 
-        initializeMousePosition();
         initializeUIElements();
 
-        gameMultiplexer.addProcessor(gameInputProcessor);
         gameMultiplexer.addProcessor(gameStage);
+        gameMultiplexer.addProcessor(gameInputProcessor);
     }
 
     private void initializeUIElements() {
@@ -160,12 +159,53 @@ public class GameScreen extends ScreenAdapter {
             }
         });
         gameStage.addActor(buttonHome);
+
+
+        if(Gdx.app.getType() == Application.ApplicationType.Android){
+            initializeAndroidUIElements();
+        }
     }
 
-    private void initializeMousePosition() {
+    private void initializeAndroidUIElements() {
 
-        this.aimX = Gdx.input.getX();
-        this.aimY = Gdx.input.getY();
+        // Reload Button
+        buttonReload = new ImageButton(game.getSkin());
+        buttonReload.setSize(buttonReload.getHeight()/1, buttonReload.getHeight()/1);
+
+        ImageButton.ImageButtonStyle reloadStyle = new ImageButton.ImageButtonStyle(buttonReload.getStyle());
+        buttonReload.setStyle(reloadStyle);
+
+        buttonReload.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ammo_empty.png"))));
+        buttonReload.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ammo_empty.png"))));
+        buttonReload.getStyle().up = buttonReload.getSkin().getDrawable("button"/*"button-small"*/);
+        buttonReload.getStyle().down = buttonReload.getSkin().getDrawable("button-down"/*"button-small-down"*/);
+        buttonReload.setPosition(Gdx.graphics.getWidth() - buttonReload.getWidth(), 0);
+        buttonReload.addListener(new ClickListener() {
+            public void clicked(InputEvent e, float x, float y) {
+                gameInputProcessor.reloadGun();
+            }
+        });
+        gameStage.addActor(buttonReload);
+
+
+        // Fire Button
+        buttonFire = new ImageButton(game.getSkin());
+        buttonFire.setSize(buttonFire.getHeight()/1, buttonFire.getHeight()/1);
+
+        ImageButton.ImageButtonStyle fireStyle = new ImageButton.ImageButtonStyle(buttonFire.getStyle());
+        buttonFire.setStyle(fireStyle);
+
+        buttonFire.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("fire.png"))));
+        buttonFire.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("fire.png"))));
+        buttonFire.getStyle().up = buttonFire.getSkin().getDrawable("button"/*"button-small"*/);
+        buttonFire.getStyle().down = buttonFire.getSkin().getDrawable("button-down"/*"button-small-down"*/);
+        buttonFire.setPosition(0, 0);
+        buttonFire.addListener(new ClickListener() {
+            public void clicked(InputEvent e, float x, float y) {
+                gameInputProcessor.shot();
+            }
+        });
+        gameStage.addActor(buttonFire);
     }
 
     private void loadAssets(){
@@ -191,10 +231,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.game.getAssetManager().load(BACKGROUND_GAME_IMAGE, Texture.class);
 
-        this.game.getAssetManager().load(SHOT, Sound.class);
-        this.game.getAssetManager().load(RELOAD_BULLET, Sound.class);
-        this.game.getAssetManager().load(SLIDE_GUN, Sound.class);
-        this.game.getAssetManager().load(EMPTY_GUN, Sound.class);
+        this.gameInputProcessor.loadAssets();
 
         this.game.getAssetManager().load(BULLET_BOX, Texture.class);
         this.game.getAssetManager().load(AMMO, Texture.class);
@@ -216,7 +253,7 @@ public class GameScreen extends ScreenAdapter {
 
         //debugRenderer.render(controller.getWorld(), debugMatrix);
 
-        updateAim();
+        gameInputProcessor.updateAim();
         camera.zoom = camera_zoom;
 
         gameStage.act(delta);
@@ -225,15 +262,6 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
     }
 
-    private void updateAim() {
-
-        this.aimPosition.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-        camera.unproject(this.aimPosition);
-
-        this.aimPosition.set(aimPosition.x * PIXEL_TO_METER, aimPosition.y*PIXEL_TO_METER, 0);
-        controller.updateAimLocation(this.aimPosition.x,this.aimPosition.y);
-
-    }
 
     public Vector3 getAimPosition() {
         System.out.println("x: " + aimPosition.x + "y:" + aimPosition.y);
@@ -322,71 +350,17 @@ public class GameScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(this.gameMultiplexer);
     }
 
-    public void shot() {
 
-        if (this.controller.fireGun(this.aimPosition.x, this.aimPosition.y)){
-            this.shotSoundEffect.play();
-            gameStatusView.spendBullet();
-        }
 
-        else
-            if(this.model.getPlayerModel().getGun().getNumberOfBullets() == 0)
-                this.emptyGunSoundEffect.play();
-
+    public OrthographicCamera getCamera() {
+        return camera;
     }
 
-    public void reloadGun() {
-
-        class PlaySoundInThread extends Thread{
-
-            private int times;
-            private long duration;
-            private int oldBulletsBox;
-            private int oldBulletsGun;
-
-
-            public PlaySoundInThread(int times, long duration, int oldBulletsBox, int oldBulletsGun) {
-
-                this.oldBulletsBox = oldBulletsBox;
-                this.times = times;
-                this.duration = duration;
-                this.oldBulletsGun = oldBulletsGun;
-
-            }
-
-            @Override
-            public void run() {
-                for (int i = 0; i < times; i++) {
-
-                    try {
-                        reloadBulletSoundEffect.play();
-                        gameStatusView.setPlayerBulletsString(--oldBulletsBox);
-                        gameStatusView.setGunBullets(++oldBulletsGun);
-                        Thread.sleep(this.duration);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                slideGunSoundEffect.play();
-            }
-        }
-
-        int oldBulletsBox = this.model.getPlayerModel().getNumberOfBullets();
-        int oldBulletsGun = this.model.getPlayerModel().getGun().getNumberOfBullets();
-        int numberOfBulletsToReload = this.controller.reloadGun();
-
-        if(numberOfBulletsToReload > 0) {
-
-            long delay = (long)(this.model.getPlayerModel().getGun().getReloadBulletDelay() * 1000) ;
-
-            System.out.println(delay);
-
-            Thread reloadSoundThread = new Thread(new PlaySoundInThread(numberOfBulletsToReload, delay, oldBulletsBox, oldBulletsGun));
-            reloadSoundThread.start();
-
-        }
-
+    public GameStatusView getGameStatusView() {
+        return gameStatusView;
     }
 
+    public MainModel getModel() {
+        return model;
+    }
 }
