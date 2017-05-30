@@ -3,6 +3,7 @@ package com.aimon.game.controller;
 import com.aimon.game.controller.entities.DuckBody;
 import com.aimon.game.controller.entities.GroundBody;
 import com.aimon.game.controller.entities.GunController;
+import com.aimon.game.controller.entities.PlayerController;
 import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.model.entities.EntityModel;
@@ -40,18 +41,17 @@ public class MainController {
 
     private MainModel model;
     private List<DuckBody> duckBodies;
-    private GunController gunController;
+    private PlayerController playerController;
 
     public MainController(MainModel model) {
 
         System.out.println("Altura do mundo: " + FIELD_HEIGHT);
 
-
         this.model = model;
         this.world = new World(new Vector2(0,0), true);
         List<DuckModel> ducks = model.getDucks();
         duckBodies = new ArrayList<DuckBody>();
-        this.gunController = new GunController(this.model.getGunModel());
+        this.playerController = new PlayerController(this.model.getPlayerModel());
 
         this.world.setContactListener(new ContactListener() {
             @Override
@@ -124,7 +124,7 @@ public class MainController {
             ((EntityModel) body.getUserData()).setRotation(body.getAngle());
         }
 
-        this.gunController.updateStatus(delta);
+        this.playerController.getGunController().updateStatus(delta);
 
     }
 
@@ -146,22 +146,27 @@ public class MainController {
 
     public boolean fireGun(float x, float y) {
 
-        if (this.gunController.fire()) {
+        if (this.playerController.fireGun()) {
 
+            boolean goodShot = false;
             for (DuckBody duck : duckBodies) {
                 DuckModel model = (DuckModel) duck.getModel();
 
                 if (duck.isInRange(x, y)) {
 
                     model.kill();
+                    this.model.decreaseNumberOfDucks();
+                    goodShot = true;
                 }
+
             }
+            this.playerController.goodShot(goodShot);
             return true;
         }
         return false;
     }
 
     public int reloadGun() {
-        return this.gunController.reload(6);
+        return this.playerController.reloadGun();
     }
 }

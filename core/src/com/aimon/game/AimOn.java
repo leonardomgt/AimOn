@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class AimOn extends Game {
 
-	private static final int NUMBER_OF_DUCKS = 40;
+	private static final int NUMBER_OF_DUCKS = 24;
 
 	private SpriteBatch batch;
     private AssetManager assetManager;
@@ -91,4 +91,12 @@ public class AimOn extends Game {
     public Skin getSkin() {
         return skin;
     }
+
+	public BitmapFont getPineWoodFont() {
+		return pineWoodFont;
+	}
+
+	public MainModel getMainModel() {
+		return mainModel;
+	}
 }
