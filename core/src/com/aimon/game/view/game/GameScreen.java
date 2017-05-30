@@ -37,7 +37,7 @@ import java.util.List;
 
 public class GameScreen extends ScreenAdapter {
 
-    private final AimOn game;
+    public final AimOn game;
     private final OrthographicCamera camera;
     private Matrix4 debugMatrix;
     private Box2DDebugRenderer debugRenderer;

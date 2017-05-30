@@ -22,6 +22,8 @@ public class GameInputProcessor extends InputAdapter {
         switch (keycode) {
             case Input.Keys.R:
                 this.gameScreen.reloadGun();
+            case Input.Keys.B:
+                this.gameScreen.game.setMenuScreen();
         }
 
         return super.keyDown(keycode);
