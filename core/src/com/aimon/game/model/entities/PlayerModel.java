@@ -20,7 +20,7 @@ public class PlayerModel  extends EntityModel {
         super(GameScreen.VIEWPORT_WIDTH-0.5f,GameScreen.VIEWPORT_HEIGHT-0.5f,0f);
         this.name = name;
         this.numberOfBullets = numberOfBullets;
-        this.gun = new GunModel(6,.5f,.5f,3);
+        this.gun = new GunModel(6,.5f,.5f);
         this.killedDucks = 0;
         this.missedShots = 0;
 

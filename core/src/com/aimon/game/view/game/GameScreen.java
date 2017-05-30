@@ -74,7 +74,8 @@ public class GameScreen extends ScreenAdapter {
 
     private static float camera_zoom = 1f;
 
-    private final MainController controller;
+    private  MainController controller;
+    private  MainModel model;
 
     private final DuckView hueyView;
     private final DuckView deweyView;
@@ -84,7 +85,6 @@ public class GameScreen extends ScreenAdapter {
 
     private final AimView aimView;
 
-    private final MainModel model;
     private int aimX, aimY;
 
     private ImageButton buttonHome;
@@ -104,8 +104,8 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(AimOn game, MainModel model, MainController controller) {
 
         this.game = game;
-        this.model = model;
-        this.controller = controller;
+
+        setModelController(model, controller);
 
         this.loadAssets();
 
@@ -138,6 +138,11 @@ public class GameScreen extends ScreenAdapter {
 
         gameMultiplexer.addProcessor(gameInputProcessor);
         gameMultiplexer.addProcessor(gameStage);
+    }
+
+    private void setModelController(MainModel model, MainController controller) {
+        this.model = model;
+        this.controller = controller;
     }
 
     private void initializeUIElements() {

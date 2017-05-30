@@ -64,7 +64,9 @@ public class MainController {
             }
 
             @Override
-            public void endContact(Contact contact) {}
+            public void endContact(Contact contact) {
+                MainController.this.model.increaseNumberOfDucksOnGround();
+            }
 
             @Override
             public void preSolve(Contact contact, Manifold oldManifold) {}

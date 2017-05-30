@@ -29,14 +29,15 @@ public class MainModel {
     private GroundModel ground;
     private final int numberOfDucks;
     private int numberOfAliveDucks;
+    private int numberOfDucksOnGround = 0;
     private PlayerModel playerModel;
 
-    public MainModel(float aimX, float aimY, int numberOfDucks) {
+    public MainModel(float aimX, float aimY, int numberOfDucks, PlayerModel playerModel) {
 
         this.aim = new AimModel(aimX,aimY);
         this.numberOfDucks = numberOfDucks;
         this.ducks = new ArrayList<DuckModel>();
-        this.playerModel = new PlayerModel("Player 1", 24);
+        this.playerModel = playerModel;
         this.numberOfAliveDucks = numberOfDucks;
 
         for (int i = 0; i < numberOfDucks; i++) {
@@ -107,4 +108,12 @@ public class MainModel {
     public void decreaseNumberOfDucks() {
         this.numberOfAliveDucks--;
     }
+
+    public void increaseNumberOfDucksOnGround() {
+
+        this.numberOfDucksOnGround++;
+
+    }
+
+
 }
