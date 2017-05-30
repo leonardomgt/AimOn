@@ -26,18 +26,6 @@ public class AndroidInputProcessor extends GameInputProcessor {
 
     @Override
     public boolean touchDragged (int screenX, int screenY, int pointer) {
-        //if (!dragging) return false;
-        //gameScreen.getAimPosition().set(screenX*1f, screenY*1f,0);
-       //
-
-       /* Vector3 newAimPos = new Vector3(Gdx.input.getX() - touchedPosition.x, Gdx.input.getY() - touchedPosition.y, 0);
-        gameScreen.getCamera().unproject(newAimPos);
-
-        newAimPos.set(newAimPos.x*gameScreen.PIXEL_TO_METER, newAimPos.y*gameScreen.PIXEL_TO_METER, 0);
-
-        gameScreen.getAimPosition().set(gameScreen.getAimPosition().x + newAimPos.x, gameScreen.getAimPosition().y + newAimPos.y, 0);
-        gameScreen.getController().updateAimLocation(gameScreen.getAimPosition().x, gameScreen.getAimPosition().y);*/
-
 
         gameScreen.getAimPosition().set(currentAimPos.x + (Gdx.input.getX() - touchedPosition.x), Gdx.graphics.getHeight()- currentAimPos.y + Gdx.input.getY() - touchedPosition.y, 0);
         gameScreen.getCamera().unproject(gameScreen.getAimPosition());

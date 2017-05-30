@@ -1,6 +1,7 @@
 package com.aimon.game.view.game.inputprocessors;
 
 import com.aimon.game.view.game.GameScreen;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
@@ -59,10 +60,16 @@ public abstract class GameInputProcessor extends InputAdapter{
             gameScreen.getGameStatusView().spendBullet();
         }
 
-        else
-        if(gameScreen.getModel().getPlayerModel().getGun().getNumberOfBullets() == 0)
+        else if(gameScreen.getModel().getPlayerModel().getGun().getNumberOfBullets() == 0)
             emptyGunSoundEffect.play();
 
+
+
+        float acx = Gdx.input.getAccelerometerX();
+        float acy = Gdx.input.getAccelerometerY();
+        float acz = Gdx.input.getAccelerometerZ();
+
+        System.out.println(acx + acy + acz);
     }
 
     public void reloadGun() {
