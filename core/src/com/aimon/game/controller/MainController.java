@@ -45,8 +45,6 @@ public class MainController {
 
     public MainController(MainModel model) {
 
-        System.out.println("Altura do mundo: " + FIELD_HEIGHT);
-
         this.model = model;
         this.world = new World(new Vector2(0,0), true);
         List<DuckModel> ducks = model.getDucks();

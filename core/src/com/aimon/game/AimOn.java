@@ -47,13 +47,14 @@ public class AimOn extends Game {
 	public void setMenuScreen() {
 		this.setScreen(menuScreen);
 		((MainMenuScreen) this.menuScreen).setInputProcessor();
+		Gdx.input.setCursorCatched(false);
 
 	}
 
 	public void setGameScreen() {
 		this.setScreen(gameScreen);
 		((GameScreen) this.gameScreen).setInputProcessor();
-		//Gdx.input.setCursorCatched(true);
+		Gdx.input.setCursorCatched(true);
 	}
 
 	@Override

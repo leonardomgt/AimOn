@@ -45,28 +45,7 @@ public class GameScreen extends ScreenAdapter {
     public static final float VIEWPORT_WIDTH = 22.5f;
     public static final float  VIEWPORT_HEIGHT = VIEWPORT_WIDTH*((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
 
-    public static final String AIM_IMAGE = "arm-cross.png";
     public static final String BACKGROUND_GAME_IMAGE = "backgroundGame.jpg";
-    private static final String DEWEY_SPRITE_RIGHT = "dewey_right.png";
-    private static final String DEWEY_SPRITE_LEFT = "dewey_left.png";
-    private static final String HUEY_SPRITE_RIGHT = "huey_right.png";
-    private static final String HUEY_SPRITE_LEFT = "huey_left.png";
-    private static final String LOUIE_SPRITE_RIGHT = "louie_right.png";
-    private static final String LOUIE_SPRITE_LEFT = "louie_left.png";
-    public static final String ALIVE_DUCK = "alive_duck.png";
-
-    public static final String DEWEY_DEAD = "dewey_dead.png";
-    public static final String DEWEY_SHOT = "dewey_shot.png";
-    public static final String HUEY_DEAD = "huey_dead.png";
-    public static final String HUEY_SHOT = "huey_shot.png";
-    public static final String LOUIE_DEAD = "louie_dead.png";
-    public static final String LOUIE_SHOT = "louie_shot.png";
-    public static final String BULLET_BOX = "bullet_box.png";
-    public static final String AMMO = "ammo.png";
-    public static final String AMMO_EMPTY = "ammo_empty.png";
-    public static final String MISSED_SHOT = "missed.png";
-
-
 
 
     private static float camera_zoom = 1f;
@@ -124,8 +103,6 @@ public class GameScreen extends ScreenAdapter {
         camera = new OrthographicCamera(camera_zoom *VIEWPORT_WIDTH / PIXEL_TO_METER, camera_zoom *VIEWPORT_HEIGHT / PIXEL_TO_METER);
         //camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.position.set(MainController.getControllerWidth()  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
-        System.out.println("camera x: " + camera.position.x + "camera y:" + camera.position.y);
-        System.out.println("camera largura: " + camera.viewportWidth + "camera altura:" + camera.viewportHeight);
         camera.update();
 
         this.debugMatrix = new Matrix4(this.camera.combined);
@@ -210,33 +187,9 @@ public class GameScreen extends ScreenAdapter {
 
     private void loadAssets(){
 
-        this.game.getAssetManager().load(AIM_IMAGE, Texture.class);
-
-        this.game.getAssetManager().load(DEWEY_SPRITE_RIGHT, Texture.class);
-        this.game.getAssetManager().load(DEWEY_SPRITE_LEFT, Texture.class);
-
-        this.game.getAssetManager().load(HUEY_SPRITE_RIGHT, Texture.class);
-        this.game.getAssetManager().load(HUEY_SPRITE_LEFT, Texture.class);
-
-        this.game.getAssetManager().load(LOUIE_SPRITE_RIGHT, Texture.class);
-        this.game.getAssetManager().load(LOUIE_SPRITE_LEFT, Texture.class);
-
-        this.game.getAssetManager().load(DEWEY_DEAD, Texture.class);
-        this.game.getAssetManager().load(DEWEY_SHOT, Texture.class);
-        this.game.getAssetManager().load(HUEY_DEAD, Texture.class);
-        this.game.getAssetManager().load(HUEY_SHOT, Texture.class);
-        this.game.getAssetManager().load(LOUIE_DEAD, Texture.class);
-        this.game.getAssetManager().load(LOUIE_SHOT, Texture.class);
-        this.game.getAssetManager().load(ALIVE_DUCK, Texture.class);
-
         this.game.getAssetManager().load(BACKGROUND_GAME_IMAGE, Texture.class);
 
         this.gameInputProcessor.loadAssets();
-
-        this.game.getAssetManager().load(BULLET_BOX, Texture.class);
-        this.game.getAssetManager().load(AMMO, Texture.class);
-        this.game.getAssetManager().load(AMMO_EMPTY, Texture.class);
-        this.game.getAssetManager().load(MISSED_SHOT, Texture.class);
 
         this.game.getAssetManager().finishLoading();
 
@@ -264,16 +217,12 @@ public class GameScreen extends ScreenAdapter {
 
 
     public Vector3 getAimPosition() {
-        System.out.println("x: " + aimPosition.x + "y:" + aimPosition.y);
         return aimPosition;
     }
 
     public void changeZoom() {
 
         if(camera_zoom == 1) {
-
-            System.out.println("   Camera: " + this.camera.position);
-
 
             this.camera.position.set(aimPosition.x /PIXEL_TO_METER, aimPosition.y /PIXEL_TO_METER,0);
             camera_zoom = 0.5f;

@@ -16,7 +16,6 @@ public class DesktopInputProcessor extends GameInputProcessor {
 
     public DesktopInputProcessor(GameScreen gameScreen) {
         super(gameScreen);
-        System.out.println("DESKTOP");
 
     }
 

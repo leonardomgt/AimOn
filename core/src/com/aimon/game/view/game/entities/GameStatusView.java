@@ -9,13 +9,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-
-import static com.aimon.game.view.game.GameScreen.ALIVE_DUCK;
-import static com.aimon.game.view.game.GameScreen.AMMO;
-import static com.aimon.game.view.game.GameScreen.AMMO_EMPTY;
-import static com.aimon.game.view.game.GameScreen.BULLET_BOX;
-import static com.aimon.game.view.game.GameScreen.DEWEY_SHOT;
-import static com.aimon.game.view.game.GameScreen.MISSED_SHOT;
 import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
 
 /**
@@ -23,6 +16,14 @@ import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
  */
 
 public class GameStatusView {
+
+    public static final String BULLET_BOX = "bullet_box.png";
+    public static final String AMMO = "ammo.png";
+    public static final String AMMO_EMPTY = "ammo_empty.png";
+    public static final String MISSED_SHOT = "missed.png";
+    public static final String ALIVE_DUCK = "alive_duck.png";
+    public static final String DEAD_DUCK = "dewey_shot.png";
+
 
     private int playerBullets;
     private int gunBullets;
@@ -45,7 +46,11 @@ public class GameStatusView {
 
 
     public GameStatusView(AimOn game, PlayerModel player) {
+
+
         this.game = game;
+        loadAssets();
+
         this.font = new BitmapFont();
         this.font.setColor(Color.BLACK);
         this.playerBullets = player.getNumberOfBullets();
@@ -55,6 +60,17 @@ public class GameStatusView {
         this.createSprites();
         this.killedDucks = model.getKilledDucks();
         this.missedShots = model.getMissedShots();
+
+    }
+
+    private void loadAssets() {
+        this.game.getAssetManager().load(ALIVE_DUCK, Texture.class);
+        this.game.getAssetManager().load(BULLET_BOX, Texture.class);
+        this.game.getAssetManager().load(AMMO, Texture.class);
+        this.game.getAssetManager().load(AMMO_EMPTY, Texture.class);
+        this.game.getAssetManager().load(MISSED_SHOT, Texture.class);
+
+        this.game.getAssetManager().finishLoading();
 
     }
 
@@ -76,7 +92,7 @@ public class GameStatusView {
         texture = game.getAssetManager().get(ALIVE_DUCK);
         this.numberOfDucksSprite = createSprite(texture, 1f, model.getX(), model.getY()-2f);
 
-        texture = game.getAssetManager().get(DEWEY_SHOT);
+        texture = game.getAssetManager().get(DEAD_DUCK);
         this.killedDucksSprite = createSprite(texture,1, model.getX(), model.getY()-3f);
 
         texture = game.getAssetManager().get(MISSED_SHOT);

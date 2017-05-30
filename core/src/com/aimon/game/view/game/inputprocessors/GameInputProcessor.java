@@ -110,8 +110,6 @@ public abstract class GameInputProcessor extends InputAdapter{
 
             long delay = (long)(gameScreen.getModel().getPlayerModel().getGun().getReloadBulletDelay() * 1000) ;
 
-            System.out.println(delay);
-
             Thread reloadSoundThread = new Thread(new PlaySoundInThread(numberOfBulletsToReload, delay, oldBulletsBox, oldBulletsGun));
             reloadSoundThread.start();
 

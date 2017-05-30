@@ -16,6 +16,8 @@ public class AimView extends EntityView {
     float aimZoom = 1;
     float INITIAL_ZOOM = .1f;
 
+    public static final String AIM_IMAGE = "arm-cross.png";
+
     public AimView(AimOn game) {
         super(game, null);
         sprite.setScale(INITIAL_ZOOM, INITIAL_ZOOM);
@@ -24,7 +26,11 @@ public class AimView extends EntityView {
 
     public Sprite createSprite(AimOn game) {
 
-        Texture texture = game.getAssetManager().get(GameScreen.AIM_IMAGE, Texture.class);
+        game.getAssetManager().load(AIM_IMAGE, Texture.class);
+        game.getAssetManager().finishLoading();
+
+
+        Texture texture = game.getAssetManager().get(AIM_IMAGE, Texture.class);
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
 
     }
