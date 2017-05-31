@@ -1,6 +1,7 @@
 package com.aimon.game.view.game.entities;
 
 import com.aimon.game.AimOn;
+import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.EntityModel;
 import com.aimon.game.model.entities.PlayerModel;
 import com.badlogic.gdx.graphics.Color;
@@ -45,26 +46,26 @@ public class GameStatusView {
     private Sprite killedDucksSprite;
 
 
-    public GameStatusView(AimOn game, PlayerModel player) {
-
-
+    public GameStatusView(AimOn game, MainModel mainModel) {
         this.game = game;
         loadAssets();
 
         this.font = new BitmapFont();
         this.font.setColor(Color.BLACK);
-        this.playerBullets = player.getNumberOfBullets();
-        this.gunBullets = player.getGun().getNumberOfBullets();
-        this.numberOfAliveDucks = game.getMainModel().getNumberOfAliveDucks();
-        this.model = player;
+        this.playerBullets = mainModel.getPlayerModel().getNumberOfBullets();
+        this.gunBullets = mainModel.getPlayerModel().getGun().getNumberOfBullets();
+        this.numberOfAliveDucks = mainModel.getNumberOfAliveDucks();
+        this.model = mainModel.getPlayerModel();
         this.createSprites();
         this.killedDucks = model.getKilledDucks();
         this.missedShots = model.getMissedShots();
+
 
     }
 
     private void loadAssets() {
         this.game.getAssetManager().load(ALIVE_DUCK, Texture.class);
+        this.game.getAssetManager().load(DEAD_DUCK, Texture.class);
         this.game.getAssetManager().load(BULLET_BOX, Texture.class);
         this.game.getAssetManager().load(AMMO, Texture.class);
         this.game.getAssetManager().load(AMMO_EMPTY, Texture.class);
@@ -97,6 +98,7 @@ public class GameStatusView {
 
         texture = game.getAssetManager().get(MISSED_SHOT);
         this.missedShotsSprite = createSprite(texture, 0.2f, model.getX(), model.getY()-4f);
+
 
     }
 
@@ -143,6 +145,16 @@ public class GameStatusView {
 
 
 
+        font.draw(batch, game.getGameScreen().getModel().isBonus() ? "Bonus" : "Level: " +  game.getGameScreen().getModel().getLevel(), (model.getX() - 0.2f) / PIXEL_TO_METER, (model.getY() - 4.7f) / PIXEL_TO_METER);
+
+        if(game.getGameScreen().getModel().isBonus()) {
+            font.draw(batch, Integer.toString(MainModel.getBonusTime() - (int) game.getGameScreen().getModel().getLevelTime()), (model.getX() - 0.2f) / PIXEL_TO_METER, (model.getY() - 5.7f) / PIXEL_TO_METER);
+        }
+
+
+
+
+
     }
 
     private void drawFont(CharSequence str, SpriteBatch batch, float x, float y) {
@@ -154,7 +166,7 @@ public class GameStatusView {
 
 
     public void update(EntityModel model) {
-        this.numberOfAliveDucks = game.getMainModel().getNumberOfAliveDucks();
+        this.numberOfAliveDucks = game.getGameScreen().getModel().getNumberOfAliveDucks();
         this.killedDucks = ((PlayerModel) model).getKilledDucks();
         this.missedShots = ((PlayerModel) model).getMissedShots();
 
@@ -171,4 +183,5 @@ public class GameStatusView {
     public void spendBullet() {
         this.gunBullets--;
     }
+
 }

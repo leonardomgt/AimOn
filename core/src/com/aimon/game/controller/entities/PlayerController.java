@@ -17,6 +17,13 @@ public class PlayerController {
     }
 
     public boolean fireGun() {
+
+        if (this.playerModel.getGun().getNumberOfBullets() == 1) {
+            if(this.playerModel.getNumberOfBullets() == 0) {
+                this.playerModel.setOutOfBullets(true);
+            }
+        }
+
         return this.gunController.fire();
     }
 
@@ -43,12 +50,16 @@ public class PlayerController {
 
     public void goodShot(boolean good) {
 
-        if (good)
+        if (good) {
             this.playerModel.increaseDucksKilled();
+            this.playerModel.increaseScore();
+        }
 
         else
             this.playerModel.increaseMissedShots();
 
     }
+
+
 
 }

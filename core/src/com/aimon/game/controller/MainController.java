@@ -32,6 +32,7 @@ public class MainController {
     private static final float FIELD_HEIGHT = FIELD_WIDTH*((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
 
 
+
     private static final float GROUND_HEIGHT = 1.3f;
 
 
@@ -58,11 +59,15 @@ public class MainController {
                 Body bodyB = contact.getFixtureB().getBody();
                 DuckModel duckModel = bodyA.getUserData() instanceof  DuckModel ? (DuckModel) bodyA.getUserData() : (DuckModel) bodyB.getUserData();
                 duckModel.setState(DuckModel.DuckState.DEAD);
+                MainController.this.model.increaseNumberOfDucksOnGround();
+
 
             }
 
             @Override
-            public void endContact(Contact contact) {}
+            public void endContact(Contact contact) {
+
+            }
 
             @Override
             public void preSolve(Contact contact, Manifold oldManifold) {}
@@ -122,7 +127,9 @@ public class MainController {
             ((EntityModel) body.getUserData()).setRotation(body.getAngle());
         }
 
+        this.model.setLevelTime(this.model.getLevelTime() + delta);
         this.playerController.getGunController().updateStatus(delta);
+        this.model.updateState();
 
     }
 
@@ -156,6 +163,9 @@ public class MainController {
                     this.model.decreaseNumberOfDucks();
                     goodShot = true;
                 }
+                else {
+                    this.frightenDuck(x, y, duck);
+                }
 
             }
             this.playerController.goodShot(goodShot);
@@ -167,4 +177,18 @@ public class MainController {
     public int reloadGun() {
         return this.playerController.reloadGun();
     }
+
+    private void frightenDuck(float x, float y, DuckBody duckBody) {
+
+        if(distance(x,y,duckBody.getX(), duckBody.getY()) < DuckModel.getFrightenDistance()) {
+            duckBody.setFrighten(x);
+        }
+
+    }
+
+    private static float distance(float x1, float y1, float x2, float y2) {
+
+        return (float) Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1,2));
+    }
+
 }

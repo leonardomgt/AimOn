@@ -1,7 +1,5 @@
 package com.aimon.game;
 
-import com.aimon.game.controller.MainController;
-import com.aimon.game.model.MainModel;
 import com.aimon.game.view.game.GameScreen;
 import com.aimon.game.view.menu.MainMenuScreen;
 import com.badlogic.gdx.Game;
@@ -15,7 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class AimOn extends Game {
 
-	private static final int NUMBER_OF_DUCKS = 24;
+	private static int NUMBER_OF_DUCKS = 6;
+	private static int NUMBER_OF_BULLETS = 9;
+	public final String playerName = "Player 1";
 
 	private SpriteBatch batch;
     private AssetManager assetManager;
@@ -23,8 +23,7 @@ public class AimOn extends Game {
 
 	private ScreenAdapter menuScreen;
 	private ScreenAdapter gameScreen;
-	private MainModel mainModel;
-	private MainController mainController;
+
 	public BitmapFont pineWoodFont;
 
     private Skin skin;
@@ -38,10 +37,7 @@ public class AimOn extends Game {
 		font = new BitmapFont();
 		initializeUIConfig();
 
-		this.mainModel = new MainModel(MainController.getControllerWidth()/2, MainController.getControllerHeight()/2, NUMBER_OF_DUCKS);
-		this.mainController = new MainController(this.mainModel);
 		this.menuScreen = new MainMenuScreen(this);
-		this.gameScreen = new GameScreen(this, this.mainModel, this.mainController);
 
 		this.setMenuScreen();
 	}
@@ -54,6 +50,7 @@ public class AimOn extends Game {
 	}
 
 	public void setGameScreen() {
+		this.gameScreen = new GameScreen(this, this.playerName, NUMBER_OF_DUCKS, NUMBER_OF_BULLETS);
 		this.setScreen(gameScreen);
 		((GameScreen) this.gameScreen).setInputProcessor();
 		Gdx.input.setCursorCatched(true);
@@ -95,12 +92,12 @@ public class AimOn extends Game {
         return skin;
     }
 
-	public BitmapFont getPineWoodFont() {
-		return pineWoodFont;
+	public GameScreen getGameScreen() {
+		return (GameScreen) this.gameScreen;
 	}
 
-	public MainModel getMainModel() {
-		return mainModel;
+	public BitmapFont getPineWoodFont() {
+		return pineWoodFont;
 	}
 
 	public boolean isSoundOn() {

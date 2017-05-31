@@ -23,6 +23,10 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
         }
     }
 
+    private static final float FRIGHTEN_DISTANCE = 5;
+    private static final float FRIGHTEN_TIME = 0.5f;
+    private static final float FRIGHTEN_VELOCITY_FACTOR = 2.5f;
+
     public enum DuckDirection {RIGHT, LEFT};
     public enum DuckState{GO_UP, GO_DOWN, FLOAT_UP, FLOAT_DOWN, FALLING, SHOT, DEAD}
 
@@ -37,6 +41,12 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
 
     private float lifeTime = 0;
     private float deadMoment;
+
+    private float normalVelocity;
+    private float frightenVelocity;
+
+    private boolean frightened = false;
+    private float frightenedMoment = 0;
 
 
     public DuckModel(float x, float y, float rotation, DuckType type, float depth) {
@@ -124,5 +134,49 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
 
     public float getDeadMoment() {
         return deadMoment;
+    }
+
+    public float getNormalVelocity() {
+        return normalVelocity;
+    }
+
+    public void setNormalVelocity(float normalVelocity) {
+        this.normalVelocity = normalVelocity;
+    }
+
+    public float getFrightenVelocity() {
+        return frightenVelocity;
+    }
+
+    public void setFrightenVelocity(float frightenVelocity) {
+        this.frightenVelocity = frightenVelocity;
+    }
+
+    public boolean isFrightened() {
+        return frightened;
+    }
+
+    public void setFrightened(boolean frightened) {
+        this.frightened = frightened;
+    }
+
+    public float getFrightenedMoment() {
+        return frightenedMoment;
+    }
+
+    public void setFrightenedMoment(float frightenedMoment) {
+        this.frightenedMoment = frightenedMoment;
+    }
+
+    public static float getFrightenDistance() {
+        return FRIGHTEN_DISTANCE;
+    }
+
+    public static float getFrightenTime() {
+        return FRIGHTEN_TIME;
+    }
+
+    public static float getFrightenVelocityFactor() {
+        return FRIGHTEN_VELOCITY_FACTOR;
     }
 }
