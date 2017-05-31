@@ -111,20 +111,25 @@ public abstract class GameInputProcessor extends InputAdapter{
 
         camera.translate(aimPositionScreen.x, aimPositionScreen.y);
 
-       /* // show only background area
+        // show only background area
 
-        if((camera.position.x + camera.zoom*Gdx.graphics.getWidth()/2f) > MainController.getControllerWidth()/PIXEL_TO_METER){
-            camera.translate(MainController.getControllerWidth()/PIXEL_TO_METER - (camera.position.x + camera.zoom*Gdx.graphics.getWidth()/2f),0);
+        float maxX = MainController.getControllerWidth()/PIXEL_TO_METER/2f + camera.viewportWidth/2f;
+        float maxY = camera.viewportHeight;
+        float minX = MainController.getControllerWidth()/PIXEL_TO_METER/2f - camera.viewportWidth/2f;
+        float minY = 0;
+
+        if((camera.position.x + camera.zoom*Gdx.graphics.getWidth()/2f) > maxX){
+            camera.translate(maxX - (camera.position.x + camera.zoom*Gdx.graphics.getWidth()/2f),0);
         }
-        if((camera.position.x - camera.zoom*Gdx.graphics.getWidth()/2f) < 0){
-            camera.translate( - (camera.position.x - camera.zoom*Gdx.graphics.getWidth()/2f),0);
+        if((camera.position.x - camera.zoom*Gdx.graphics.getWidth()/2f) < minX){
+            camera.translate(minX - (camera.position.x - camera.zoom*Gdx.graphics.getWidth()/2f),0);
         }
-        if((camera.position.y + camera.zoom*Gdx.graphics.getHeight()/2f) > MainController.getControllerHeight()/PIXEL_TO_METER){
-            camera.translate(0, MainController.getControllerHeight()/PIXEL_TO_METER - (camera.position.y + camera.zoom*Gdx.graphics.getHeight()/2f));
+        if((camera.position.y + camera.zoom*Gdx.graphics.getHeight()/2f) > maxY){
+            camera.translate(0, maxY - (camera.position.y + camera.zoom*Gdx.graphics.getHeight()/2f));
         }
-        if((camera.position.y - camera.zoom*Gdx.graphics.getHeight()/2f) < 0){
-            camera.translate(0, - (camera.position.y - camera.zoom*Gdx.graphics.getHeight()/2f));
-        }*/
+        if((camera.position.y - camera.zoom*Gdx.graphics.getHeight()/2f) < minY){
+            camera.translate(0,minY - (camera.position.y - camera.zoom*Gdx.graphics.getHeight()/2f));
+        }
 
         camera.update();
 
@@ -231,13 +236,13 @@ public abstract class GameInputProcessor extends InputAdapter{
 
 
         if(!(aimPosition.x > Gdx.graphics.getWidth() && Gdx.input.getDeltaX() > 0)
-                && !(aimPosition.x < 0 && Gdx.input.getDeltaX() < 0)){
+        && !(aimPosition.x < 0 && Gdx.input.getDeltaX() < 0)){
 
             aimPosition.add(Gdx.input.getDeltaX(),0, 0);
         }
 
         if(!(aimPosition.y > Gdx.graphics.getHeight() && Gdx.input.getDeltaY() > 0)
-                && !(aimPosition.y < 0 && Gdx.input.getDeltaY() < 0)){
+        && !(aimPosition.y < 0 && Gdx.input.getDeltaY() < 0)){
 
             aimPosition.add(0,Gdx.input.getDeltaY(), 0);
         }

@@ -33,7 +33,7 @@ public class MainController {
 
 
 
-    private static final float GROUND_HEIGHT = 1.3f;
+    private static final float GROUND_HEIGHT = 1f;
 
 
     private final World world;
