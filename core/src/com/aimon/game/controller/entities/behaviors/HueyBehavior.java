@@ -1,6 +1,7 @@
 package com.aimon.game.controller.entities.behaviors;
 
 import com.aimon.game.controller.entities.DuckBody;
+import com.aimon.game.model.entities.DuckModel;
 import com.badlogic.gdx.math.MathUtils;
 
 /**
@@ -18,10 +19,10 @@ public class HueyBehavior extends DuckBehavior {
     @Override
     public void update(float delta) {
 
-        if (!super.verifyLimits()) {
+        if (!super.verifyLimits() && !((DuckModel) this.duck.getModel()).isFrightened()) {
             int rand = MathUtils.random(0,100);
 
-            if(rand < 8) {
+            if(rand < 2) {
                 duck.changeDirection();
             }
 
