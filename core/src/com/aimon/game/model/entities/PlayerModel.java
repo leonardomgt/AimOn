@@ -44,10 +44,6 @@ public class PlayerModel  extends EntityModel {
         return numberOfBullets;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public void setNumberOfBullets(int numberOfBullets) {
         this.numberOfBullets = numberOfBullets;
     }
@@ -86,4 +82,10 @@ public class PlayerModel  extends EntityModel {
     public void setOutOfBullets(boolean outOfBullets) {
         this.outOfBullets = outOfBullets;
     }
+
+    public void increaseScore(){
+        this.score++;
+    }
+
+
 }

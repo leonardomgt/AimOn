@@ -57,6 +57,7 @@ public class GameStatusView {
         this.killedDucks = model.getKilledDucks();
         this.missedShots = model.getMissedShots();
 
+
     }
 
     private void createSprites() {
@@ -127,7 +128,15 @@ public class GameStatusView {
         drawFont(Integer.toString(this.missedShots), batch, model.getX() + 0.5f, model.getY() - 4f);
         this.missedShotsSprite.draw(batch);
 
-        font.draw(batch, "Level: " + game.getGameScreen().getModel().getLevel(), (model.getX() - 0.2f) / PIXEL_TO_METER, (model.getY() - 4.7f) / PIXEL_TO_METER);
+
+
+        font.draw(batch, game.getGameScreen().getModel().isBonus() ? "Bonus" : "Level: " +  game.getGameScreen().getModel().getLevel(), (model.getX() - 0.2f) / PIXEL_TO_METER, (model.getY() - 4.7f) / PIXEL_TO_METER);
+
+        if(game.getGameScreen().getModel().isBonus()) {
+            font.draw(batch, Integer.toString(MainModel.getBonusTime() - (int) game.getGameScreen().getModel().getLevelTime()), (model.getX() - 0.2f) / PIXEL_TO_METER, (model.getY() - 5.7f) / PIXEL_TO_METER);
+        }
+
+
 
 
 
@@ -159,4 +168,5 @@ public class GameStatusView {
     public void spendBullet() {
         this.gunBullets--;
     }
+
 }

@@ -12,7 +12,7 @@ public class LouieBehavior extends DuckBehavior {
 
     public LouieBehavior(DuckBody duck){
         super(duck);
-        this.duck.changeVelocity(-6, 0);
+        this.duck.changeVelocity(-4, 0);
     }
 
 
@@ -21,7 +21,7 @@ public class LouieBehavior extends DuckBehavior {
 
         if (!super.verifyLimits() && !((DuckModel) this.duck.getModel()).isFrightened()) {
 
-            int rand = MathUtils.random(0,100);
+            int rand = MathUtils.random(0,200);
 
             if(rand < 2) {
                duck.changeDirection();
@@ -30,7 +30,7 @@ public class LouieBehavior extends DuckBehavior {
             if(rand < 10) {
                 duck.goUp(5);
             }
-            if(rand > 90) {
+            if(rand > 190) {
                duck.goDown(5);
             }
 

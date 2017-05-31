@@ -127,6 +127,7 @@ public class MainController {
             ((EntityModel) body.getUserData()).setRotation(body.getAngle());
         }
 
+        this.model.setLevelTime(this.model.getLevelTime() + delta);
         this.playerController.getGunController().updateStatus(delta);
         this.model.updateState();
 

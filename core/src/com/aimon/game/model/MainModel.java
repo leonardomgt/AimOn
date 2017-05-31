@@ -21,8 +21,9 @@ import static com.badlogic.gdx.math.MathUtils.random;
 
 public class MainModel {
 
-    public static final float DUCKS_MIN_DEPTH = 7.5f;
-    public static final float DUCKS_MAX_DEPTH = 15f;
+    public static final float DUCKS_MIN_DEPTH = 8f;
+    public static final float DUCKS_MAX_DEPTH = 12f;
+    private static final int BONUS_TIME = 15;
 
     public enum LevelState {RUNNING, GAME_OVER, NEXT_LEVEL}
 
@@ -35,6 +36,8 @@ public class MainModel {
     private PlayerModel playerModel;
     private LevelState levelState = LevelState.RUNNING;
     private int level;
+    private boolean bonus = false;
+    private float levelTime = 0;
 
     public MainModel(float aimX, float aimY, int numberOfDucks, PlayerModel playerModel, int level) {
 
@@ -44,8 +47,8 @@ public class MainModel {
         this.playerModel = playerModel;
         this.numberOfAliveDucks = numberOfDucks;
         this.numberOfDucksOnGround = 0;
-
         this.level = level;
+        bonus = level == 0 ? true : false;
 
         for (int i = 0; i < numberOfDucks; i++) {
 
@@ -124,7 +127,11 @@ public class MainModel {
 
     public void updateState() {
 
-        if (this.numberOfDucksOnGround == this.numberOfDucks) {
+        if (bonus && (this.levelTime > BONUS_TIME)) {
+            this.levelState = LevelState.NEXT_LEVEL;
+        }
+
+        else if (this.numberOfDucksOnGround == this.numberOfDucks) {
             this.levelState = LevelState.NEXT_LEVEL;
         }
         else if (this.playerModel.isOutOfBullets() && this.getNumberOfAliveDucks() > 0) {
@@ -141,4 +148,19 @@ public class MainModel {
         return level;
     }
 
+    public float getLevelTime() {
+        return levelTime;
+    }
+
+    public void setLevelTime(float levelTime) {
+        this.levelTime = levelTime;
+    }
+
+    public boolean isBonus() {
+        return bonus;
+    }
+
+    public static int getBonusTime() {
+        return BONUS_TIME;
+    }
 }

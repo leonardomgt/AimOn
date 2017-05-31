@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class AimOn extends Game {
 
-	private static int NUMBER_OF_DUCKS = 600;
-	private static int NUMBER_OF_BULLETS = 700;
+	private static int NUMBER_OF_DUCKS = 6;
+	private static int NUMBER_OF_BULLETS = 9;
 	public final String playerName = "Player 1";
 
 	private SpriteBatch batch;
@@ -94,5 +94,7 @@ public class AimOn extends Game {
 		return (GameScreen) this.gameScreen;
 	}
 
-
+	public BitmapFont getPineWoodFont() {
+		return pineWoodFont;
+	}
 }

@@ -198,11 +198,7 @@ public class DuckBody extends EntityBody{
 
             this.changeDirection();
 
-            System.out.println("Muda direcção");
-
         }
-
-
 
     }
 

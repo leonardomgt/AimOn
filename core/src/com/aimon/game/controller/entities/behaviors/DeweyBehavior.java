@@ -22,7 +22,7 @@ public class DeweyBehavior extends DuckBehavior {
 
         if (!super.verifyLimits() && !((DuckModel) this.duck.getModel()).isFrightened()) {
 
-            int rand = MathUtils.random(0,100);
+            int rand = MathUtils.random(0,200);
 
             if(rand < 3) {
                 duck.changeDirection();
@@ -31,7 +31,7 @@ public class DeweyBehavior extends DuckBehavior {
             if(rand < 10) {
                 duck.goUp(1);
             }
-            if(rand > 90) {
+            if(rand > 190) {
                 duck.goDown(1);
             }
 

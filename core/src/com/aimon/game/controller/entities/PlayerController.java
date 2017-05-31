@@ -50,8 +50,10 @@ public class PlayerController {
 
     public void goodShot(boolean good) {
 
-        if (good)
+        if (good) {
             this.playerModel.increaseDucksKilled();
+            this.playerModel.increaseScore();
+        }
 
         else
             this.playerModel.increaseMissedShots();
