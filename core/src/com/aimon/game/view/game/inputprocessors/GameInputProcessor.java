@@ -1,10 +1,14 @@
 package com.aimon.game.view.game.inputprocessors;
 
+import com.aimon.game.controller.MainController;
 import com.aimon.game.view.game.GameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * Created by Leo on 30/05/2017.
@@ -53,6 +57,73 @@ public abstract class GameInputProcessor extends InputAdapter{
         this.emptyGunSoundEffect = this.gameScreen.game.getAssetManager().get(EMPTY_GUN);
     }
 
+    public void changeZoom() {
+
+        float PIXEL_TO_METER = gameScreen.PIXEL_TO_METER;
+        OrthographicCamera camera = gameScreen.getCamera();
+        Vector3 aimPosition = gameScreen.getAimPosition();
+
+        if(camera.zoom == 1) {
+
+            camera.position.set(aimPosition.x /PIXEL_TO_METER, aimPosition.y /PIXEL_TO_METER,0);
+            camera.zoom = 0.5f;
+
+            Vector2 aimPositionScreen = new Vector2(-camera.zoom*(Gdx.input.getX() - Gdx.graphics.getWidth()/2f), -camera.zoom*(Gdx.graphics.getHeight()/2f - Gdx.input.getY()));
+
+            camera.translate(aimPositionScreen.x, aimPositionScreen.y);
+
+        }
+
+        else {
+            camera.zoom = 1;
+            camera.position.set(MainController.getControllerWidth()  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
+
+
+        }
+
+        camera.update();
+
+
+    }
+
+    public void changeZoomScroll(int amount) {
+
+        float PIXEL_TO_METER = gameScreen.PIXEL_TO_METER;
+        OrthographicCamera camera = gameScreen.getCamera();
+        Vector3 aimPosition = gameScreen.getAimPosition();
+        float zoom = camera.zoom;
+        if(camera.zoom >= 1 && amount == 1) return;
+        if(camera.zoom <= 0.1f && amount == -1) return;
+
+        camera.position.set(aimPosition.x /PIXEL_TO_METER, aimPosition.y /PIXEL_TO_METER,0);
+
+        zoom += amount*0.02f;
+        camera.zoom = zoom;
+
+        Vector2 aimPositionScreen = new Vector2(-camera.zoom*(Gdx.input.getX() - Gdx.graphics.getWidth()/2f), -camera.zoom*(Gdx.graphics.getHeight()/2f - Gdx.input.getY()));
+
+        camera.translate(aimPositionScreen.x, aimPositionScreen.y);
+
+        // show only background area
+
+        if((camera.position.x + camera.zoom*Gdx.graphics.getWidth()/2f) > MainController.getControllerWidth()/PIXEL_TO_METER){
+            camera.translate(MainController.getControllerWidth()/PIXEL_TO_METER - (camera.position.x + camera.zoom*Gdx.graphics.getWidth()/2f),0);
+        }
+        if((camera.position.x - camera.zoom*Gdx.graphics.getWidth()/2f) < 0){
+            camera.translate( - (camera.position.x - camera.zoom*Gdx.graphics.getWidth()/2f),0);
+        }
+        if((camera.position.y + camera.zoom*Gdx.graphics.getHeight()/2f) > MainController.getControllerHeight()/PIXEL_TO_METER){
+            camera.translate(0, MainController.getControllerHeight()/PIXEL_TO_METER - (camera.position.y + camera.zoom*Gdx.graphics.getHeight()/2f));
+        }
+        if((camera.position.y - camera.zoom*Gdx.graphics.getHeight()/2f) < 0){
+            camera.translate(0, - (camera.position.y - camera.zoom*Gdx.graphics.getHeight()/2f));
+        }
+
+        camera.update();
+
+
+    }
+
     public void shot() {
 
         if (gameScreen.getController().fireGun(gameScreen.getAimPosition().x, gameScreen.getAimPosition().y)){
@@ -63,13 +134,6 @@ public abstract class GameInputProcessor extends InputAdapter{
         else if(gameScreen.getModel().getPlayerModel().getGun().getNumberOfBullets() == 0)
             emptyGunSoundEffect.play();
 
-
-
-        float acx = Gdx.input.getAccelerometerX();
-        float acy = Gdx.input.getAccelerometerY();
-        float acz = Gdx.input.getAccelerometerZ();
-
-        System.out.println(acx + acy + acz);
     }
 
     public void reloadGun() {

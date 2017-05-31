@@ -47,9 +47,6 @@ public class GameScreen extends ScreenAdapter {
 
     public static final String BACKGROUND_GAME_IMAGE = "backgroundGame.jpg";
 
-
-    private static float camera_zoom = 1f;
-
     private final MainController controller;
 
     private final DuckView hueyView;
@@ -70,7 +67,7 @@ public class GameScreen extends ScreenAdapter {
     private Stage gameStage = new Stage();
     private ImageButton buttonHome;
     private ImageButton buttonReload;
-    private ImageButton buttonFire;
+    private ImageButton buttonZoom;
 
 
     public GameScreen(AimOn game, MainModel model, MainController controller) {
@@ -100,8 +97,7 @@ public class GameScreen extends ScreenAdapter {
 
         // create the camera and the SpriteBatch
 
-        camera = new OrthographicCamera(camera_zoom *VIEWPORT_WIDTH / PIXEL_TO_METER, camera_zoom *VIEWPORT_HEIGHT / PIXEL_TO_METER);
-        //camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_HEIGHT / PIXEL_TO_METER);
         camera.position.set(MainController.getControllerWidth()  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
@@ -154,8 +150,8 @@ public class GameScreen extends ScreenAdapter {
 
         buttonReload.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ammo_empty.png"))));
         buttonReload.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ammo_empty.png"))));
-        buttonReload.getStyle().up = buttonReload.getSkin().getDrawable("button"/*"button-small"*/);
-        buttonReload.getStyle().down = buttonReload.getSkin().getDrawable("button-down"/*"button-small-down"*/);
+        buttonReload.getStyle().up = buttonReload.getSkin().getDrawable("button");
+        buttonReload.getStyle().down = buttonReload.getSkin().getDrawable("button-down");
         buttonReload.setPosition(Gdx.graphics.getWidth() - buttonReload.getWidth(), 0);
         buttonReload.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
@@ -165,24 +161,24 @@ public class GameScreen extends ScreenAdapter {
         gameStage.addActor(buttonReload);
 
 
-        // Fire Button
-        buttonFire = new ImageButton(game.getSkin());
-        buttonFire.setSize(buttonFire.getHeight()/1, buttonFire.getHeight()/1);
+        // Zoom Button
+        buttonZoom = new ImageButton(game.getSkin());
+        buttonZoom.setSize(buttonZoom.getHeight()/1, buttonZoom.getHeight()/1);
 
-        ImageButton.ImageButtonStyle fireStyle = new ImageButton.ImageButtonStyle(buttonFire.getStyle());
-        buttonFire.setStyle(fireStyle);
+        ImageButton.ImageButtonStyle fireStyle = new ImageButton.ImageButtonStyle(buttonZoom.getStyle());
+        buttonZoom.setStyle(fireStyle);
 
-        buttonFire.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("fire.png"))));
-        buttonFire.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("fire.png"))));
-        buttonFire.getStyle().up = buttonFire.getSkin().getDrawable("button"/*"button-small"*/);
-        buttonFire.getStyle().down = buttonFire.getSkin().getDrawable("button-down"/*"button-small-down"*/);
-        buttonFire.setPosition(0, 0);
-        buttonFire.addListener(new ClickListener() {
+        buttonZoom.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("fire.png"))));
+        buttonZoom.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("fire.png"))));
+        buttonZoom.getStyle().up = buttonZoom.getSkin().getDrawable("button"/*"button-small"*/);
+        buttonZoom.getStyle().down = buttonZoom.getSkin().getDrawable("button-down"/*"button-small-down"*/);
+        buttonZoom.setPosition(0, 0);
+        buttonZoom.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
                 gameInputProcessor.shot();
             }
         });
-        gameStage.addActor(buttonFire);
+        gameStage.addActor(buttonZoom);
     }
 
     private void loadAssets(){
@@ -207,7 +203,6 @@ public class GameScreen extends ScreenAdapter {
         //debugRenderer.render(controller.getWorld(), debugMatrix);
 
         gameInputProcessor.updateAim();
-        camera.zoom = camera_zoom;
 
         gameStage.act(delta);
         gameStage.draw();
@@ -220,28 +215,6 @@ public class GameScreen extends ScreenAdapter {
         return aimPosition;
     }
 
-    public void changeZoom() {
-
-        if(camera_zoom == 1) {
-
-            this.camera.position.set(aimPosition.x /PIXEL_TO_METER, aimPosition.y /PIXEL_TO_METER,0);
-            camera_zoom = 0.5f;
-
-            camera.update();
-
-            Vector2 aimPositionScreen = new Vector2(-camera_zoom*(Gdx.input.getX() - Gdx.graphics.getWidth()/2f), -camera_zoom*(Gdx.graphics.getHeight()/2f - Gdx.input.getY()));
-
-            this.camera.translate(aimPositionScreen.x, aimPositionScreen.y);
-
-        }
-
-        else {
-            camera_zoom = 1;
-            camera.position.set(MainController.getControllerWidth()  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
-        }
-
-
-    }
 
     private void updateBatch(float delta) {
         game.getBatch().setProjectionMatrix(camera.combined);
@@ -275,7 +248,7 @@ public class GameScreen extends ScreenAdapter {
 
         }
 
-        aimView.setAimZoom(camera_zoom);
+        aimView.setAimZoom(camera.zoom);
         aimView.update(model.getAim());
         aimView.draw(game.getBatch());
         gameStatusView.update(model.getPlayerModel());

@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "AimOn";
 		config.width = 1024;
-		config.height = 768;
+		config.height = 600;
 		new LwjglApplication(new AimOn(), config);
 	}
 }

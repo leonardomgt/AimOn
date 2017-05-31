@@ -44,13 +44,19 @@ public class DesktopInputProcessor extends GameInputProcessor {
                 return true;
 
             case Input.Buttons.RIGHT:
-                this.gameScreen.changeZoom();
+                changeZoom();
                 return true;
 
             default:
         }
 
         return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount){
+        changeZoomScroll(amount);
+        return true;
     }
 
     public void updateAim() {
