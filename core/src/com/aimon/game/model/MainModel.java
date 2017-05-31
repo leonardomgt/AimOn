@@ -22,23 +22,30 @@ import static com.badlogic.gdx.math.MathUtils.random;
 public class MainModel {
 
     public static final float DUCKS_MIN_DEPTH = 7.5f;
-    public static final float DUCKS_MAX_DEPTH = 30f;
+    public static final float DUCKS_MAX_DEPTH = 15f;
+
+    public enum LevelState {RUNNING, GAME_OVER, NEXT_LEVEL}
 
     private List<DuckModel> ducks;
     private AimModel aim;
     private GroundModel ground;
     private final int numberOfDucks;
     private int numberOfAliveDucks;
-    private int numberOfDucksOnGround = 0;
+    private int numberOfDucksOnGround;
     private PlayerModel playerModel;
+    private LevelState levelState = LevelState.RUNNING;
+    private int level;
 
-    public MainModel(float aimX, float aimY, int numberOfDucks, PlayerModel playerModel) {
+    public MainModel(float aimX, float aimY, int numberOfDucks, PlayerModel playerModel, int level) {
 
         this.aim = new AimModel(aimX,aimY);
         this.numberOfDucks = numberOfDucks;
         this.ducks = new ArrayList<DuckModel>();
         this.playerModel = playerModel;
         this.numberOfAliveDucks = numberOfDucks;
+        this.numberOfDucksOnGround = 0;
+
+        this.level = level;
 
         for (int i = 0; i < numberOfDucks; i++) {
 
@@ -54,7 +61,6 @@ public class MainModel {
                 default:
                     type = DuckModel.DuckType.HUEY;
                     break;
-
 
             }
             t = random.nextInt(3);
@@ -99,6 +105,7 @@ public class MainModel {
     }
 
     public AimModel getAim() { return aim; }
+
     public GroundModel getGround() { return this.ground;}
 
     public PlayerModel getPlayerModel() {
@@ -115,5 +122,23 @@ public class MainModel {
 
     }
 
+    public void updateState() {
+
+        if (this.numberOfDucksOnGround == this.numberOfDucks) {
+            this.levelState = LevelState.NEXT_LEVEL;
+        }
+        else if (this.playerModel.isOutOfBullets() && this.getNumberOfAliveDucks() > 0) {
+            this.levelState = LevelState.GAME_OVER;
+        }
+
+    }
+
+    public LevelState getLevelState() {
+        return levelState;
+    }
+
+    public int getLevel() {
+        return level;
+    }
 
 }

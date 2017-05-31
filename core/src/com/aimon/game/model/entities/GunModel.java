@@ -7,7 +7,6 @@ package com.aimon.game.model.entities;
 public class GunModel extends EntityModel {
 
 
-
     public enum GunState {IDLE, FIRING, RELOADING};
 
     private int capacity;
@@ -23,12 +22,12 @@ public class GunModel extends EntityModel {
     private GunState state = GunModel.GunState.IDLE;
 
 
-    public GunModel(int capacity, float shotDelay, float reloadBulletDelay) {
+    public GunModel() {
         super(0,0,0f);
-        this.capacity = capacity;
-        this.shotDelay = shotDelay;
+        this.capacity = 6;
+        this.shotDelay = .5f;
         this.numberOfBullets = capacity;
-        this.reloadBulletDelay = reloadBulletDelay;
+        this.reloadBulletDelay = .5f;
 
     }
 

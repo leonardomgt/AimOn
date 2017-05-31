@@ -17,6 +17,13 @@ public class PlayerController {
     }
 
     public boolean fireGun() {
+
+        if (this.playerModel.getGun().getNumberOfBullets() == 1) {
+            if(this.playerModel.getNumberOfBullets() == 0) {
+                this.playerModel.setOutOfBullets(true);
+            }
+        }
+
         return this.gunController.fire();
     }
 
@@ -50,5 +57,7 @@ public class PlayerController {
             this.playerModel.increaseMissedShots();
 
     }
+
+
 
 }

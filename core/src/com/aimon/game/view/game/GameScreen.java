@@ -4,6 +4,7 @@ import com.aimon.game.AimOn;
 import com.aimon.game.controller.MainController;
 import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.DuckModel;
+import com.aimon.game.model.entities.PlayerModel;
 import com.aimon.game.view.game.entities.AimView;
 import com.aimon.game.view.game.entities.DuckView;
 import com.aimon.game.view.game.entities.GameStatusView;
@@ -74,14 +75,11 @@ public class GameScreen extends ScreenAdapter {
 
     private static float camera_zoom = 1f;
 
-    private  MainController controller;
-    private  MainModel model;
-
     private final DuckView hueyView;
     private final DuckView deweyView;
     private final DuckView louieView;
 
-    private final GameStatusView gameStatusView;
+    private GameStatusView gameStatusView;
 
     private final AimView aimView;
 
@@ -100,12 +98,23 @@ public class GameScreen extends ScreenAdapter {
     private final Sound slideGunSoundEffect;
     private final Sound emptyGunSoundEffect;
 
+    private MainModel model;
+    private MainController controller;
+    private PlayerModel playerModel;
 
-    public GameScreen(AimOn game, MainModel model, MainController controller) {
+    private int initialNumberOfDucks;
+    private int initialNumberOfBullets;
+
+    private int level = 0;
+
+    public GameScreen(AimOn game, String playerName, int initialNumberOfDucks, int initialNumberOfBullets) {
 
         this.game = game;
+        this.initialNumberOfDucks = initialNumberOfDucks;
+        this.initialNumberOfBullets = initialNumberOfBullets;
+        this.playerModel = new PlayerModel(playerName, initialNumberOfBullets);
 
-        setModelController(model, controller);
+
 
         this.loadAssets();
 
@@ -113,7 +122,8 @@ public class GameScreen extends ScreenAdapter {
         this.hueyView = new DuckView(game, DuckModel.DuckType.HUEY);
         this.louieView = new DuckView(game, DuckModel.DuckType.LOUIE);
         this.aimView = new AimView(game);
-        this.gameStatusView = new GameStatusView(game, model.getPlayerModel());
+
+
 
         // create the camera and the SpriteBatch
 
@@ -138,11 +148,28 @@ public class GameScreen extends ScreenAdapter {
 
         gameMultiplexer.addProcessor(gameInputProcessor);
         gameMultiplexer.addProcessor(gameStage);
+
+        initiateLevel();
     }
 
-    private void setModelController(MainModel model, MainController controller) {
-        this.model = model;
-        this.controller = controller;
+    private void initiateLevel() {
+
+        this.level++;
+
+        this.initialNumberOfBullets--;
+        if (initialNumberOfBullets + this.playerModel.getGun().getCapacity() < initialNumberOfDucks) {
+
+            this.initialNumberOfDucks *= 2;
+            this.initialNumberOfBullets = (3*initialNumberOfDucks)/2;
+
+        }
+
+        this.playerModel.setNumberOfBullets(this.initialNumberOfBullets);
+        this.playerModel.reset();
+        this.model = new MainModel(MainController.getControllerWidth()/2, MainController.getControllerHeight()/2, this.initialNumberOfDucks, this.playerModel, level);
+        this.controller = new MainController(this.model);
+        this.gameStatusView = new GameStatusView(game, model);
+
     }
 
     private void initializeUIElements() {
@@ -176,7 +203,6 @@ public class GameScreen extends ScreenAdapter {
     private void loadAssets(){
 
         this.game.getAssetManager().load(AIM_IMAGE, Texture.class);
-
         this.game.getAssetManager().load(DEWEY_SPRITE_RIGHT, Texture.class);
         this.game.getAssetManager().load(DEWEY_SPRITE_LEFT, Texture.class);
 
@@ -213,21 +239,33 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
 
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         controller.update(delta);
-        updateBatch(delta);
+        switch (this.model.getLevelState()) {
+            case NEXT_LEVEL:
+                initiateLevel();
+                break;
+            case GAME_OVER:
+                this.game.setMenuScreen();
+                break;
+            case RUNNING:
 
-        //debugRenderer.render(controller.getWorld(), debugMatrix);
+                Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        updateAim();
-        camera.zoom = camera_zoom;
+                updateBatch(delta);
 
-        gameStage.act(delta);
-        gameStage.draw();
+                //debugRenderer.render(controller.getWorld(), debugMatrix);
 
-        camera.update();
+                updateAim();
+                camera.zoom = camera_zoom;
+
+                gameStage.act(delta);
+                gameStage.draw();
+
+                camera.update();
+                break;
+        }
+
     }
 
     private void updateAim() {
@@ -393,5 +431,11 @@ public class GameScreen extends ScreenAdapter {
         }
 
     }
+
+    public MainModel getModel() {
+        return model;
+    }
+
+
 
 }

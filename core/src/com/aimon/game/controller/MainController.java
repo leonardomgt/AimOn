@@ -45,8 +45,6 @@ public class MainController {
 
     public MainController(MainModel model) {
 
-        System.out.println("Altura do mundo: " + FIELD_HEIGHT);
-
         this.model = model;
         this.world = new World(new Vector2(0,0), true);
         List<DuckModel> ducks = model.getDucks();
@@ -60,12 +58,14 @@ public class MainController {
                 Body bodyB = contact.getFixtureB().getBody();
                 DuckModel duckModel = bodyA.getUserData() instanceof  DuckModel ? (DuckModel) bodyA.getUserData() : (DuckModel) bodyB.getUserData();
                 duckModel.setState(DuckModel.DuckState.DEAD);
+                MainController.this.model.increaseNumberOfDucksOnGround();
+
 
             }
 
             @Override
             public void endContact(Contact contact) {
-                MainController.this.model.increaseNumberOfDucksOnGround();
+
             }
 
             @Override
@@ -127,6 +127,7 @@ public class MainController {
         }
 
         this.playerController.getGunController().updateStatus(delta);
+        this.model.updateState();
 
     }
 

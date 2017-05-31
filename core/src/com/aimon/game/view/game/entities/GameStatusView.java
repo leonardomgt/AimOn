@@ -1,6 +1,7 @@
 package com.aimon.game.view.game.entities;
 
 import com.aimon.game.AimOn;
+import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.EntityModel;
 import com.aimon.game.model.entities.PlayerModel;
 import com.badlogic.gdx.graphics.Color;
@@ -44,14 +45,14 @@ public class GameStatusView {
     private Sprite killedDucksSprite;
 
 
-    public GameStatusView(AimOn game, PlayerModel player) {
+    public GameStatusView(AimOn game, MainModel mainModel) {
         this.game = game;
         this.font = new BitmapFont();
         this.font.setColor(Color.BLACK);
-        this.playerBullets = player.getNumberOfBullets();
-        this.gunBullets = player.getGun().getNumberOfBullets();
-        this.numberOfAliveDucks = game.getMainModel().getNumberOfAliveDucks();
-        this.model = player;
+        this.playerBullets = mainModel.getPlayerModel().getNumberOfBullets();
+        this.gunBullets = mainModel.getPlayerModel().getGun().getNumberOfBullets();
+        this.numberOfAliveDucks = mainModel.getNumberOfAliveDucks();
+        this.model = mainModel.getPlayerModel();
         this.createSprites();
         this.killedDucks = model.getKilledDucks();
         this.missedShots = model.getMissedShots();
@@ -81,6 +82,7 @@ public class GameStatusView {
 
         texture = game.getAssetManager().get(MISSED_SHOT);
         this.missedShotsSprite = createSprite(texture, 0.2f, model.getX(), model.getY()-4f);
+
 
     }
 
@@ -125,6 +127,8 @@ public class GameStatusView {
         drawFont(Integer.toString(this.missedShots), batch, model.getX() + 0.5f, model.getY() - 4f);
         this.missedShotsSprite.draw(batch);
 
+        font.draw(batch, "Level: " + game.getGameScreen().getModel().getLevel(), (model.getX() - 0.2f) / PIXEL_TO_METER, (model.getY() - 4.7f) / PIXEL_TO_METER);
+
 
 
     }
@@ -138,7 +142,7 @@ public class GameStatusView {
 
 
     public void update(EntityModel model) {
-        this.numberOfAliveDucks = game.getMainModel().getNumberOfAliveDucks();
+        this.numberOfAliveDucks = game.getGameScreen().getModel().getNumberOfAliveDucks();
         this.killedDucks = ((PlayerModel) model).getKilledDucks();
         this.missedShots = ((PlayerModel) model).getMissedShots();
 
