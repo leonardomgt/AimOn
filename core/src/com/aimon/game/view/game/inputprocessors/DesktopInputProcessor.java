@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Vector3;
 
 
 /**
@@ -16,7 +17,6 @@ public class DesktopInputProcessor extends GameInputProcessor {
 
     public DesktopInputProcessor(GameScreen gameScreen) {
         super(gameScreen);
-
     }
 
     @Override
@@ -55,19 +55,42 @@ public class DesktopInputProcessor extends GameInputProcessor {
 
     @Override
     public boolean scrolled(int amount){
-        changeZoomScroll(amount);
+
+        if(gameScreen.getCamera().zoom >= 1 && amount == 1) return true;
+        if(gameScreen.getCamera().zoom <= 0.1f && amount == -1) return true;
+
+        changeZoomScroll(gameScreen.getCamera().zoom + amount*0.04f);
         return true;
     }
 
     public void updateAim() {
 
-        gameScreen.getAimPosition().set(Gdx.input.getX(), Gdx.input.getY(), 0);
-        gameScreen.getCamera().unproject(gameScreen.getAimPosition());
+      /*  if(Gdx.input.getX() > gameScreen.getController().getControllerWidth()){
+            gameScreen.getAimPosition().set(gameScreen.getController().getControllerWidth(), gameScreen.getAimPosition().y, 0);
+        }
+        if(gameScreen.getAimPosition().x < 0){
+            gameScreen.getAimPosition().set(0, gameScreen.getAimPosition().y, 0);
+        }
+        if(gameScreen.getAimPosition().y > gameScreen.getController().getControllerHeight()){
+            gameScreen.getAimPosition().set(gameScreen.getAimPosition().x, gameScreen.getController().getControllerHeight(), 0);
+        }
+        if(gameScreen.getAimPosition().y < 0){
+            gameScreen.getAimPosition().set(gameScreen.getAimPosition().x, 0, 0);
+        }*/
 
+        projectAimToCamera(gameScreen.getAimPosition());
+
+        // Buttons listener
+        Gdx.input.setCursorPosition((int)gameScreen.getAimPosition().x, (int)gameScreen.getAimPosition().y);
+
+
+        gameScreen.getCamera().unproject( gameScreen.getAimPosition());
         gameScreen.getAimPosition().set(gameScreen.getAimPosition().x * gameScreen.PIXEL_TO_METER, gameScreen.getAimPosition().y*gameScreen.PIXEL_TO_METER, 0);
+
         gameScreen.getController().updateAimLocation(gameScreen.getAimPosition().x, gameScreen.getAimPosition().y);
 
     }
+
 
 
 

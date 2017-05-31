@@ -163,8 +163,9 @@ public class DuckBody extends EntityBody{
 
     public void changeVelocity(float x, float y){
 
-        // TODO: Depht factor
-        this.body.setLinearVelocity(x, y);
+        float depthFactor = ((DuckModel) model).getDepthFactor();
+        this.body.setLinearVelocity(x*depthFactor, y*depthFactor);
+
     }
 
 

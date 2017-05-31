@@ -2,13 +2,20 @@ package com.aimon.game.view.game.inputprocessors;
 
 import com.aimon.game.controller.MainController;
 import com.aimon.game.view.game.GameScreen;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
  * Created by Leo on 30/05/2017.
@@ -24,6 +31,8 @@ public abstract class GameInputProcessor extends InputAdapter{
     protected Sound slideGunSoundEffect;
     protected Sound emptyGunSoundEffect;
 
+    private boolean soundOn = true;
+
     private static final String SHOT = "shotgun.wav";
     private static final String RELOAD_BULLET = "load_bullet.wav";
     private static final String SLIDE_GUN = "slide_gun.wav";
@@ -37,6 +46,8 @@ public abstract class GameInputProcessor extends InputAdapter{
         reloadBulletSoundEffect = null;
         slideGunSoundEffect = null;
         emptyGunSoundEffect = null;
+
+        soundOn = gameScreen.game.isSoundOn();
     }
 
 
@@ -86,25 +97,21 @@ public abstract class GameInputProcessor extends InputAdapter{
 
     }
 
-    public void changeZoomScroll(int amount) {
+    public void changeZoomScroll(float zoom) {
 
         float PIXEL_TO_METER = gameScreen.PIXEL_TO_METER;
         OrthographicCamera camera = gameScreen.getCamera();
         Vector3 aimPosition = gameScreen.getAimPosition();
-        float zoom = camera.zoom;
-        if(camera.zoom >= 1 && amount == 1) return;
-        if(camera.zoom <= 0.1f && amount == -1) return;
 
         camera.position.set(aimPosition.x /PIXEL_TO_METER, aimPosition.y /PIXEL_TO_METER,0);
 
-        zoom += amount*0.02f;
         camera.zoom = zoom;
 
-        Vector2 aimPositionScreen = new Vector2(-camera.zoom*(Gdx.input.getX() - Gdx.graphics.getWidth()/2f), -camera.zoom*(Gdx.graphics.getHeight()/2f - Gdx.input.getY()));
+        Vector2 aimPositionScreen = new Vector2(-camera.zoom*(aimPosition.x - gameScreen.getInitialAimPosition().x)/PIXEL_TO_METER, -camera.zoom*(aimPosition.y - gameScreen.getInitialAimPosition().y)/PIXEL_TO_METER);
 
         camera.translate(aimPositionScreen.x, aimPositionScreen.y);
 
-        // show only background area
+       /* // show only background area
 
         if((camera.position.x + camera.zoom*Gdx.graphics.getWidth()/2f) > MainController.getControllerWidth()/PIXEL_TO_METER){
             camera.translate(MainController.getControllerWidth()/PIXEL_TO_METER - (camera.position.x + camera.zoom*Gdx.graphics.getWidth()/2f),0);
@@ -117,7 +124,7 @@ public abstract class GameInputProcessor extends InputAdapter{
         }
         if((camera.position.y - camera.zoom*Gdx.graphics.getHeight()/2f) < 0){
             camera.translate(0, - (camera.position.y - camera.zoom*Gdx.graphics.getHeight()/2f));
-        }
+        }*/
 
         camera.update();
 
@@ -127,12 +134,12 @@ public abstract class GameInputProcessor extends InputAdapter{
     public void shot() {
 
         if (gameScreen.getController().fireGun(gameScreen.getAimPosition().x, gameScreen.getAimPosition().y)){
-            shotSoundEffect.play();
+            if(soundOn) shotSoundEffect.play();
             gameScreen.getGameStatusView().spendBullet();
         }
 
         else if(gameScreen.getModel().getPlayerModel().getGun().getNumberOfBullets() == 0)
-            emptyGunSoundEffect.play();
+            if(soundOn) emptyGunSoundEffect.play();
 
     }
 
@@ -160,7 +167,7 @@ public abstract class GameInputProcessor extends InputAdapter{
                 for (int i = 0; i < times; i++) {
 
                     try {
-                        reloadBulletSoundEffect.play();
+                        if(soundOn) reloadBulletSoundEffect.play();
                         gameScreen.getGameStatusView().setPlayerBulletsString(--oldBulletsBox);
                         gameScreen.getGameStatusView().setGunBullets(++oldBulletsGun);
                         Thread.sleep(this.duration);
@@ -169,7 +176,7 @@ public abstract class GameInputProcessor extends InputAdapter{
                     }
                 }
 
-                slideGunSoundEffect.play();
+                if(soundOn) slideGunSoundEffect.play();
             }
         }
 
@@ -186,5 +193,59 @@ public abstract class GameInputProcessor extends InputAdapter{
 
         }
 
+    }
+
+    public void initializeUIElements() {
+
+        float deltaToLimits = 16;
+
+        // Home Button
+        ImageButton buttonHome;
+
+        buttonHome = new ImageButton(gameScreen.game.getSkin());
+        buttonHome.setSize(buttonHome.getHeight()/1.2f,buttonHome.getHeight()/1.2f);
+
+        ImageButton.ImageButtonStyle homeStyle = new ImageButton.ImageButtonStyle(buttonHome.getStyle());
+        buttonHome.setStyle(homeStyle);
+
+        buttonHome.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("home.png"))));
+        buttonHome.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("home.png"))));
+        buttonHome.getStyle().up = buttonHome.getSkin().getDrawable("button-small");
+        buttonHome.getStyle().down = buttonHome.getSkin().getDrawable("button-small-down");
+        buttonHome.setPosition(deltaToLimits, Gdx.graphics.getHeight()-buttonHome.getHeight() - deltaToLimits);
+        buttonHome.addListener(new ClickListener() {
+            public void clicked(InputEvent e, float x, float y) {
+                gameScreen.game.setMenuScreen();
+            }
+        });
+        gameScreen.getGameStage().addActor(buttonHome);
+
+    }
+
+    protected void projectAimToCamera(Vector3 aimPosition) {
+
+        gameScreen.getAimPosition().set(gameScreen.getAimPosition().x / gameScreen.PIXEL_TO_METER, gameScreen.getAimPosition().y/gameScreen.PIXEL_TO_METER, 0);
+        gameScreen.getCamera().project( gameScreen.getAimPosition());
+
+        gameScreen.getAimPosition().set(gameScreen.getAimPosition().x, Gdx.graphics.getHeight() - gameScreen.getAimPosition().y -1, 0);
+
+
+        if(!(aimPosition.x > Gdx.graphics.getWidth() && Gdx.input.getDeltaX() > 0)
+                && !(aimPosition.x < 0 && Gdx.input.getDeltaX() < 0)){
+
+            aimPosition.add(Gdx.input.getDeltaX(),0, 0);
+        }
+
+        if(!(aimPosition.y > Gdx.graphics.getHeight() && Gdx.input.getDeltaY() > 0)
+                && !(aimPosition.y < 0 && Gdx.input.getDeltaY() < 0)){
+
+            aimPosition.add(0,Gdx.input.getDeltaY(), 0);
+        }
+
+    }
+
+
+    public void setSoundOn(boolean soundOn) {
+        this.soundOn = soundOn;
     }
 }

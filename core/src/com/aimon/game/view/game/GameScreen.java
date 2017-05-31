@@ -12,6 +12,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,9 +21,12 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
@@ -60,15 +64,12 @@ public class GameScreen extends ScreenAdapter {
     private final MainModel model;
 
     private Vector3 aimPosition;
+    private final Vector3 initialAimPosition;
 
     private InputMultiplexer gameMultiplexer = new InputMultiplexer();
 
     private GameInputProcessor gameInputProcessor;
     private Stage gameStage = new Stage();
-    private ImageButton buttonHome;
-    private ImageButton buttonReload;
-    private ImageButton buttonZoom;
-
 
     public GameScreen(AimOn game, MainModel model, MainController controller) {
 
@@ -76,7 +77,8 @@ public class GameScreen extends ScreenAdapter {
         this.model = model;
         this.controller = controller;
 
-        this.aimPosition = new Vector3(model.getAim().getX(), model.getAim().getY(), 0);
+        this.initialAimPosition = new Vector3(model.getAim().getX(), model.getAim().getY(), 0);
+        this.aimPosition = new Vector3(initialAimPosition);
 
         switch (Gdx.app.getType()){
             case Android:
@@ -106,80 +108,12 @@ public class GameScreen extends ScreenAdapter {
         this.debugRenderer = new Box2DDebugRenderer();
 
 
-        initializeUIElements();
+        gameInputProcessor.initializeUIElements();
 
         gameMultiplexer.addProcessor(gameStage);
         gameMultiplexer.addProcessor(gameInputProcessor);
     }
 
-    private void initializeUIElements() {
-
-        // Home Button
-        buttonHome = new ImageButton(game.getSkin());
-        buttonHome.setSize(buttonHome.getHeight()/1.2f,buttonHome.getHeight()/1.2f);
-
-        ImageButton.ImageButtonStyle homeStyle = new ImageButton.ImageButtonStyle(buttonHome.getStyle());
-        buttonHome.setStyle(homeStyle);
-
-        buttonHome.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("home.png"))));
-        buttonHome.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("home.png"))));
-        buttonHome.getStyle().up = buttonHome.getSkin().getDrawable("button-small");
-        buttonHome.getStyle().down = buttonHome.getSkin().getDrawable("button-small-down");
-        buttonHome.setPosition(0, Gdx.graphics.getHeight()-buttonHome.getHeight());
-        buttonHome.addListener(new ClickListener() {
-            public void clicked(InputEvent e, float x, float y) {
-                game.setMenuScreen();
-            }
-        });
-        gameStage.addActor(buttonHome);
-
-
-        if(Gdx.app.getType() == Application.ApplicationType.Android){
-            initializeAndroidUIElements();
-        }
-    }
-
-    private void initializeAndroidUIElements() {
-
-        // Reload Button
-        buttonReload = new ImageButton(game.getSkin());
-        buttonReload.setSize(buttonReload.getHeight()/1, buttonReload.getHeight()/1);
-
-        ImageButton.ImageButtonStyle reloadStyle = new ImageButton.ImageButtonStyle(buttonReload.getStyle());
-        buttonReload.setStyle(reloadStyle);
-
-        buttonReload.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ammo_empty.png"))));
-        buttonReload.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ammo_empty.png"))));
-        buttonReload.getStyle().up = buttonReload.getSkin().getDrawable("button");
-        buttonReload.getStyle().down = buttonReload.getSkin().getDrawable("button-down");
-        buttonReload.setPosition(Gdx.graphics.getWidth() - buttonReload.getWidth(), 0);
-        buttonReload.addListener(new ClickListener() {
-            public void clicked(InputEvent e, float x, float y) {
-                gameInputProcessor.reloadGun();
-            }
-        });
-        gameStage.addActor(buttonReload);
-
-
-        // Zoom Button
-        buttonZoom = new ImageButton(game.getSkin());
-        buttonZoom.setSize(buttonZoom.getHeight()/1, buttonZoom.getHeight()/1);
-
-        ImageButton.ImageButtonStyle fireStyle = new ImageButton.ImageButtonStyle(buttonZoom.getStyle());
-        buttonZoom.setStyle(fireStyle);
-
-        buttonZoom.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("fire.png"))));
-        buttonZoom.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("fire.png"))));
-        buttonZoom.getStyle().up = buttonZoom.getSkin().getDrawable("button"/*"button-small"*/);
-        buttonZoom.getStyle().down = buttonZoom.getSkin().getDrawable("button-down"/*"button-small-down"*/);
-        buttonZoom.setPosition(0, 0);
-        buttonZoom.addListener(new ClickListener() {
-            public void clicked(InputEvent e, float x, float y) {
-                gameInputProcessor.shot();
-            }
-        });
-        gameStage.addActor(buttonZoom);
-    }
 
     private void loadAssets(){
 
@@ -284,5 +218,13 @@ public class GameScreen extends ScreenAdapter {
 
     public MainModel getModel() {
         return model;
+    }
+
+    public Vector3 getInitialAimPosition() {
+        return initialAimPosition;
+    }
+
+    public Stage getGameStage() {
+        return gameStage;
     }
 }

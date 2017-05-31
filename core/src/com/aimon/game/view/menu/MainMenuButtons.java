@@ -60,7 +60,7 @@ public class MainMenuButtons implements Disposable {
         buttonSound.setPosition(Gdx.graphics.getWidth()- 2*buttonSound.getWidth(), Gdx.graphics.getHeight()- buttonSound.getHeight());
         buttonSound.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                mainMenu.game.setGameScreen();
+                mainMenu.game.setSoundOn(!mainMenu.game.isSoundOn());
             }
         });
         stage.addActor(buttonSound);

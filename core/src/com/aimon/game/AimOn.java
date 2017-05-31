@@ -29,6 +29,8 @@ public class AimOn extends Game {
 
     private Skin skin;
 
+	private boolean soundOn = true;
+
     @Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -99,5 +101,13 @@ public class AimOn extends Game {
 
 	public MainModel getMainModel() {
 		return mainModel;
+	}
+
+	public boolean isSoundOn() {
+		return soundOn;
+	}
+
+	public void setSoundOn(boolean soundOn) {
+		this.soundOn = soundOn;
 	}
 }
