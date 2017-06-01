@@ -20,6 +20,7 @@ public class DuckBody extends EntityBody{
     private static final float DUCK_MASS = 0.05f;
     private final short DUCK_CATEGORY = 0x0001;
     private final short IGNORE_DUCKS = ~DUCK_CATEGORY;
+    private static final float TIME_STUNNED = 0.5f;
 
     private DuckBehavior behavior;
 
@@ -108,7 +109,7 @@ public class DuckBody extends EntityBody{
             case SHOT:
                 this.applyForceToCenter(0,0);
 
-                if (dm.getLifeTime() - dm.getDeadMoment() > 0.5) {
+                if (dm.getLifeTime() - dm.getDeadMoment() >= TIME_STUNNED) {
                     dm.setState(DuckModel.DuckState.FALLING);
                 }
                 this.setRotation(0);
@@ -245,6 +246,11 @@ public class DuckBody extends EntityBody{
         return height;
     }
 
+    public static float get_TIME_STUNNED() {
+        return TIME_STUNNED;
+    }
 
-
+    public static float getTHRESHOLD() {
+        return THRESHOLD;
+    }
 }

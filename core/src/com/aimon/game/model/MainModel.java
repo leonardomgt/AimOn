@@ -51,20 +51,23 @@ public class MainModel {
         bonus = level == 0 ? true : false;
 
 
-
         for (int i = 0; i < numberOfDucks; i++) {
 
             DuckModel.DuckType type;
             int t = random.nextInt(3);
+            float frightenedFactor;
             switch (t) {
                 case 0:
                     type = DuckModel.DuckType.DEWEY;
+                    frightenedFactor = DuckModel.DEWEY_FRIGHTEN_FACTOR;
                     break;
                 case 1:
                     type = DuckModel.DuckType.LOUIE;
+                    frightenedFactor = DuckModel.LOUIE_FRIGHTEN_FACTOR;
                     break;
                 default:
                     type = DuckModel.DuckType.HUEY;
+                    frightenedFactor = DuckModel.HUEY_FRIGHTEN_FACTOR;
                     break;
 
             }
@@ -80,11 +83,11 @@ public class MainModel {
                     x = MainController.getControllerWidth();
                     break;
                 default:
-                    x = MathUtils.random(MainController.getControllerWidth()/2 + GameScreen.VIEWPORT_WIDTH/2 + 1, MainController.getControllerWidth());
+                    x = MathUtils.random(0, MainController.getControllerWidth());
                     y = fieldHeight;
             }
 
-            DuckModel currentDuck = new DuckModel(x,y, 0, type, MathUtils.random(DUCKS_MIN_DEPTH,DUCKS_MAX_DEPTH));
+            DuckModel currentDuck = new DuckModel(x,y, 0, type, MathUtils.random(DUCKS_MIN_DEPTH,DUCKS_MAX_DEPTH), frightenedFactor);
 
             System.out.println(y);
 
@@ -164,5 +167,9 @@ public class MainModel {
 
     public static int getBonusTime() {
         return BONUS_TIME;
+    }
+
+    public int getNumberOfDucksOnGround() {
+        return numberOfDucksOnGround;
     }
 }

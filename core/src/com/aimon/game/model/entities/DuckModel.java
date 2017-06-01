@@ -55,8 +55,10 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
     private float normalVelocity;
     private float frigthenVelocity;
 
+    private float frightenedFactor;
 
-    public DuckModel(float x, float y, float rotation, DuckType type, float depth) {
+
+    public DuckModel(float x, float y, float rotation, DuckType type, float depth, float frightenedFactor) {
 
         super(x,y,rotation);
         this.type = type;
@@ -66,6 +68,7 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
         this.state = DuckState.FLOAT_UP;
         this.depthFactor = 10/depth;
         this.depth = depth;
+        this.frightenedFactor = frightenedFactor;
 
     }
 
@@ -183,5 +186,9 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
 
     public void setFrigthenVelocity(float frigthenVelocity) {
         this.frigthenVelocity = frigthenVelocity;
+    }
+
+    public float getFrightenedFactor() {
+        return frightenedFactor;
     }
 }
