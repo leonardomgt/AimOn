@@ -9,31 +9,18 @@ import com.aimon.game.view.game.entities.AimView;
 import com.aimon.game.view.game.entities.DuckView;
 import com.aimon.game.view.game.entities.GameStatusView;
 import com.aimon.game.view.game.inputprocessors.*;
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-
 import java.util.List;
 
 import static com.aimon.game.model.MainModel.LevelState.NEXT_LEVEL;
@@ -53,7 +40,8 @@ public class GameScreen extends ScreenAdapter {
 
     public final static float PIXEL_TO_METER = .85f / (114 / 3f);
     public static final float VIEWPORT_WIDTH = 22.5f;
-    public static final float  VIEWPORT_HEIGHT = VIEWPORT_WIDTH*((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
+    public static final float HEIGHT_WIDTH_RATIO = Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth();
+    public static final float VIEWPORT_HEIGHT = VIEWPORT_WIDTH* HEIGHT_WIDTH_RATIO;
 
     private static final int BONUS_LEVEL = 0;
     private static final int BONUS_LEVEL_DUCKS = 500;
@@ -91,10 +79,12 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(AimOn game, String playerName, int initialNumberOfDucks, int initialNumberOfBullets) {
 
+        System.out.println(HEIGHT_WIDTH_RATIO);
+
         this.game = game;
         this.initialNumberOfDucks = initialNumberOfDucks;
         this.initialNumberOfBullets = initialNumberOfBullets;
-        this.playerModel = new PlayerModel(playerName, initialNumberOfBullets);
+        this.playerModel = new PlayerModel(playerName, initialNumberOfBullets, GameScreen.VIEWPORT_WIDTH-0.5f, GameScreen.VIEWPORT_HEIGHT-0.5f);
 
         initiateLevel();
 
@@ -150,7 +140,7 @@ public class GameScreen extends ScreenAdapter {
 
             this.level++;
             this.initialNumberOfBullets-=3;
-            if (initialNumberOfBullets + this.playerModel.getGun().getCapacity() < initialNumberOfDucks) {
+            if (initialNumberOfBullets + this.playerModel.getGun().getCapacity()/2 < initialNumberOfDucks) {
 
                 this.bonus = true;
                 this.setModelController(BONUS_LEVEL_DUCKS, BONUS_LEVEL_BULLETS, BONUS_LEVEL);
@@ -171,8 +161,8 @@ public class GameScreen extends ScreenAdapter {
 
         this.playerModel.setNumberOfBullets(initialNumberOfBullets);
         this.playerModel.reset();
-        this.model = new MainModel(MainController.getControllerWidth()/2, VIEWPORT_HEIGHT/2f, initialNumberOfDucks, this.playerModel, level);
-        this.controller = new MainController(this.model);
+        this.model = new MainModel(MainController.getControllerWidth()/2, VIEWPORT_HEIGHT/2f, initialNumberOfDucks, this.playerModel, level, HEIGHT_WIDTH_RATIO);
+        this.controller = new MainController(this.model, HEIGHT_WIDTH_RATIO);
         this.gameStatusView = new GameStatusView(game, model);
 
     }

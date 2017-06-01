@@ -9,3 +9,8 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 eclipse.project {
     name = appName + "-core"
 }
+
+dependencies {
+    compile 'junit:junit:4.12'
+    compile 'com.badlogicgames.gdx:gdx-backend-lwjgl:1.9.6'
+}

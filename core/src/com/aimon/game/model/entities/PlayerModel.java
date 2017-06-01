@@ -17,9 +17,9 @@ public class PlayerModel  extends EntityModel {
 
     private boolean outOfBullets = false;
 
-    public PlayerModel(String name, int numberOfBullets) {
+    public PlayerModel(String name, int numberOfBullets, float x, float y) {
 
-        super(GameScreen.VIEWPORT_WIDTH-0.5f,GameScreen.VIEWPORT_HEIGHT-0.5f,0f);
+        super(x,y,0f);
         this.name = name;
         this.numberOfBullets = numberOfBullets;
         this.killedDucks = 0;

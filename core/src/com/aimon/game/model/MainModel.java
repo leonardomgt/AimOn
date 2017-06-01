@@ -21,8 +21,8 @@ import static com.badlogic.gdx.math.MathUtils.random;
 
 public class MainModel {
 
-    public static final float DUCKS_MIN_DEPTH = 8f;
-    public static final float DUCKS_MAX_DEPTH = 12f;
+    public static final float DUCKS_MIN_DEPTH = 7.5f;
+    public static final float DUCKS_MAX_DEPTH = 15f;
     private static final int BONUS_TIME = 15;
 
     public enum LevelState {RUNNING, GAME_OVER, NEXT_LEVEL}
@@ -39,7 +39,7 @@ public class MainModel {
     private boolean bonus = false;
     private float levelTime = 0;
 
-    public MainModel(float aimX, float aimY, int numberOfDucks, PlayerModel playerModel, int level) {
+    public MainModel(float aimX, float aimY, int numberOfDucks, PlayerModel playerModel, int level, float ratio) {
 
         this.aim = new AimModel(aimX,aimY);
         this.numberOfDucks = numberOfDucks;
@@ -49,6 +49,8 @@ public class MainModel {
         this.numberOfDucksOnGround = 0;
         this.level = level;
         bonus = level == 0 ? true : false;
+
+
 
         for (int i = 0; i < numberOfDucks; i++) {
 
@@ -67,24 +69,24 @@ public class MainModel {
 
             }
             t = random.nextInt(3);
+            float fieldHeight = MainController.getControllerWidth() * ratio;
             float x;
-            float y;
+            float y = MathUtils.random(MainController.getControllerGroundHeight() + 5f, fieldHeight);
             switch (t) {
                 case 0: //nasce à esquerda
-                    x = MathUtils.random(0.0f, MainController.getControllerWidth()/2 - GameScreen.VIEWPORT_WIDTH/2 - 1);
-                    y = MathUtils.random(MainController.getControllerGroundHeight() + 5, MainController.getControllerHeight());
+                    x = 0f;
                     break;
                 case 1: //nasce à direita
+                    x = MainController.getControllerWidth();
+                    break;
+                default:
                     x = MathUtils.random(MainController.getControllerWidth()/2 + GameScreen.VIEWPORT_WIDTH/2 + 1, MainController.getControllerWidth());
-                    y = MathUtils.random(MainController.getControllerGroundHeight() + 5, MainController.getControllerHeight());
-                    break;
-                default: //nasce em cima
-                    x = MathUtils.random(0.0f, MainController.getControllerWidth());
-                    y = MathUtils.random(GameScreen.VIEWPORT_HEIGHT + 1, MainController.getControllerHeight());
-                    break;
+                    y = fieldHeight;
             }
 
             DuckModel currentDuck = new DuckModel(x,y, 0, type, MathUtils.random(DUCKS_MIN_DEPTH,DUCKS_MAX_DEPTH));
+
+            System.out.println(y);
 
 
             this.ducks.add(currentDuck);

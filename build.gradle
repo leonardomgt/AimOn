@@ -116,7 +116,8 @@ project(":html") {
 project(":core") {
     apply plugin: "java"
 
-    sourceSets.test.java.srcDirs = ["/test"]
+
+    sourceSets.test.java.srcDirs = ["/java/com/aimon/game/test"]
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"

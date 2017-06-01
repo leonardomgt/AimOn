@@ -27,25 +27,22 @@ import java.util.List;
 
 public class MainController {
 
-
     private static final float FIELD_WIDTH = 25;
-    private static final float FIELD_HEIGHT = FIELD_WIDTH*((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
-
-
-
+    //private static final float FIELD_HEIGHT = FIELD_WIDTH*((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
     private static final float GROUND_HEIGHT = 1f;
+    private static float FIELD_HEIGHT;
 
 
     private final World world;
-
     private float accumulator;
 
     private MainModel model;
     private List<DuckBody> duckBodies;
     private PlayerController playerController;
 
-    public MainController(MainModel model) {
+    public MainController(MainModel model, float ratio) {
 
+        MainController.FIELD_HEIGHT = FIELD_WIDTH * ratio;
         this.model = model;
         this.world = new World(new Vector2(0,0), true);
         List<DuckModel> ducks = model.getDucks();
