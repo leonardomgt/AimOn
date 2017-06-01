@@ -57,7 +57,7 @@ public class DesktopInputProcessor extends GameInputProcessor {
     public boolean scrolled(int amount){
 
         if(gameScreen.getCamera().zoom >= 1 && amount == 1) return true;
-        if(gameScreen.getCamera().zoom <= 0.1f && amount == -1) return true;
+        if(gameScreen.getCamera().zoom <= 0.5f && amount == -1) return true;
 
         changeZoomScroll(gameScreen.getCamera().zoom + amount*0.04f);
         return true;
@@ -81,7 +81,7 @@ public class DesktopInputProcessor extends GameInputProcessor {
         projectAimToCamera(gameScreen.getAimPosition());
 
         // Buttons listener
-        Gdx.input.setCursorPosition((int)gameScreen.getAimPosition().x, (int)gameScreen.getAimPosition().y);
+        //Gdx.input.setCursorPosition((int)gameScreen.getAimPosition().x, (int)gameScreen.getAimPosition().y);
 
 
         gameScreen.getCamera().unproject( gameScreen.getAimPosition());

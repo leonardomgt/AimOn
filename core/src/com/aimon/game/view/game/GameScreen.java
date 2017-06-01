@@ -171,7 +171,7 @@ public class GameScreen extends ScreenAdapter {
 
         this.playerModel.setNumberOfBullets(initialNumberOfBullets);
         this.playerModel.reset();
-        this.model = new MainModel(MainController.getControllerWidth()/2, MainController.getControllerHeight()/2, initialNumberOfDucks, this.playerModel, level);
+        this.model = new MainModel(MainController.getControllerWidth()/2, VIEWPORT_HEIGHT/2f, initialNumberOfDucks, this.playerModel, level);
         this.controller = new MainController(this.model);
         this.gameStatusView = new GameStatusView(game, model);
 

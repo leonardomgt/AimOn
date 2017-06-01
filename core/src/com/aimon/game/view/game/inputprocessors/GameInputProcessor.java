@@ -38,6 +38,8 @@ public abstract class GameInputProcessor extends InputAdapter{
     private static final String SLIDE_GUN = "slide_gun.wav";
     private static final String EMPTY_GUN = "empty_gun.wav";
 
+    private Vector3 currentAimPosition;
+
     protected GameInputProcessor(GameScreen gameScreen) {
 
         this.gameScreen = gameScreen;
@@ -48,6 +50,8 @@ public abstract class GameInputProcessor extends InputAdapter{
         emptyGunSoundEffect = null;
 
         soundOn = gameScreen.game.isSoundOn();
+
+        currentAimPosition = gameScreen.getInitialAimPosition();
     }
 
 
@@ -103,14 +107,20 @@ public abstract class GameInputProcessor extends InputAdapter{
         OrthographicCamera camera = gameScreen.getCamera();
         Vector3 aimPosition = gameScreen.getAimPosition();
 
+        System.out.println("camera.position: " + camera.position);
         camera.position.set(aimPosition.x /PIXEL_TO_METER, aimPosition.y /PIXEL_TO_METER,0);
+        System.out.println("camera.position2: " + camera.position);
 
+        float oldZoom = camera.zoom;
         camera.zoom = zoom;
 
-        Vector2 aimPositionScreen = new Vector2(-camera.zoom*(aimPosition.x - gameScreen.getInitialAimPosition().x)/PIXEL_TO_METER, -camera.zoom*(aimPosition.y - gameScreen.getInitialAimPosition().y)/PIXEL_TO_METER);
+        Vector2 aimPositionScreen = new Vector2(-(camera.zoom/oldZoom)*(aimPosition.x - currentAimPosition.x)/PIXEL_TO_METER, -(camera.zoom/oldZoom)*(aimPosition.y - currentAimPosition.y)/PIXEL_TO_METER);
 
         camera.translate(aimPositionScreen.x, aimPositionScreen.y);
 
+        System.out.println("camera.position3: " + camera.position);
+
+        currentAimPosition.set(camera.position.x*PIXEL_TO_METER, camera.position.y*PIXEL_TO_METER, 0);
         // show only background area
 
         float maxX = MainController.getControllerWidth()/PIXEL_TO_METER/2f + camera.viewportWidth/2f;
