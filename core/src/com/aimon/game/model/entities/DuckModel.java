@@ -25,7 +25,14 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
 
     private static final float FRIGHTEN_DISTANCE = 5;
     private static final float FRIGHTEN_TIME = 0.5f;
-    private static final float FRIGHTEN_VELOCITY_FACTOR = 2.5f;
+
+    public static final float DEWEY_NORMAL_VELOCITY = 2f;
+    public static final float HUEY_NORMAL_VELOCITY = 4f;
+    public static final float LOUIE_NORMAL_VELOCITY = 4f;
+
+    public static final float DEWEY_FRIGHTEN_FACTOR = 2f;
+    public static final float HUEY_FRIGHTEN_FACTOR = 4f;
+    public static final float LOUIE_FRIGHTEN_FACTOR = 4f;
 
     public enum DuckDirection {RIGHT, LEFT};
     public enum DuckState{GO_UP, GO_DOWN, FLOAT_UP, FLOAT_DOWN, FALLING, SHOT, DEAD}
@@ -42,11 +49,11 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
     private float lifeTime = 0;
     private float deadMoment;
 
-    private float normalVelocity;
-    private float frightenVelocity;
-
     private boolean frightened = false;
     private float frightenedMoment = 0;
+
+    private float normalVelocity;
+    private float frigthenVelocity;
 
 
     public DuckModel(float x, float y, float rotation, DuckType type, float depth) {
@@ -136,21 +143,6 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
         return deadMoment;
     }
 
-    public float getNormalVelocity() {
-        return normalVelocity;
-    }
-
-    public void setNormalVelocity(float normalVelocity) {
-        this.normalVelocity = normalVelocity;
-    }
-
-    public float getFrightenVelocity() {
-        return frightenVelocity;
-    }
-
-    public void setFrightenVelocity(float frightenVelocity) {
-        this.frightenVelocity = frightenVelocity;
-    }
 
     public boolean isFrightened() {
         return frightened;
@@ -176,7 +168,20 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
         return FRIGHTEN_TIME;
     }
 
-    public static float getFrightenVelocityFactor() {
-        return FRIGHTEN_VELOCITY_FACTOR;
+
+    public float getNormalVelocity() {
+        return normalVelocity;
+    }
+
+    public void setNormalVelocity(float normalVelocity) {
+        this.normalVelocity = normalVelocity;
+    }
+
+    public float getFrigthenVelocity() {
+        return frigthenVelocity;
+    }
+
+    public void setFrigthenVelocity(float frigthenVelocity) {
+        this.frigthenVelocity = frigthenVelocity;
     }
 }

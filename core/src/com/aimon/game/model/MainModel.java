@@ -21,8 +21,8 @@ import static com.badlogic.gdx.math.MathUtils.random;
 
 public class MainModel {
 
-    public static final float DUCKS_MIN_DEPTH = 8f;
-    public static final float DUCKS_MAX_DEPTH = 12f;
+    public static final float DUCKS_MIN_DEPTH = 10f;
+    public static final float DUCKS_MAX_DEPTH = 15f;
     private static final int BONUS_TIME = 15;
 
     public enum LevelState {RUNNING, GAME_OVER, NEXT_LEVEL}

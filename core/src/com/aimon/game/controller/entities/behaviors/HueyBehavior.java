@@ -12,7 +12,10 @@ public class HueyBehavior extends DuckBehavior {
 
     public HueyBehavior(DuckBody duck){
         super(duck);
-        this.duck.changeVelocity(-3, 0);
+        ((DuckModel) this.duck.getModel()).setNormalVelocity(DuckModel.HUEY_NORMAL_VELOCITY);
+        ((DuckModel) this.duck.getModel()).setFrigthenVelocity(DuckModel.HUEY_NORMAL_VELOCITY * DuckModel.HUEY_FRIGHTEN_FACTOR);
+        ((DuckModel) this.duck.getModel()).setDirection(DuckModel.DuckDirection.RIGHT);
+        this.duck.changeVelocity(DuckModel.HUEY_NORMAL_VELOCITY, -2);
     }
 
 

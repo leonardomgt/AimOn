@@ -12,7 +12,10 @@ public class LouieBehavior extends DuckBehavior {
 
     public LouieBehavior(DuckBody duck){
         super(duck);
-        this.duck.changeVelocity(-4, 0);
+        ((DuckModel) this.duck.getModel()).setNormalVelocity(DuckModel.LOUIE_NORMAL_VELOCITY);
+        ((DuckModel) this.duck.getModel()).setFrigthenVelocity(DuckModel.LOUIE_NORMAL_VELOCITY * DuckModel.LOUIE_FRIGHTEN_FACTOR);
+        ((DuckModel) this.duck.getModel()).setDirection(DuckModel.DuckDirection.RIGHT);
+        this.duck.changeVelocity(DuckModel.LOUIE_NORMAL_VELOCITY, -2);
     }
 
 

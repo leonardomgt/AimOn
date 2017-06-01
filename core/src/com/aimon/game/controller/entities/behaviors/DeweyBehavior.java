@@ -12,8 +12,12 @@ import com.badlogic.gdx.math.MathUtils;
 public class DeweyBehavior extends DuckBehavior {
 
     public DeweyBehavior(DuckBody duck){
-
         super(duck);
+        ((DuckModel) this.duck.getModel()).setNormalVelocity(DuckModel.DEWEY_NORMAL_VELOCITY);
+        ((DuckModel) this.duck.getModel()).setFrigthenVelocity(DuckModel.DEWEY_NORMAL_VELOCITY * DuckModel.DEWEY_FRIGHTEN_FACTOR);
+
+        ((DuckModel) this.duck.getModel()).setDirection(DuckModel.DuckDirection.RIGHT);
+        this.duck.changeVelocity(DuckModel.DEWEY_NORMAL_VELOCITY, -2);
     }
 
 
@@ -24,7 +28,7 @@ public class DeweyBehavior extends DuckBehavior {
 
             int rand = MathUtils.random(0,200);
 
-            if(rand < 3) {
+            if(rand < 2) {
                 duck.changeDirection();
             }
 

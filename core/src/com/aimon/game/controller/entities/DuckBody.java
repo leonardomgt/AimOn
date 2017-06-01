@@ -42,11 +42,8 @@ public class DuckBody extends EntityBody{
                 0,0, widthPixels,0, widthPixels,heightPixels, 0,heightPixels
         }, widthPixels , heightPixels, density, friction, restitution, DUCK_CATEGORY, IGNORE_DUCKS);
 
-        this.body.setLinearVelocity(-2*model.getDepthFactor(),-2);
 
-        model.setNormalVelocity(this.body.getLinearVelocity().x);
-        model.setFrightenVelocity(model.getNormalVelocity()*DuckModel.getFrightenVelocityFactor());
-        model.setDirection(DuckModel.DuckDirection.LEFT);
+        System.out.println("velocidade: " + this.body.getLinearVelocity().x);
 
         switch (model.getType()){
             case DEWEY:
@@ -59,13 +56,20 @@ public class DuckBody extends EntityBody{
                 this.behavior = new LouieBehavior(this);
                 break;
         }
+
+        System.out.println("velocidade: " + this.body.getLinearVelocity().x);
     }
 
     public void updateDuckState(float delta) {
 
+
+
         DuckModel dm = (DuckModel) this.model;
         dm.updateLifeTime(delta);
-        updateFrightenState();
+
+        if(dm.isFrightened()) {
+            updateFrightenState();
+        }
 
         switch (dm.getState()) {
             case GO_UP:
@@ -170,7 +174,8 @@ public class DuckBody extends EntityBody{
     public void changeVelocity(float x, float y){
 
         float depthFactor = ((DuckModel) model).getDepthFactor();
-        this.body.setLinearVelocity(x*depthFactor, y*depthFactor);
+        this.body.setLinearVelocity(x, y);
+        this.body.setLinearVelocity(this.body.getLinearVelocity().x*depthFactor, this.body.getLinearVelocity().y*depthFactor);
 
     }
 
@@ -191,46 +196,45 @@ public class DuckBody extends EntityBody{
     public void setFrighten(float x) {
 
         DuckModel duckModel = (DuckModel)this.model;
-        duckModel.setFrightened(true);
-        duckModel.setFrightenedMoment(duckModel.getLifeTime());
-        this.changeVelocity(duckModel.getFrightenVelocity(), body.getLinearVelocity().y);
 
         if ((duckModel.getX() < x && duckModel.getDirection() == DuckModel.DuckDirection.RIGHT) || (duckModel.getX() > x && duckModel.getDirection() == DuckModel.DuckDirection.LEFT) ) {
-
             this.changeDirection();
+        }
+
+        if(!duckModel.isFrightened()) {
+
+            if (duckModel.getDirection() == DuckModel.DuckDirection.RIGHT) {
+                this.changeVelocity(duckModel.getFrigthenVelocity(), body.getLinearVelocity().y);
+            }
+            else {
+                this.changeVelocity(-duckModel.getFrigthenVelocity(), body.getLinearVelocity().y);
+            }
+
+            System.out.println("aumentando velocidade: " + this.body.getLinearVelocity().x);
 
         }
 
-    }
-
-    public void setUnfrighten() {
-
-        DuckModel duckModel = (DuckModel)this.model;
-        duckModel.setFrightened(false);
-        this.changeVelocity(duckModel.getNormalVelocity(), body.getLinearVelocity().y);
+        duckModel.setFrightened(true);
+        duckModel.setFrightenedMoment(duckModel.getLifeTime());
 
     }
-
 
     private void updateFrightenState() {
 
         DuckModel dm = (DuckModel) this.model;
+        if (dm.getLifeTime() - dm.getFrightenedMoment() > DuckModel.getFrightenTime()) {
 
-        if(dm.isFrightened()) {
-
-            dm.setNormalVelocity(this.body.getLinearVelocity().x/DuckModel.getFrightenVelocityFactor());
-            if (dm.getLifeTime() - dm.getFrightenedMoment() > DuckModel.getFrightenTime()) {
-                this.setUnfrighten();
-
+            if (dm.getDirection() == DuckModel.DuckDirection.RIGHT) {
+                this.changeVelocity(dm.getNormalVelocity(), body.getLinearVelocity().y);
             }
+            else {
+                this.changeVelocity(-dm.getNormalVelocity(), body.getLinearVelocity().y);
+            }
+            
+            dm.setFrightened(false);
+            System.out.println("reduzindo velocidade: " + this.body.getLinearVelocity().x);
 
         }
-
-        else {
-            dm.setNormalVelocity(this.body.getLinearVelocity().x);
-            dm.setFrightenVelocity(dm.getNormalVelocity()*DuckModel.getFrightenVelocityFactor());
-        }
-
     }
 
     public float getWidth() {
@@ -240,4 +244,7 @@ public class DuckBody extends EntityBody{
     public float getHeight() {
         return height;
     }
+
+
+
 }
