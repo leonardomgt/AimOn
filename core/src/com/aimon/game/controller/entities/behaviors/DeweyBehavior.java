@@ -15,7 +15,6 @@ public class DeweyBehavior extends DuckBehavior {
         super(duck);
         ((DuckModel) this.duck.getModel()).setNormalVelocity(DuckModel.DEWEY_NORMAL_VELOCITY);
         ((DuckModel) this.duck.getModel()).setFrigthenVelocity(DuckModel.DEWEY_NORMAL_VELOCITY * DuckModel.DEWEY_FRIGHTEN_FACTOR);
-
         ((DuckModel) this.duck.getModel()).setDirection(DuckModel.DuckDirection.RIGHT);
         this.duck.changeVelocity(DuckModel.DEWEY_NORMAL_VELOCITY, -2);
     }
