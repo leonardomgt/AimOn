@@ -27,11 +27,11 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
     private static final float FRIGHTEN_TIME = 0.5f;
 
     public static final float DEWEY_NORMAL_VELOCITY = 2f;
-    public static final float HUEY_NORMAL_VELOCITY = 4f;
+    public static final float HUEY_NORMAL_VELOCITY = 3f;
     public static final float LOUIE_NORMAL_VELOCITY = 4f;
 
     public static final float DEWEY_FRIGHTEN_FACTOR = 2f;
-    public static final float HUEY_FRIGHTEN_FACTOR = 4f;
+    public static final float HUEY_FRIGHTEN_FACTOR = 3f;
     public static final float LOUIE_FRIGHTEN_FACTOR = 4f;
 
     public enum DuckDirection {RIGHT, LEFT};

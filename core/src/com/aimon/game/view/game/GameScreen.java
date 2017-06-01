@@ -150,7 +150,7 @@ public class GameScreen extends ScreenAdapter {
 
             this.level++;
             this.initialNumberOfBullets-=3;
-            if (initialNumberOfBullets + this.playerModel.getGun().getCapacity() < initialNumberOfDucks) {
+            if (initialNumberOfBullets + this.playerModel.getGun().getCapacity()/2 < initialNumberOfDucks) {
 
                 this.bonus = true;
                 this.setModelController(BONUS_LEVEL_DUCKS, BONUS_LEVEL_BULLETS, BONUS_LEVEL);

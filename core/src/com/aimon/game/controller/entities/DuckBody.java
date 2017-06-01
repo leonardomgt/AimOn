@@ -230,7 +230,7 @@ public class DuckBody extends EntityBody{
             else {
                 this.changeVelocity(-dm.getNormalVelocity(), body.getLinearVelocity().y);
             }
-            
+
             dm.setFrightened(false);
             System.out.println("reduzindo velocidade: " + this.body.getLinearVelocity().x);
 
