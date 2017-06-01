@@ -80,13 +80,11 @@ public class MainModel {
                     x = MainController.getControllerWidth();
                     break;
                 default:
-                    x = MathUtils.random(MainController.getControllerWidth()/2 + GameScreen.VIEWPORT_WIDTH/2 + 1, MainController.getControllerWidth());
+                    x = MathUtils.random(0, MainController.getControllerWidth());
                     y = fieldHeight;
             }
 
             DuckModel currentDuck = new DuckModel(x,y, 0, type, MathUtils.random(DUCKS_MIN_DEPTH,DUCKS_MAX_DEPTH));
-
-            System.out.println(y);
 
 
             this.ducks.add(currentDuck);
@@ -164,5 +162,9 @@ public class MainModel {
 
     public static int getBonusTime() {
         return BONUS_TIME;
+    }
+
+    public int getNumberOfDucksOnGround() {
+        return numberOfDucksOnGround;
     }
 }

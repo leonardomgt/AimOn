@@ -43,8 +43,6 @@ public class DuckBody extends EntityBody{
         }, widthPixels , heightPixels, density, friction, restitution, DUCK_CATEGORY, IGNORE_DUCKS);
 
 
-        System.out.println("velocidade: " + this.body.getLinearVelocity().x);
-
         switch (model.getType()){
             case DEWEY:
                 this.behavior = new DeweyBehavior(this);
@@ -57,7 +55,6 @@ public class DuckBody extends EntityBody{
                 break;
         }
 
-        System.out.println("velocidade: " + this.body.getLinearVelocity().x);
     }
 
     public void updateDuckState(float delta) {
@@ -210,8 +207,6 @@ public class DuckBody extends EntityBody{
                 this.changeVelocity(-duckModel.getFrigthenVelocity(), body.getLinearVelocity().y);
             }
 
-            System.out.println("aumentando velocidade: " + this.body.getLinearVelocity().x);
-
         }
 
         duckModel.setFrightened(true);
@@ -232,7 +227,6 @@ public class DuckBody extends EntityBody{
             }
 
             dm.setFrightened(false);
-            System.out.println("reduzindo velocidade: " + this.body.getLinearVelocity().x);
 
         }
     }

@@ -14,6 +14,7 @@ public class GunModel extends EntityModel {
     private float shotDelay;
     private float lastShotMoment = 0;
     private float reloadBulletDelay;
+    private float slideDelay;
     private float lastReloadMoment = 0;
     private float gunLifeTime = 0;
 
@@ -28,6 +29,7 @@ public class GunModel extends EntityModel {
         this.shotDelay = .5f;
         this.numberOfBullets = capacity;
         this.reloadBulletDelay = .5f;
+        this.slideDelay = 1.6f;
 
     }
 
@@ -93,5 +95,9 @@ public class GunModel extends EntityModel {
 
     public int getEmptySpaces() {
         return this.capacity - this.numberOfBullets;
+    }
+
+    public float getSlideDelay() {
+        return slideDelay;
     }
 }

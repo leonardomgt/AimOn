@@ -29,11 +29,16 @@ public abstract class DuckBehavior {
         }
 
         else if(duck.getX() < 0) {
-            duck.getBody().setTransform(MainController.getControllerWidth(), duck.getY(), duck.getBody().getAngle());
+            //duck.getBody().setTransform(MainController.getControllerWidth(), duck.getY(), duck.getBody().getAngle());
+            duck.changeDirection();
+            duck.setTransform(duck.getX() + 0.01f, duck.getY(), 0);
             return true;
         }
         else if(duck.getX() > MainController.getControllerWidth()) {
-            duck.getBody().setTransform(0, duck.getY(), duck.getBody().getAngle());
+            //duck.getBody().setTransform(0, duck.getY(), duck.getBody().getAngle());
+            duck.changeDirection();
+            duck.setTransform(duck.getX() - 0.01f, duck.getY(), 0);
+
             return true;
         }
 

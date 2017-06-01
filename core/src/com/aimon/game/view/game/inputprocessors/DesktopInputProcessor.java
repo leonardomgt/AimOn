@@ -81,7 +81,7 @@ public class DesktopInputProcessor extends GameInputProcessor {
         projectAimToCamera(gameScreen.getAimPosition());
 
         // Buttons listener
-        //Gdx.input.setCursorPosition((int)gameScreen.getAimPosition().x, (int)gameScreen.getAimPosition().y);
+        Gdx.input.setCursorPosition((int)gameScreen.getAimPosition().x, (int)gameScreen.getAimPosition().y);
 
 
         gameScreen.getCamera().unproject( gameScreen.getAimPosition());

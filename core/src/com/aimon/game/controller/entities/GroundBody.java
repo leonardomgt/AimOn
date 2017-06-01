@@ -31,11 +31,11 @@ public class GroundBody extends EntityBody {
         super(world,groundModel);
         this.body.setType(BodyDef.BodyType.StaticBody);
 
-        float groundWidthPixels = MainController.getControllerWidth();
-        float groundHeightPixels = MainController.getControllerGroundHeight();
+        float groundWidth = MainController.getControllerWidth() +10 ;
+        float groundHeight = MainController.getControllerGroundHeight();
 
         EdgeShape groundShape = new EdgeShape();
-        groundShape.set(0.0f, groundHeightPixels, groundWidthPixels, groundHeightPixels);
+        groundShape.set(-5.0f, groundHeight, groundWidth, groundHeight);
         FixtureDef groundFixture = new FixtureDef();
 
         groundFixture.shape = groundShape;

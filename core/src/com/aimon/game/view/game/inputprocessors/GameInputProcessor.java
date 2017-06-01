@@ -128,7 +128,7 @@ public abstract class GameInputProcessor extends InputAdapter{
         float minX = MainController.getControllerWidth()/PIXEL_TO_METER/2f - camera.viewportWidth/2f;
         float minY = 0;
 
-        if((camera.position.x + camera.zoom*Gdx.graphics.getWidth()/2f) > maxX){
+        /*if((camera.position.x + camera.zoom*Gdx.graphics.getWidth()/2f) > maxX){
             camera.translate(maxX - (camera.position.x + camera.zoom*Gdx.graphics.getWidth()/2f),0);
         }
         if((camera.position.x - camera.zoom*Gdx.graphics.getWidth()/2f) < minX){
@@ -139,7 +139,7 @@ public abstract class GameInputProcessor extends InputAdapter{
         }
         if((camera.position.y - camera.zoom*Gdx.graphics.getHeight()/2f) < minY){
             camera.translate(0,minY - (camera.position.y - camera.zoom*Gdx.graphics.getHeight()/2f));
-        }
+        }*/
 
         camera.update();
 

@@ -53,13 +53,13 @@ public class GunController {
             case FIRING:
 
                 float elapsedTimeShot = this.model.getGunLifeTime() - this.model.getLastShotMoment();
-                if (elapsedTimeShot > this.model.getShotDelay()){
+                if (elapsedTimeShot >= this.model.getShotDelay()){
                     this.model.setState(GunModel.GunState.IDLE);
                 }
                 break;
             case RELOADING:
                 float elapsedTimeReload = this.model.getGunLifeTime() - this.model.getLastReloadMoment();
-                if (elapsedTimeReload > this.model.getReloadedBullets() * this.model.getReloadBulletDelay() + 1.6){
+                if (elapsedTimeReload >= this.model.getReloadedBullets() * this.model.getReloadBulletDelay() + this.model.getSlideDelay()){
                     this.model.setState(GunModel.GunState.IDLE);
                 }
                 break;

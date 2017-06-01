@@ -154,7 +154,7 @@ public class MainController {
             for (DuckBody duck : duckBodies) {
                 DuckModel model = (DuckModel) duck.getModel();
 
-                if (duck.isInRange(x, y)) {
+                if (duck.isInRange(x, y) && model.isAlive()) {
 
                     model.kill();
                     this.model.decreaseNumberOfDucks();
