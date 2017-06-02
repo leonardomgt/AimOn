@@ -12,57 +12,53 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by joaofurriel on 27/05/17.
+ * Class that records the Game Status and show it to screen
  */
 
 public class GameStatusView {
 
-    /** The Constant BULLET_BOX. */
+    /** The path to BULLET BOX image asset. */
     public static final String BULLET_BOX = "bullet_box.png";
-    
-    /** The Constant AMMO. */
+
+    /** The path to AMMO image asset. */
     public static final String AMMO = "ammo.png";
-    
-    /** The Constant AMMO_EMPTY. */
+
+    /** The path to NO AMMO image asset. */
     public static final String AMMO_EMPTY = "ammo_empty.png";
-    
-    /** The Constant MISSED_SHOT. */
+
+    /** The path to MISSED SHOT image asset. */
     public static final String MISSED_SHOT = "missed.png";
-    
-    /** The Constant ALIVE_DUCK. */
+
+    /** The path to ALIVE DUCK image asset. */
     public static final String ALIVE_DUCK = "alive_duck.png";
-    
-    /** The Constant DEAD_DUCK. */
+
+    /** The path to DEAD DUCK image asset. */
     public static final String DEAD_DUCK = "dewey_shot.png";
 
 
-    /** The player bullets. */
+    /** The number of player bullets. */
     private int playerBullets;
     
-    /** The gun bullets. */
+    /** The gun remaining bullets. */
     private int gunBullets;
-    
-    /** The player score. */
-    private int playerScore;
     
     /** The number of alive ducks. */
     private int numberOfAliveDucks;
     
-    /** The missed shots. */
+    /** The number of missed shots. */
     private int missedShots;
     
-    /** The killed ducks. */
+    /** The number of killed ducks. */
     private int killedDucks;
 
     /** The font. */
     private BitmapFont font;
     
-    /** The model. */
+    /** The player model. */
     private PlayerModel model;
     
-    /** The game. */
+    /** The AimOn game. */
     private AimOn game;
 
     /** The player bullets sprite. */
@@ -111,7 +107,7 @@ public class GameStatusView {
     }
 
     /**
-     * Load assets.
+     * Load assets needed for Game Status view.
      */
     private void loadAssets() {
         this.game.getAssetManager().load(ALIVE_DUCK, Texture.class);
@@ -174,7 +170,7 @@ public class GameStatusView {
     }
 
     /**
-     * Draw.
+     * Draw Game Status on Screen.
      *
      * @param batch the batch
      */
@@ -225,12 +221,12 @@ public class GameStatusView {
     }
 
     /**
-     * Draw font.
+     * Draw text to Screen.
      *
-     * @param str the str
+     * @param str the string to draw
      * @param batch the batch
-     * @param x the x
-     * @param y the y
+     * @param x the x position
+     * @param y the y position
      */
     private void drawFont(CharSequence str, SpriteBatch batch, float x, float y) {
 
@@ -241,7 +237,7 @@ public class GameStatusView {
 
 
     /**
-     * Update.
+     * Update Game Status.
      *
      * @param model the model
      */
@@ -253,11 +249,11 @@ public class GameStatusView {
     }
 
     /**
-     * Sets the player bullets string.
+     * Sets the player bullets.
      *
-     * @param playerBullets the new player bullets string
+     * @param playerBullets the new player bullets
      */
-    public void setPlayerBulletsString(int playerBullets) {
+    public void setPlayerBullets(int playerBullets) {
         this.playerBullets = playerBullets;
     }
 
@@ -271,7 +267,7 @@ public class GameStatusView {
     }
 
     /**
-     * Spend bullet.
+     * Spend bullet. Decrements gun bullets.
      */
     public void spendBullet() {
         this.gunBullets--;

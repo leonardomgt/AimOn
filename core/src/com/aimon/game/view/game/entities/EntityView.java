@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by joaofurriel on 28/04/17.
+ * Class responsible for drawing and update the Views
  */
 
 /**
@@ -22,14 +21,15 @@ public abstract class EntityView {
 
     Sprite sprite;
     
-    /** The argument. */
+    /** A field with flexible type class.
+     *  Can be used as auxiliary by Sub-Classes. */
     protected Object argument;
 
     /**
      * Instantiates a new entity view.
      *
      * @param game the game
-     * @param arg the arg
+     * @param arg the flexible argument
      */
     EntityView(AimOn game, Object arg) {
         this.argument = arg;
@@ -37,7 +37,7 @@ public abstract class EntityView {
     }
 
     /**
-     * Draw.
+     * Draw the View to screen.
      *
      * @param batch the batch
      */
@@ -54,7 +54,7 @@ public abstract class EntityView {
     public abstract Sprite createSprite(AimOn game);
 
     /**
-     * Update.
+     * Update Entity View.
      *
      * @param model the model
      */

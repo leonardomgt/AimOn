@@ -2,10 +2,8 @@ package com.aimon.game.view.game.inputprocessors;
 
 import com.aimon.game.controller.MainController;
 import com.aimon.game.view.game.GameScreen;
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,9 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by Leo on 30/05/2017.
+ * Handles all the user inputs.
  */
 
 public abstract class GameInputProcessor extends InputAdapter{
@@ -31,28 +28,28 @@ public abstract class GameInputProcessor extends InputAdapter{
     /** The shot sound effect. */
     protected Sound shotSoundEffect;
     
-    /** The reload bullet sound effect. */
+    /** The reloading bullet sound effect. */
     protected Sound reloadBulletSoundEffect;
     
-    /** The slide gun sound effect. */
+    /** The slide after reload sound effect. */
     protected Sound slideGunSoundEffect;
     
-    /** The empty gun sound effect. */
+    /** The trigger pulled with empty gun sound effect. */
     protected Sound emptyGunSoundEffect;
 
-    /** The sound on. */
+    /** Flag indicating if game sound is On/Off. */
     private boolean soundOn = true;
 
-    /** The Constant SHOT. */
+    /** The path to SHOT sound asset. */
     private static final String SHOT = "shotgun.wav";
     
-    /** The Constant RELOAD_BULLET. */
+    /** The path to RELOADING BULLET sound asset. */
     private static final String RELOAD_BULLET = "load_bullet.wav";
-    
-    /** The Constant SLIDE_GUN. */
+
+    /** The path to SLIDE sound asset. */
     private static final String SLIDE_GUN = "slide_gun.wav";
-    
-    /** The Constant EMPTY_GUN. */
+
+    /** The path to EMPTY GUN sound asset. */
     private static final String EMPTY_GUN = "empty_gun.wav";
 
     /** The current aim position. */
@@ -79,12 +76,12 @@ public abstract class GameInputProcessor extends InputAdapter{
 
 
     /**
-     * Update aim.
+     * Update aim position.
      */
     public abstract void updateAim();
 
     /**
-     * Load assets.
+     * Load assets needed for Game Input Processor elements.
      */
     public void loadAssets() {
 
@@ -102,7 +99,7 @@ public abstract class GameInputProcessor extends InputAdapter{
     }
 
     /**
-     * Change zoom.
+     * Change camera zoom.
      */
     public void changeZoom() {
 
@@ -134,7 +131,7 @@ public abstract class GameInputProcessor extends InputAdapter{
     }
 
     /**
-     * Change zoom scroll.
+     * Change camera zoom using scroll.
      *
      * @param zoom the zoom
      */
@@ -184,7 +181,7 @@ public abstract class GameInputProcessor extends InputAdapter{
     }
 
     /**
-     * Shot.
+     * Pull the trigger.
      */
     public void shot() {
 
@@ -200,6 +197,8 @@ public abstract class GameInputProcessor extends InputAdapter{
 
     /**
      * Reload gun.
+     *
+     * Creates a new Thread to play the sound effects of reloading the gun
      */
     public void reloadGun() {
 
@@ -226,7 +225,7 @@ public abstract class GameInputProcessor extends InputAdapter{
 
                     try {
                         if(soundOn) reloadBulletSoundEffect.play();
-                        gameScreen.getGameStatusView().setPlayerBulletsString(--oldBulletsBox);
+                        gameScreen.getGameStatusView().setPlayerBullets(--oldBulletsBox);
                         gameScreen.getGameStatusView().setGunBullets(++oldBulletsGun);
                         Thread.sleep(this.duration);
                     } catch (InterruptedException e) {
@@ -254,7 +253,10 @@ public abstract class GameInputProcessor extends InputAdapter{
     }
 
     /**
-     * Initialize UI elements.
+     * Initialize UI elements:
+     *
+     * Button Home - Back to Main-Menu.
+     *
      */
     public void initializeUIElements() {
 
@@ -283,40 +285,13 @@ public abstract class GameInputProcessor extends InputAdapter{
 
     }
 
-    /**
-     * Project aim to camera.
-     *
-     * @param aimPosition the aim position
-     */
-    protected void projectAimToCamera(Vector3 aimPosition) {
-
-        gameScreen.getAimPosition().set(gameScreen.getAimPosition().x / gameScreen.PIXEL_TO_METER, gameScreen.getAimPosition().y/gameScreen.PIXEL_TO_METER, 0);
-        gameScreen.getCamera().project( gameScreen.getAimPosition());
-
-        gameScreen.getAimPosition().set(gameScreen.getAimPosition().x, Gdx.graphics.getHeight() - gameScreen.getAimPosition().y -1, 0);
-
-
-        if(!(aimPosition.x > Gdx.graphics.getWidth() && Gdx.input.getDeltaX() > 0)
-        && !(aimPosition.x < 0 && Gdx.input.getDeltaX() < 0)){
-
-            aimPosition.add(Gdx.input.getDeltaX(),0, 0);
-        }
-
-        if(!(aimPosition.y > Gdx.graphics.getHeight() && Gdx.input.getDeltaY() > 0)
-        && !(aimPosition.y < 0 && Gdx.input.getDeltaY() < 0)){
-
-            aimPosition.add(0,Gdx.input.getDeltaY(), 0);
-        }
-
-    }
-
 
     /**
-     * Sets the sound on.
+     * Sets the sound flag.
      *
-     * @param soundOn the new sound on
+     * @param sound true if sound is ON, else false
      */
-    public void setSoundOn(boolean soundOn) {
-        this.soundOn = soundOn;
+    public void setSound(boolean sound) {
+        this.soundOn = sound;
     }
 }

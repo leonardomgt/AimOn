@@ -3,16 +3,13 @@ package com.aimon.game.view.game.inputprocessors;
 import com.aimon.game.view.game.GameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
 
-
-// TODO: Auto-generated Javadoc
 /**
- * Created by Leo on 23/05/2017.
+ *  InputProcessor for Desktop case:
+ *
+ *  This class is only called when the Running Platform is Desktop.
  */
-
 
 public class DesktopInputProcessor extends GameInputProcessor {
 
@@ -27,7 +24,10 @@ public class DesktopInputProcessor extends GameInputProcessor {
     }
 
     /**
-     * Key down.
+     * Handle inputs:
+     *
+     *   Key R - Reload the gun.
+     *   Key B - Back to main-menu.
      *
      * @param keycode the keycode
      * @return true, if successful
@@ -49,7 +49,10 @@ public class DesktopInputProcessor extends GameInputProcessor {
     }
 
     /**
-     * Touch down.
+     * Handle mouse click inputs:
+     *
+     *     Left Button - Shot.
+     *     Right Button - Zoom In/Out
      *
      * @param screenX the screen X
      * @param screenY the screen Y
@@ -76,7 +79,7 @@ public class DesktopInputProcessor extends GameInputProcessor {
     }
 
     /**
-     * Scrolled.
+     * Handle scroll input: Change zoom.
      *
      * @param amount the amount
      * @return true, if successful
@@ -106,6 +109,35 @@ public class DesktopInputProcessor extends GameInputProcessor {
         gameScreen.getAimPosition().set(gameScreen.getAimPosition().x * gameScreen.PIXEL_TO_METER, gameScreen.getAimPosition().y*gameScreen.PIXEL_TO_METER, 0);
 
         gameScreen.getController().updateAimLocation(gameScreen.getAimPosition().x, gameScreen.getAimPosition().y);
+
+    }
+
+    /**
+     * Project aim to camera:
+     *
+     * Avoid the aim to get out of the screen.
+     *
+     * @param aimPosition the aim position
+     */
+    protected void projectAimToCamera(Vector3 aimPosition) {
+
+        gameScreen.getAimPosition().set(gameScreen.getAimPosition().x / gameScreen.PIXEL_TO_METER, gameScreen.getAimPosition().y/gameScreen.PIXEL_TO_METER, 0);
+        gameScreen.getCamera().project( gameScreen.getAimPosition());
+
+        gameScreen.getAimPosition().set(gameScreen.getAimPosition().x, Gdx.graphics.getHeight() - gameScreen.getAimPosition().y -1, 0);
+
+
+        if(!(aimPosition.x > Gdx.graphics.getWidth() && Gdx.input.getDeltaX() > 0)
+                && !(aimPosition.x < 0 && Gdx.input.getDeltaX() < 0)){
+
+            aimPosition.add(Gdx.input.getDeltaX(),0, 0);
+        }
+
+        if(!(aimPosition.y > Gdx.graphics.getHeight() && Gdx.input.getDeltaY() > 0)
+                && !(aimPosition.y < 0 && Gdx.input.getDeltaY() < 0)){
+
+            aimPosition.add(0,Gdx.input.getDeltaY(), 0);
+        }
 
     }
 

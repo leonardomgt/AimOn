@@ -6,42 +6,37 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by Leo on 24/05/2017.
+ * Contains all buttons used in Main-Menu screen
  */
 
 public class MainMenuButtons implements Disposable {
 
-    /** The main menu. */
+    /** The Main-Menu screen. */
     final MainMenuScreen mainMenu;
 
-    /** The stage. */
+    /** The stage containing all Buttons. */
     public Stage stage;
     
-    /** The table. */
-    private Table table;
-    
-    /** The button play. */
+    /** The button Play. Changes to a GameScreen and starts the game. */
     private TextButton buttonPlay;
     
-    /** The button sound. */
+    /** The button Sound. Mute the game sounds. */
     private final ImageButton buttonSound;
     
-    /** The button settings. */
-    private final ImageButton buttonSettings;
+    /** The button Exit. Close the program.*/
+    private final ImageButton buttonExit;
 
 
     /**
-     * Instantiates a new main menu buttons.
+     * Instantiates a new object MainMenuButtons and creates all its the Buttons.
      *
-     * @param mainMenu the main menu
+     * @param mainMenu the Main-Menu screen
      */
     public MainMenuButtons(final MainMenuScreen mainMenu) {
 
@@ -62,7 +57,7 @@ public class MainMenuButtons implements Disposable {
         stage.addActor(buttonPlay);
 
 
-        // Settings Button
+        // Sound Button
         buttonSound = new ImageButton(mainMenu.game.getSkin());
         buttonSound.setSize(buttonSound.getHeight()/1.2f, buttonSound.getHeight()/1.2f);
 
@@ -82,31 +77,31 @@ public class MainMenuButtons implements Disposable {
         stage.addActor(buttonSound);
 
 
-        // Settings Button
-        buttonSettings = new ImageButton(mainMenu.game.getSkin());
-        buttonSettings.setSize(buttonSettings.getHeight()/1.2f,buttonSettings.getHeight()/1.2f);
+        // Exit Button
+        buttonExit = new ImageButton(mainMenu.game.getSkin());
+        buttonExit.setSize(buttonExit.getHeight()/1.2f, buttonExit.getHeight()/1.2f);
 
-        ImageButton.ImageButtonStyle settingsStyle = new ImageButton.ImageButtonStyle(buttonSettings.getStyle());
-        buttonSettings.setStyle(settingsStyle);
+        ImageButton.ImageButtonStyle settingsStyle = new ImageButton.ImageButtonStyle(buttonExit.getStyle());
+        buttonExit.setStyle(settingsStyle);
 
-        buttonSettings.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings.png"))));
-        buttonSettings.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("settings.png"))));
-        buttonSettings.getStyle().up = buttonSettings.getSkin().getDrawable("button-small");
-        buttonSettings.getStyle().down = buttonSettings.getSkin().getDrawable("button-small-down");
-        buttonSettings.setPosition(Gdx.graphics.getWidth()- buttonSettings.getWidth(), Gdx.graphics.getHeight()-buttonSettings.getHeight());
-        buttonSettings.addListener(new ClickListener() {
+        buttonExit.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cross.png"))));
+        buttonExit.getStyle().imageDown = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("cross.png"))));
+        buttonExit.getStyle().up = buttonExit.getSkin().getDrawable("button-small");
+        buttonExit.getStyle().down = buttonExit.getSkin().getDrawable("button-small-down");
+        buttonExit.setPosition(Gdx.graphics.getWidth()- buttonExit.getWidth(), Gdx.graphics.getHeight()- buttonExit.getHeight());
+        buttonExit.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                mainMenu.game.setGameScreen();
+                System.exit(0);
             }
         });
-        stage.addActor(buttonSettings);
+        stage.addActor(buttonExit);
 
     }
 
     /**
-     * Update.
+     * Update the buttons stage.
      *
-     * @param delta the delta
+     * @param delta the delta time since last call
      */
     public void update(float delta){
         stage.act(delta);
@@ -115,18 +110,20 @@ public class MainMenuButtons implements Disposable {
 
 
     /**
-     * Dispose.
+     * Dispose the elements used in Main-Menu.
      */
     @Override
     public void dispose() {
         stage.dispose();
         mainMenu.game.getSkin().dispose();
         buttonPlay.clearListeners();
+        buttonSound.clearListeners();
+        buttonExit.clearListeners();
     }
 
 
     /**
-     * Gets the stage.
+     * Gets the buttons stage.
      *
      * @return the stage
      */

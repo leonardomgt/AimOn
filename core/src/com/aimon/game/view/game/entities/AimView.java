@@ -2,14 +2,12 @@ package com.aimon.game.view.game.entities;
 
 import com.aimon.game.AimOn;
 import com.aimon.game.model.entities.EntityModel;
-import com.aimon.game.view.game.GameScreen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by Leo on 29/04/2017.
+ * Contains the visual elements to aim drawing
  */
 
 public class AimView extends EntityView {
@@ -20,13 +18,13 @@ public class AimView extends EntityView {
     /** The initial zoom. */
     float INITIAL_ZOOM = .1f;
 
-    /** The Constant AIM_IMAGE. */
+    /** The path to AIM image asset. */
     public static final String AIM_IMAGE = "arm-cross.png";
 
     /**
      * Instantiates a new aim view.
      *
-     * @param game the game
+     * @param game the AimOn game
      */
     public AimView(AimOn game) {
         super(game, null);
