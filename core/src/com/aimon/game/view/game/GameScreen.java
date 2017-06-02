@@ -17,45 +17,37 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import java.util.List;
 
 import static com.aimon.game.model.MainModel.LevelState.NEXT_LEVEL;
 
-
-// TODO: Auto-generated Javadoc
 /**
- * Created by Leo on 18/04/2017.
+ * Game Screen
+ *
+ * Contains all visual elements needed in game scene.
  */
 
 
 public class GameScreen extends ScreenAdapter {
 
-    /** The game. */
+    /** The AimOn game. */
     public final AimOn game;
     
     /** The camera. */
     private final OrthographicCamera camera;
-    
-    /** The debug matrix. */
-    private Matrix4 debugMatrix;
-    
-    /** The debug renderer. */
-    private Box2DDebugRenderer debugRenderer;
 
-    /** The Constant PIXEL_TO_METER. */
+    /** The convert rate from PIXELs to METERs. */
     public final static float PIXEL_TO_METER = .85f / (114 / 3f);
     
-    /** The Constant VIEWPORT_WIDTH. */
-    public static final float VIEWPORT_WIDTH = 22.5f;
-    
-    /** The Constant HEIGHT_WIDTH_RATIO. */
+    /** The ratio Height/Width. */
     public static final float HEIGHT_WIDTH_RATIO = Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth();
-    
-    /** The Constant VIEWPORT_HEIGHT. */
+
+    /** The VIEWPORT WIDTH. */
+    public static final float VIEWPORT_WIDTH = 22.5f;
+
+    /** The VIEWPORT HEIGHT. */
     public static final float VIEWPORT_HEIGHT = VIEWPORT_WIDTH* HEIGHT_WIDTH_RATIO;
 
     /** The Constant BONUS_LEVEL. */
@@ -67,7 +59,7 @@ public class GameScreen extends ScreenAdapter {
     /** The Constant BONUS_LEVEL_BULLETS. */
     private static final int BONUS_LEVEL_BULLETS = 494;
 
-    /** The Constant BACKGROUND_GAME_IMAGE. */
+    /** The path to the game background image. */
     public static final String BACKGROUND_GAME_IMAGE = "backgroundGame.jpg";
 
     /** The huey view. */
@@ -91,7 +83,7 @@ public class GameScreen extends ScreenAdapter {
     /** The initial aim position. */
     private final Vector3 initialAimPosition;
 
-    /** The game multiplexer. */
+    /** The game multiplexer. Holds input processor and buttons stage. */
     private InputMultiplexer gameMultiplexer = new InputMultiplexer();
 
     /** The game input processor. */
@@ -101,11 +93,10 @@ public class GameScreen extends ScreenAdapter {
     private Stage gameStage = new Stage();
 
 
-
-    /** The model. */
+    /** The Game model. */
     private MainModel model;
     
-    /** The controller. */
+    /** The Game controller. */
     private MainController controller;
     
     /** The player model. */
@@ -117,23 +108,21 @@ public class GameScreen extends ScreenAdapter {
     /** The initial number of bullets. */
     private int initialNumberOfBullets;
     
-    /** The level. */
+    /** The level count. */
     private int level = 0;
 
-    /** The bonus. */
+    /** The bonus flag. True if Level is a bonus level. */
     private boolean bonus = false;
 
     /**
      * Instantiates a new game screen.
      *
-     * @param game the game
+     * @param game the AimOn game
      * @param playerName the player name
      * @param initialNumberOfDucks the initial number of ducks
      * @param initialNumberOfBullets the initial number of bullets
      */
     public GameScreen(AimOn game, String playerName, int initialNumberOfDucks, int initialNumberOfBullets) {
-
-        System.out.println(HEIGHT_WIDTH_RATIO);
 
         this.game = game;
         this.initialNumberOfDucks = initialNumberOfDucks;
@@ -167,10 +156,6 @@ public class GameScreen extends ScreenAdapter {
         camera.position.set(MainController.getControllerWidth()  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
 
-        this.debugMatrix = new Matrix4(this.camera.combined);
-        debugMatrix.scale(1/PIXEL_TO_METER, 1/PIXEL_TO_METER, 1f);
-        this.debugRenderer = new Box2DDebugRenderer();
-
 
         gameInputProcessor.initializeUIElements();
 
@@ -180,7 +165,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     /**
-     * Initiate level.
+     * Initiate a new level.
      */
     private void initiateLevel() {
 
@@ -215,11 +200,11 @@ public class GameScreen extends ScreenAdapter {
     }
 
     /**
-     * Sets the model controller.
+     * Creates a new model and a new controller for the new level.
      *
      * @param initialNumberOfDucks the initial number of ducks
      * @param initialNumberOfBullets the initial number of bullets
-     * @param level the level
+     * @param level the level count
      */
     private void setModelController(int initialNumberOfDucks, int initialNumberOfBullets, int level) {
 
@@ -233,7 +218,7 @@ public class GameScreen extends ScreenAdapter {
 
 
     /**
-     * Load assets.
+     * Load assets needed to game screen.
      */
     private void loadAssets(){
 
@@ -246,9 +231,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     /**
-     * Render.
+     * Render. Is called once per frame.
      *
-     * @param delta the delta
+     * @param delta the delta time in seconds since last render call
      */
     @Override
     public void render(float delta) {
@@ -264,8 +249,6 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         updateBatch(delta);
-
-        //debugRenderer.render(controller.getWorld(), debugMatrix);
 
         gameInputProcessor.updateAim();
 
@@ -287,9 +270,9 @@ public class GameScreen extends ScreenAdapter {
 
 
     /**
-     * Update batch.
+     * Update all visual elements in game screen.
      *
-     * @param delta the delta
+     * @param delta the delta time in seconds since last call
      */
     private void updateBatch(float delta) {
         game.getBatch().setProjectionMatrix(camera.combined);
@@ -301,7 +284,10 @@ public class GameScreen extends ScreenAdapter {
     }
 
     /**
-     * Draw entities.
+     * Draw entities:
+     *
+     *   if Running: Draw duckView, aimView and gameStatusView.
+     *   else gameOver
      *
      * @param delta the delta
      */
@@ -377,22 +363,21 @@ public class GameScreen extends ScreenAdapter {
     }
 
     /**
-     * Gets the controller.
+     * Gets the game controller.
      *
-     * @return the controller
+     * @return the game controller
      */
     public MainController getController() {
         return controller;
     }
 
     /**
-     * Sets the input processor.
+     * Sets the input processor as the multiplexer with input processor and buttons stage.
      */
     public void setInputProcessor(){
 
         Gdx.input.setInputProcessor(this.gameMultiplexer);
     }
-
 
 
     /**
@@ -414,9 +399,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
     /**
-     * Gets the model.
+     * Gets the game model.
      *
-     * @return the model
+     * @return the game model
      */
     public MainModel getModel() {
         return model;
@@ -432,7 +417,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     /**
-     * Gets the game stage.
+     * Gets the game stage with all Buttons used in game screen.
      *
      * @return the game stage
      */

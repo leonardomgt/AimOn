@@ -10,45 +10,45 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 // TODO: Auto-generated Javadoc
 /**
- * Created by joaofurriel on 28/04/17.
+ * Contains all visual elements for ducks drawing.
  */
 
 public class DuckView extends EntityView {
 
-    /** The Constant DEWEY_SPRITE_RIGHT. */
+    /** The path to DEWEY_SPRITE_RIGHT image asset. */
     private static final String DEWEY_SPRITE_RIGHT = "dewey_right.png";
-    
-    /** The Constant DEWEY_SPRITE_LEFT. */
+
+    /** The path to DEWEY_SPRITE_LEFT image asset. */
     private static final String DEWEY_SPRITE_LEFT = "dewey_left.png";
-    
-    /** The Constant HUEY_SPRITE_RIGHT. */
+
+    /** The path to HUEY_SPRITE_RIGHT image asset. */
     private static final String HUEY_SPRITE_RIGHT = "huey_right.png";
-    
-    /** The Constant HUEY_SPRITE_LEFT. */
+
+    /** The path to HUEY_SPRITE_LEFT image asset. */
     private static final String HUEY_SPRITE_LEFT = "huey_left.png";
-    
-    /** The Constant LOUIE_SPRITE_RIGHT. */
+
+    /** The path to LOUIE_SPRITE_RIGHT image asset. */
     private static final String LOUIE_SPRITE_RIGHT = "louie_right.png";
-    
-    /** The Constant LOUIE_SPRITE_LEFT. */
+
+    /** The path to LOUIE_SPRITE_LEFT image asset. */
     private static final String LOUIE_SPRITE_LEFT = "louie_left.png";
 
-    /** The Constant DEWEY_DEAD. */
+    /** The path to DEWEY_DEAD image asset. */
     public static final String DEWEY_DEAD = "dewey_dead.png";
-    
-    /** The Constant DEWEY_SHOT. */
+
+    /** The path to DEWEY_SHOT image asset. */
     public static final String DEWEY_SHOT = "dewey_shot.png";
-    
-    /** The Constant HUEY_DEAD. */
+
+    /** The path to HUEY_DEAD image asset. */
     public static final String HUEY_DEAD = "huey_dead.png";
-    
-    /** The Constant HUEY_SHOT. */
+
+    /** The path to HUEY_SHOT image asset. */
     public static final String HUEY_SHOT = "huey_shot.png";
-    
-    /** The Constant LOUIE_DEAD. */
+
+    /** The path to LOUIE_DEAD image asset. */
     public static final String LOUIE_DEAD = "louie_dead.png";
-    
-    /** The Constant LOUIE_SHOT. */
+
+    /** The path to LOUIE_SHOT image asset. */
     public static final String LOUIE_SHOT = "louie_shot.png";
 
     /** The state time. */
@@ -57,8 +57,8 @@ public class DuckView extends EntityView {
     /**
      * Instantiates a new duck view.
      *
-     * @param game the game
-     * @param type the type
+     * @param game the AimOn game
+     * @param type the type of Duck
      */
     public DuckView(AimOn game, DuckModel.DuckType type) {
         super(game, type);
@@ -130,9 +130,9 @@ public class DuckView extends EntityView {
     }
 
     /**
-     * Load assets.
+     * Load assets needed for ducks drawing.
      *
-     * @param game the game
+     * @param game the AimOn game
      */
     private void loadAssets(AimOn game) {
 
@@ -178,7 +178,7 @@ public class DuckView extends EntityView {
 
 
     /**
-     * Update.
+     * Update the duck View.
      *
      * @param model the model
      * @param delta the delta

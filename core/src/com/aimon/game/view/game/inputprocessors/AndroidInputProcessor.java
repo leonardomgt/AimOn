@@ -14,9 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by Leo on 30/05/2017.
+ *  InputProcessor for Android case:
+ *
+ *  This class is only called when the Running Platform is Android.
  */
 
 public class AndroidInputProcessor extends GameInputProcessor {
@@ -27,7 +28,7 @@ public class AndroidInputProcessor extends GameInputProcessor {
     /** The current aim pos. */
     private Vector3 currentAimPos;
 
-    /** The bar. */
+    /** The zoom slider bar. */
     private Slider bar;
 
 
@@ -41,24 +42,12 @@ public class AndroidInputProcessor extends GameInputProcessor {
         super(gameScreen);
     }
 
-    /* (non-Javadoc)
-     * @see view.game.inputprocessors.GameInputProcessor#updateAim()
-     */
-    @Override
-    public void updateAim() {
-
-//        projectAimToCamera(gameScreen.getAimPosition());
-//
-//        gameScreen.getAimPosition().add(Gdx.input.getDeltaX(), Gdx.input.getDeltaY(), 0);
-//        gameScreen.getCamera().unproject(gameScreen.getAimPosition());
-//
-//        gameScreen.getAimPosition().set(gameScreen.getAimPosition().x * gameScreen.PIXEL_TO_METER, gameScreen.getAimPosition().y*gameScreen.PIXEL_TO_METER, 0);
-//        gameScreen.getController().updateAimLocation(gameScreen.getAimPosition().x, gameScreen.getAimPosition().y);
-
-    }
+    @Override public void updateAim() {}
 
     /**
-     * Touch dragged.
+     * Handle touch and drag in screen:
+     *
+     *      Updates aim position.
      *
      * @param screenX the screen X
      * @param screenY the screen Y
@@ -77,7 +66,9 @@ public class AndroidInputProcessor extends GameInputProcessor {
     }
 
     /**
-     * Touch down.
+     * Handle touch in screen
+     *
+     *      Saves the touch position and aimPosition at the moment.
      *
      * @param screenX the screen X
      * @param screenY the screen Y
@@ -97,8 +88,12 @@ public class AndroidInputProcessor extends GameInputProcessor {
         return true;
     }
 
-    /* (non-Javadoc)
-     * @see view.game.inputprocessors.GameInputProcessor#initializeUIElements()
+    /**
+     * Initialize UI elements for Android case:
+     *
+     *      Zoom Slider - Changes zoom.
+     *      Reload Button - Reload gun.
+     *      Fire Button - Shot.
      */
     public void initializeUIElements() {
 
@@ -143,7 +138,7 @@ public class AndroidInputProcessor extends GameInputProcessor {
         gameScreen.getGameStage().addActor(buttonReload);
 
 
-        // Zoom Button
+        // Fire Button
         ImageButton buttonFire = new ImageButton(gameScreen.game.getSkin());
         buttonFire.setSize(buttonFire.getHeight()/1, buttonFire.getHeight()/1);
 

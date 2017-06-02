@@ -2,55 +2,46 @@ package com.aimon.game.view.menu;
 
 import com.aimon.game.AimOn;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by Leo on 18/04/2017.
+ * The Main-Menu screen. Contains all actors in the main-menu stage.
  */
 
 public class MainMenuScreen extends ScreenAdapter {
 
-    /** The game. */
+    /** The AimOn game. */
     final AimOn game;
 
-    /** The background main menu. */
+    /** The path to the main-menu background image. */
     final String BACKGROUND_MAIN_MENU = "backgroundMainMenu2.jpg";
     
-    /** The duck main menu. */
+    /** The path to the duck image on main-menu. */
     final String DUCK_MAIN_MENU = "duck.png";
     
-    /** The hunter main menu. */
+    /** The path to the hunter image on main-menu. */
     final String HUNTER_MAIN_MENU = "hunter.png";
 
 
-    /** The buttons. */
+    /** All buttons acting in Main-Menu. */
     private MainMenuButtons buttons;
 
 
-    /** The font title. */
+    /** The font of game's title. */
     BitmapFont fontTitle;
 
     /** The camera. */
     OrthographicCamera camera;
 
     /**
-     * Instantiates a new main menu screen.
+     * Instantiates a new Main-Menu screen.
      *
-     * @param game the game
+     * @param game the AimOn game
      */
     public MainMenuScreen(AimOn game) {
 
@@ -66,7 +57,7 @@ public class MainMenuScreen extends ScreenAdapter {
     /**
      * Creates the camera.
      *
-     * @return the orthographic camera
+     * @return the orthographic camera created
      */
     private OrthographicCamera createCamera() {
         OrthographicCamera camera = new OrthographicCamera();
@@ -76,9 +67,9 @@ public class MainMenuScreen extends ScreenAdapter {
 
 
     /**
-     * Render.
+     * Render. Is called once per frame.
      *
-     * @param delta the delta
+     * @param delta the delta time in seconds since last render call
      */
     @Override
     public void render(float delta) {
@@ -92,7 +83,7 @@ public class MainMenuScreen extends ScreenAdapter {
     }
 
     /**
-     * Dispose.
+     * Dispose main-menu elements.
      */
     @Override
     public void dispose() {
@@ -101,7 +92,7 @@ public class MainMenuScreen extends ScreenAdapter {
     }
 
     /**
-     * Update batch.
+     * Update all visual elements in Main-Menu.
      */
     private void updateBatch(){
         game.getBatch().setProjectionMatrix(camera.combined);
@@ -121,7 +112,7 @@ public class MainMenuScreen extends ScreenAdapter {
     }
 
     /**
-     * Load assets.
+     * Load all assets needed for Main-Menu screen.
      */
     private void loadAssets(){
 
@@ -134,7 +125,7 @@ public class MainMenuScreen extends ScreenAdapter {
     }
 
     /**
-     * Sets the input processor.
+     * Sets the input processor as the stage of Main-Menu buttons.
      */
     public void setInputProcessor(){
         Gdx.input.setInputProcessor(buttons.getStage());
