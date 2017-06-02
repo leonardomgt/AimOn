@@ -36,8 +36,6 @@ public class GunController {
             this.model.setNumberOfBullets(this.model.getNumberOfBullets() + numberOfBullets);
             this.model.setLastReloadMoment(this.model.getGunLifeTime());
             this.model.setState(GunModel.GunState.RELOADING);
-            if (this.model.getNumberOfBullets() > this.model.getCapacity())
-                this.model.setNumberOfBullets(this.model.getCapacity());
             return this.model.getReloadedBullets();
         }
 

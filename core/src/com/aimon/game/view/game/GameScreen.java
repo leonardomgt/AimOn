@@ -193,7 +193,7 @@ public class GameScreen extends ScreenAdapter {
 
         updateBatch(delta);
 
-        debugRenderer.render(controller.getWorld(), debugMatrix);
+        //debugRenderer.render(controller.getWorld(), debugMatrix);
 
         gameInputProcessor.updateAim();
 

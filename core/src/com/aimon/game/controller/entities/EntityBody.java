@@ -41,10 +41,6 @@ public abstract class EntityBody {
         return this.body.getPosition().y;
     }
 
-    public float getAngle() {
-        return body.getAngle();
-    }
-
     public void setTransform(float x, float y, float angle) {
         body.setTransform(x, y, angle);
     }
@@ -57,18 +53,6 @@ public abstract class EntityBody {
     public void applyVerticalForceToCenter(float force) {
         body.setLinearVelocity(this.body.getLinearVelocity().x,0);
         body.applyForceToCenter(0, force, true);
-    }
-
-    public void applyHorizontalForceToCenter(float force) {
-        body.setLinearVelocity(0,this.body.getLinearVelocity().y);
-        body.applyForceToCenter(force, 0,true);
-    }
-
-
-    
-    public void rotate(float deegres) {
-        this.model.setRotation(this.model.getRotation() + deegres * MathUtils.PI/180);
-        this.body.setTransform(this.body.getPosition().x, this.body.getPosition().y, this.model.getRotation());
     }
 
     public void setRotation(float degrees) {

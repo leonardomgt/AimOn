@@ -80,9 +80,9 @@ public class MainController {
 
     }
 
-    public World getWorld() {
+    /*public World getWorld() {
         return world;
-    }
+    }*/
 
     public void update(float delta) {
         float frameTime = Math.min(delta, 0.25f);

@@ -33,8 +33,7 @@ public class PlayerController {
 
         if (reloadedBullets > 0) {
             this.playerModel.withdrawBullets(reloadedBullets);
-            this.gunController.reload(reloadedBullets);
-            return reloadedBullets;
+            return this.gunController.reload(reloadedBullets);
         }
 
         return  0;
