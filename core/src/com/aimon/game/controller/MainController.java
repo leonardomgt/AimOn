@@ -21,25 +21,45 @@ import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by joaofurriel on 28/04/17.
  */
 
 public class MainController {
 
+    /** The Constant FIELD_WIDTH. */
     private static final float FIELD_WIDTH = 25;
+    
+    /** The Constant GROUND_HEIGHT. */
     //private static final float FIELD_HEIGHT = FIELD_WIDTH*((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
     private static final float GROUND_HEIGHT = 1f;
+    
+    /** The field height. */
     private static float FIELD_HEIGHT;
 
 
+    /** The world. */
     private final World world;
+    
+    /** The accumulator. */
     private float accumulator;
 
+    /** The model. */
     private MainModel model;
+    
+    /** The duck bodies. */
     private List<DuckBody> duckBodies;
+    
+    /** The player controller. */
     private PlayerController playerController;
 
+    /**
+     * Instantiates a new main controller.
+     *
+     * @param model the model
+     * @param ratio the ratio
+     */
     public MainController(MainModel model, float ratio) {
 
         MainController.FIELD_HEIGHT = FIELD_WIDTH * ratio;
@@ -84,6 +104,11 @@ public class MainController {
         return world;
     }*/
 
+    /**
+     * Update.
+     *
+     * @param delta the delta
+     */
     public void update(float delta) {
         float frameTime = Math.min(delta, 0.25f);
         accumulator += frameTime;
@@ -130,22 +155,50 @@ public class MainController {
 
     }
 
+    /**
+     * Gets the controller width.
+     *
+     * @return the controller width
+     */
     public static float getControllerWidth() {
         return MainController.FIELD_WIDTH;
     }
 
+    /**
+     * Gets the controller height.
+     *
+     * @return the controller height
+     */
     public static float getControllerHeight() {
         return MainController.FIELD_HEIGHT;
     }
 
+    /**
+     * Gets the controller ground height.
+     *
+     * @return the controller ground height
+     */
     public static float getControllerGroundHeight() {
         return MainController.GROUND_HEIGHT;
     }
 
+    /**
+     * Update aim location.
+     *
+     * @param x the x
+     * @param y the y
+     */
     public void updateAimLocation(float x, float y){
         model.getAim().setPosition(x, y);
     }
 
+    /**
+     * Fire gun.
+     *
+     * @param x the x
+     * @param y the y
+     * @return true, if successful
+     */
     public boolean fireGun(float x, float y) {
 
         if (this.playerController.fireGun()) {
@@ -171,10 +224,22 @@ public class MainController {
         return false;
     }
 
+    /**
+     * Reload gun.
+     *
+     * @return the int
+     */
     public int reloadGun() {
         return this.playerController.reloadGun();
     }
 
+    /**
+     * Frighten duck.
+     *
+     * @param x the x
+     * @param y the y
+     * @param duckBody the duck body
+     */
     private void frightenDuck(float x, float y, DuckBody duckBody) {
 
         if(distance(x,y,duckBody.getX(), duckBody.getY()) < DuckModel.getFrightenDistance()) {
@@ -183,15 +248,34 @@ public class MainController {
 
     }
 
+    /**
+     * Distance.
+     *
+     * @param x1 the x 1
+     * @param y1 the y 1
+     * @param x2 the x 2
+     * @param y2 the y 2
+     * @return the float
+     */
     private static float distance(float x1, float y1, float x2, float y2) {
 
         return (float) Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1,2));
     }
 
+    /**
+     * Gets the duck bodies.
+     *
+     * @return the duck bodies
+     */
     public List<DuckBody> getDuckBodies() {
         return duckBodies;
     }
 
+    /**
+     * Gets the player controller.
+     *
+     * @return the player controller
+     */
     public PlayerController getPlayerController() {
         return playerController;
     }

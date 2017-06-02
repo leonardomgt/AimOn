@@ -17,26 +17,41 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by Leo on 18/04/2017.
  */
 
 public class MainMenuScreen extends ScreenAdapter {
 
+    /** The game. */
     final AimOn game;
 
+    /** The background main menu. */
     final String BACKGROUND_MAIN_MENU = "backgroundMainMenu2.jpg";
+    
+    /** The duck main menu. */
     final String DUCK_MAIN_MENU = "duck.png";
+    
+    /** The hunter main menu. */
     final String HUNTER_MAIN_MENU = "hunter.png";
 
 
+    /** The buttons. */
     private MainMenuButtons buttons;
 
 
+    /** The font title. */
     BitmapFont fontTitle;
 
+    /** The camera. */
     OrthographicCamera camera;
 
+    /**
+     * Instantiates a new main menu screen.
+     *
+     * @param game the game
+     */
     public MainMenuScreen(AimOn game) {
 
         this.game = game;
@@ -48,6 +63,11 @@ public class MainMenuScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * Creates the camera.
+     *
+     * @return the orthographic camera
+     */
     private OrthographicCamera createCamera() {
         OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false, 960, 540);
@@ -55,6 +75,11 @@ public class MainMenuScreen extends ScreenAdapter {
     }
 
 
+    /**
+     * Render.
+     *
+     * @param delta the delta
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
@@ -66,12 +91,18 @@ public class MainMenuScreen extends ScreenAdapter {
         buttons.update(delta);
     }
 
+    /**
+     * Dispose.
+     */
     @Override
     public void dispose() {
 
         buttons.dispose();
     }
 
+    /**
+     * Update batch.
+     */
     private void updateBatch(){
         game.getBatch().setProjectionMatrix(camera.combined);
         game.getBatch().begin();
@@ -89,6 +120,9 @@ public class MainMenuScreen extends ScreenAdapter {
         game.getBatch().end();
     }
 
+    /**
+     * Load assets.
+     */
     private void loadAssets(){
 
         this.game.getAssetManager().load(BACKGROUND_MAIN_MENU, Texture.class);
@@ -99,6 +133,9 @@ public class MainMenuScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * Sets the input processor.
+     */
     public void setInputProcessor(){
         Gdx.input.setInputProcessor(buttons.getStage());
     }

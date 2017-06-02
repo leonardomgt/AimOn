@@ -12,21 +12,37 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by Leo on 24/05/2017.
  */
 
 public class MainMenuButtons implements Disposable {
 
+    /** The main menu. */
     final MainMenuScreen mainMenu;
 
+    /** The stage. */
     public Stage stage;
+    
+    /** The table. */
     private Table table;
+    
+    /** The button play. */
     private TextButton buttonPlay;
+    
+    /** The button sound. */
     private final ImageButton buttonSound;
+    
+    /** The button settings. */
     private final ImageButton buttonSettings;
 
 
+    /**
+     * Instantiates a new main menu buttons.
+     *
+     * @param mainMenu the main menu
+     */
     public MainMenuButtons(final MainMenuScreen mainMenu) {
 
         this.mainMenu = mainMenu;
@@ -87,12 +103,20 @@ public class MainMenuButtons implements Disposable {
 
     }
 
+    /**
+     * Update.
+     *
+     * @param delta the delta
+     */
     public void update(float delta){
         stage.act(delta);
         stage.draw();
     }
 
 
+    /**
+     * Dispose.
+     */
     @Override
     public void dispose() {
         stage.dispose();
@@ -101,6 +125,11 @@ public class MainMenuButtons implements Disposable {
     }
 
 
+    /**
+     * Gets the stage.
+     *
+     * @return the stage
+     */
     public Stage getStage() {
         return stage;
     }

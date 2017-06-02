@@ -1,0 +1,11 @@
+com.aimon.game
+com.aimon.game.controller
+com.aimon.game.controller.entities
+com.aimon.game.controller.entities.behaviors
+com.aimon.game.model
+com.aimon.game.model.entities
+com.aimon.game.test
+com.aimon.game.view.game
+com.aimon.game.view.game.entities
+com.aimon.game.view.game.inputprocessors
+com.aimon.game.view.menu

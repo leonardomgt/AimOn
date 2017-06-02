@@ -26,6 +26,7 @@ import java.util.List;
 import static com.aimon.game.model.MainModel.LevelState.NEXT_LEVEL;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by Leo on 18/04/2017.
  */
@@ -33,50 +34,103 @@ import static com.aimon.game.model.MainModel.LevelState.NEXT_LEVEL;
 
 public class GameScreen extends ScreenAdapter {
 
+    /** The game. */
     public final AimOn game;
+    
+    /** The camera. */
     private final OrthographicCamera camera;
+    
+    /** The debug matrix. */
     private Matrix4 debugMatrix;
+    
+    /** The debug renderer. */
     private Box2DDebugRenderer debugRenderer;
 
+    /** The Constant PIXEL_TO_METER. */
     public final static float PIXEL_TO_METER = .85f / (114 / 3f);
+    
+    /** The Constant VIEWPORT_WIDTH. */
     public static final float VIEWPORT_WIDTH = 22.5f;
+    
+    /** The Constant HEIGHT_WIDTH_RATIO. */
     public static final float HEIGHT_WIDTH_RATIO = Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth();
+    
+    /** The Constant VIEWPORT_HEIGHT. */
     public static final float VIEWPORT_HEIGHT = VIEWPORT_WIDTH* HEIGHT_WIDTH_RATIO;
 
+    /** The Constant BONUS_LEVEL. */
     private static final int BONUS_LEVEL = 0;
+    
+    /** The Constant BONUS_LEVEL_DUCKS. */
     private static final int BONUS_LEVEL_DUCKS = 500;
+    
+    /** The Constant BONUS_LEVEL_BULLETS. */
     private static final int BONUS_LEVEL_BULLETS = 494;
 
+    /** The Constant BACKGROUND_GAME_IMAGE. */
     public static final String BACKGROUND_GAME_IMAGE = "backgroundGame.jpg";
 
+    /** The huey view. */
     private final DuckView hueyView;
+    
+    /** The dewey view. */
     private final DuckView deweyView;
+    
+    /** The louie view. */
     private final DuckView louieView;
 
+    /** The game status view. */
     private GameStatusView gameStatusView;
 
+    /** The aim view. */
     private final AimView aimView;
 
+    /** The aim position. */
     private Vector3 aimPosition;
+    
+    /** The initial aim position. */
     private final Vector3 initialAimPosition;
 
+    /** The game multiplexer. */
     private InputMultiplexer gameMultiplexer = new InputMultiplexer();
 
+    /** The game input processor. */
     private GameInputProcessor gameInputProcessor;
+    
+    /** The game stage. */
     private Stage gameStage = new Stage();
 
 
 
+    /** The model. */
     private MainModel model;
+    
+    /** The controller. */
     private MainController controller;
+    
+    /** The player model. */
     private PlayerModel playerModel;
 
+    /** The initial number of ducks. */
     private int initialNumberOfDucks;
+    
+    /** The initial number of bullets. */
     private int initialNumberOfBullets;
+    
+    /** The level. */
     private int level = 0;
 
+    /** The bonus. */
     private boolean bonus = false;
 
+    /**
+     * Instantiates a new game screen.
+     *
+     * @param game the game
+     * @param playerName the player name
+     * @param initialNumberOfDucks the initial number of ducks
+     * @param initialNumberOfBullets the initial number of bullets
+     */
     public GameScreen(AimOn game, String playerName, int initialNumberOfDucks, int initialNumberOfBullets) {
 
         System.out.println(HEIGHT_WIDTH_RATIO);
@@ -125,6 +179,9 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * Initiate level.
+     */
     private void initiateLevel() {
 
         if(this.bonus) {
@@ -157,6 +214,13 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * Sets the model controller.
+     *
+     * @param initialNumberOfDucks the initial number of ducks
+     * @param initialNumberOfBullets the initial number of bullets
+     * @param level the level
+     */
     private void setModelController(int initialNumberOfDucks, int initialNumberOfBullets, int level) {
 
         this.playerModel.setNumberOfBullets(initialNumberOfBullets);
@@ -168,6 +232,9 @@ public class GameScreen extends ScreenAdapter {
     }
 
 
+    /**
+     * Load assets.
+     */
     private void loadAssets(){
 
         this.game.getAssetManager().load(BACKGROUND_GAME_IMAGE, Texture.class);
@@ -178,6 +245,11 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * Render.
+     *
+     * @param delta the delta
+     */
     @Override
     public void render(float delta) {
 
@@ -204,11 +276,21 @@ public class GameScreen extends ScreenAdapter {
     }
 
 
+    /**
+     * Gets the aim position.
+     *
+     * @return the aim position
+     */
     public Vector3 getAimPosition() {
         return aimPosition;
     }
 
 
+    /**
+     * Update batch.
+     *
+     * @param delta the delta
+     */
     private void updateBatch(float delta) {
         game.getBatch().setProjectionMatrix(camera.combined);
         game.getBatch().begin();
@@ -218,6 +300,11 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * Draw entities.
+     *
+     * @param delta the delta
+     */
     private void drawEntities(float delta) {
 
         if (this.model.getLevelState() == MainModel.LevelState.RUNNING) {
@@ -279,6 +366,9 @@ public class GameScreen extends ScreenAdapter {
 
     }
 
+    /**
+     * Draw background.
+     */
     private void drawBackground() {
 
         Texture background = game.getAssetManager().get(BACKGROUND_GAME_IMAGE, Texture.class);
@@ -286,10 +376,18 @@ public class GameScreen extends ScreenAdapter {
         game.getBatch().draw(background, 0, 0, MainController.getControllerWidth() / PIXEL_TO_METER, MainController.getControllerHeight() / PIXEL_TO_METER);
     }
 
+    /**
+     * Gets the controller.
+     *
+     * @return the controller
+     */
     public MainController getController() {
         return controller;
     }
 
+    /**
+     * Sets the input processor.
+     */
     public void setInputProcessor(){
 
         Gdx.input.setInputProcessor(this.gameMultiplexer);
@@ -297,22 +395,47 @@ public class GameScreen extends ScreenAdapter {
 
 
 
+    /**
+     * Gets the camera.
+     *
+     * @return the camera
+     */
     public OrthographicCamera getCamera() {
         return camera;
     }
 
+    /**
+     * Gets the game status view.
+     *
+     * @return the game status view
+     */
     public GameStatusView getGameStatusView() {
         return gameStatusView;
     }
 
+    /**
+     * Gets the model.
+     *
+     * @return the model
+     */
     public MainModel getModel() {
         return model;
     }
 
+    /**
+     * Gets the initial aim position.
+     *
+     * @return the initial aim position
+     */
     public Vector3 getInitialAimPosition() {
         return initialAimPosition;
     }
 
+    /**
+     * Gets the game stage.
+     *
+     * @return the game stage
+     */
     public Stage getGameStage() {
         return gameStage;
     }

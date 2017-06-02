@@ -3,20 +3,37 @@ package com.aimon.game.controller.entities.behaviors;
 import com.aimon.game.controller.MainController;
 import com.aimon.game.controller.entities.DuckBody;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by Leo on 03/05/2017.
  */
 
 public abstract class DuckBehavior {
 
+    /** The duck. */
     protected DuckBody duck;
 
+    /**
+     * Instantiates a new duck behavior.
+     *
+     * @param duck the duck
+     */
     public DuckBehavior(DuckBody duck) {
         this.duck = duck;
     }
 
+    /**
+     * Update.
+     *
+     * @param delta the delta
+     */
     public abstract void update(float delta);
 
+    /**
+     * Verify limits.
+     *
+     * @return true, if successful
+     */
     protected boolean verifyLimits() {
 
         if (duck.getY() >= MainController.getControllerHeight()- duck.getHeight()/2) {

@@ -10,23 +10,43 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by joaofurriel on 29/04/17.
  */
 
 public class DuckBody extends EntityBody{
 
+    /** The Constant THRESHOLD. */
     private static final float THRESHOLD = 0.1f;
+    
+    /** The Constant DUCK_MASS. */
     private static final float DUCK_MASS = 0.05f;
+    
+    /** The duck category. */
     private final short DUCK_CATEGORY = 0x0001;
+    
+    /** The ignore ducks. */
     private final short IGNORE_DUCKS = ~DUCK_CATEGORY;
+    
+    /** The Constant TIME_STUNNED. */
     private static final float TIME_STUNNED = 0.5f;
 
+    /** The behavior. */
     private DuckBehavior behavior;
 
+    /** The width. */
     private float width;
+    
+    /** The height. */
     private float height;
 
+    /**
+     * Instantiates a new duck body.
+     *
+     * @param world the world
+     * @param model the model
+     */
     public DuckBody(World world, DuckModel model) {
         super(world,model);
 
@@ -58,6 +78,11 @@ public class DuckBody extends EntityBody{
 
     }
 
+    /**
+     * Update duck state.
+     *
+     * @param delta the delta
+     */
     public void updateDuckState(float delta) {
 
 
@@ -121,6 +146,9 @@ public class DuckBody extends EntityBody{
 
 
 
+    /**
+     * Change direction.
+     */
     public void changeDirection() {
 
         DuckModel dm = (DuckModel) this.model;
@@ -140,6 +168,11 @@ public class DuckBody extends EntityBody{
 
 
 
+    /**
+     * Go up.
+     *
+     * @param height the height
+     */
     public void goUp(float height) {
 
         DuckModel dm = (DuckModel) this.model;
@@ -152,6 +185,11 @@ public class DuckBody extends EntityBody{
 
     }
 
+    /**
+     * Go down.
+     *
+     * @param height the height
+     */
     public void goDown(float height) {
 
         DuckModel dm = (DuckModel) this.model;
@@ -165,10 +203,21 @@ public class DuckBody extends EntityBody{
     }
 
 
+    /**
+     * Gets the behavior.
+     *
+     * @return the behavior
+     */
     public DuckBehavior getBehavior() {
         return behavior;
     }
 
+    /**
+     * Change velocity.
+     *
+     * @param x the x
+     * @param y the y
+     */
     public void changeVelocity(float x, float y){
 
         float depthFactor = ((DuckModel) model).getDepthFactor();
@@ -178,6 +227,13 @@ public class DuckBody extends EntityBody{
     }
 
 
+    /**
+     * Checks if is in range.
+     *
+     * @param x the x
+     * @param y the y
+     * @return true, if is in range
+     */
     public boolean isInRange(float x, float y) {
 
         if(x > this.getX() - this.width/2f && x < this.getX() + this.width/2f){
@@ -191,6 +247,11 @@ public class DuckBody extends EntityBody{
         return false;
     }
 
+    /**
+     * Sets the frighten.
+     *
+     * @param x the new frighten
+     */
     public void setFrighten(float x) {
 
         DuckModel duckModel = (DuckModel)this.model;
@@ -215,6 +276,9 @@ public class DuckBody extends EntityBody{
 
     }
 
+    /**
+     * Update frighten state.
+     */
     private void updateFrightenState() {
 
         DuckModel dm = (DuckModel) this.model;
@@ -232,14 +296,29 @@ public class DuckBody extends EntityBody{
         }
     }
 
+    /**
+     * Gets the height.
+     *
+     * @return the height
+     */
     public float getHeight() {
         return height;
     }
 
+    /**
+     * Gets the  time stunned.
+     *
+     * @return the  time stunned
+     */
     public static float get_TIME_STUNNED() {
         return TIME_STUNNED;
     }
 
+    /**
+     * Gets the threshold.
+     *
+     * @return the threshold
+     */
     public static float getTHRESHOLD() {
         return THRESHOLD;
     }

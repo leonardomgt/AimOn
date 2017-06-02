@@ -5,12 +5,18 @@ import com.aimon.game.controller.entities.DuckBody;
 import com.aimon.game.model.entities.DuckModel;
 import com.badlogic.gdx.math.MathUtils;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by Leo on 03/05/2017.
  */
 
 public class DeweyBehavior extends DuckBehavior {
 
+    /**
+     * Instantiates a new dewey behavior.
+     *
+     * @param duck the duck
+     */
     public DeweyBehavior(DuckBody duck){
         super(duck);
         ((DuckModel) this.duck.getModel()).setNormalVelocity(DuckModel.DEWEY_NORMAL_VELOCITY);
@@ -20,6 +26,9 @@ public class DeweyBehavior extends DuckBehavior {
     }
 
 
+    /* (non-Javadoc)
+     * @see controller.entities.behaviors.DuckBehavior#update(float)
+     */
     @Override
     public void update(float delta) {
 

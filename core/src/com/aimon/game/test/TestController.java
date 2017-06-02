@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by joaofurriel on 01/06/17.
  */
@@ -34,6 +35,9 @@ public class TestController {
     Test creation of controller of a model with n ducks and a player with m bullets
      */
 
+    /**
+     * Generate model.
+     */
     @Test
     public void generateModel() {
 
@@ -51,6 +55,9 @@ public class TestController {
         assertEquals(numberOfBullets, controllerNumberOfBullets);
     }
 
+    /**
+     * Ducks born alive.
+     */
     @Test
     public void ducksBornAlive() {
 
@@ -66,6 +73,9 @@ public class TestController {
 
     }
 
+    /**
+     * Associate duck model to duck body.
+     */
     @Test
     public void associateDuckModelToDuckBody() {
 
@@ -80,6 +90,9 @@ public class TestController {
 
     }
 
+    /**
+     * Kill duck.
+     */
     @Test
     public void killDuck() {
 
@@ -96,6 +109,9 @@ public class TestController {
 
     }
 
+    /**
+     * Duck falling and dying.
+     */
     @Test
     public void duckFallingAndDying()  {
 
@@ -118,6 +134,9 @@ public class TestController {
 
     }
 
+    /**
+     * Gun empty round.
+     */
     @Test
     public void gunEmptyRound() {
 
@@ -134,6 +153,9 @@ public class TestController {
 
     }
 
+    /**
+     * Reloading logic.
+     */
     @Test
     public void reloadingLogic() {
 
@@ -141,6 +163,9 @@ public class TestController {
 
     }
 
+    /**
+     * Send duck up.
+     */
     @Test
     public void sendDuckUp() {
 
@@ -171,6 +196,9 @@ public class TestController {
 
     }
 
+    /**
+     * Send duck down.
+     */
     @Test
     public void sendDuckDown() {
 
@@ -203,6 +231,9 @@ public class TestController {
 
     }
 
+    /**
+     * Change direction.
+     */
     @Test
     public void changeDirection() {
 
@@ -246,6 +277,9 @@ public class TestController {
 
     }
 
+    /**
+     * Frighten duck change velocity.
+     */
     @Test
     public void frightenDuckChangeVelocity() {
 
@@ -286,6 +320,9 @@ public class TestController {
 
     }
 
+    /**
+     * Duck frighten time.
+     */
     @Test
     public void duckFrightenTime() {
 
@@ -306,6 +343,9 @@ public class TestController {
 
     }
 
+    /**
+     * Frighten duck from front.
+     */
     @Test
     public void frightenDuckFromFront() {
 
@@ -341,6 +381,9 @@ public class TestController {
 
     }
 
+    /**
+     * Frighten duck from behind.
+     */
     @Test
     public void frightenDuckFromBehind() {
 
@@ -376,6 +419,9 @@ public class TestController {
 
     }
 
+    /**
+     * Frighten duck already frightened.
+     */
     @Test
     public void frightenDuckAlreadyFrightened() {
 
@@ -431,6 +477,12 @@ public class TestController {
 
 
 
+    /**
+     * Update world.
+     *
+     * @param controller the controller
+     * @param max the max
+     */
     private static void updateWorld(MainController controller, float max) {
         float delta = 0;
         while(delta <= max){
@@ -439,6 +491,11 @@ public class TestController {
         }
     }
 
+    /**
+     * Next level.
+     *
+     * @throws InterruptedException the interrupted exception
+     */
     @Test
     public void nextLevel() throws InterruptedException {
 
@@ -474,6 +531,9 @@ public class TestController {
         assertEquals(MainModel.LevelState.NEXT_LEVEL, model.getLevelState());
     }
 
+    /**
+     * Game over.
+     */
     @Test
     public void gameOver(){
 
@@ -504,6 +564,9 @@ public class TestController {
 
     }
     
+    /**
+     * Reload ammo test.
+     */
     @Test
     public void reloadAmmoTest(){
 
@@ -529,6 +592,9 @@ public class TestController {
 
     }
 
+    /**
+     * Reload while reloading.
+     */
     @Test
     public void reloadWhileReloading(){
         int numberOfDucks = 6;
@@ -554,6 +620,9 @@ public class TestController {
 
     }
 
+    /**
+     * Reload while firing.
+     */
     @Test
     public void reloadWhileFiring(){
         int numberOfDucks = 6;
@@ -576,6 +645,9 @@ public class TestController {
 
     }
 
+    /**
+     * Reload empty player ammo.
+     */
     @Test
     public void reloadEmptyPlayerAmmo(){
         int numberOfDucks = 6;
@@ -593,6 +665,9 @@ public class TestController {
         assertEquals(0, controller.reloadGun());
     }
 
+    /**
+     * Duck different behaviors.
+     */
     @Test
     public void duckDifferentBehaviors(){
 
@@ -623,6 +698,9 @@ public class TestController {
 
     }
 
+    /**
+     * Duck different movements.
+     */
     @Test(timeout = 300)
     public void duckDifferentMovements() {
 
@@ -652,6 +730,9 @@ public class TestController {
 
     }
 
+    /**
+     * Aim location.
+     */
     @Test
     public void aimLocation(){
 

@@ -8,40 +8,84 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by joaofurriel on 28/04/17.
  */
 
 public class DuckView extends EntityView {
 
+    /** The Constant DEWEY_SPRITE_RIGHT. */
     private static final String DEWEY_SPRITE_RIGHT = "dewey_right.png";
+    
+    /** The Constant DEWEY_SPRITE_LEFT. */
     private static final String DEWEY_SPRITE_LEFT = "dewey_left.png";
+    
+    /** The Constant HUEY_SPRITE_RIGHT. */
     private static final String HUEY_SPRITE_RIGHT = "huey_right.png";
+    
+    /** The Constant HUEY_SPRITE_LEFT. */
     private static final String HUEY_SPRITE_LEFT = "huey_left.png";
+    
+    /** The Constant LOUIE_SPRITE_RIGHT. */
     private static final String LOUIE_SPRITE_RIGHT = "louie_right.png";
+    
+    /** The Constant LOUIE_SPRITE_LEFT. */
     private static final String LOUIE_SPRITE_LEFT = "louie_left.png";
 
+    /** The Constant DEWEY_DEAD. */
     public static final String DEWEY_DEAD = "dewey_dead.png";
+    
+    /** The Constant DEWEY_SHOT. */
     public static final String DEWEY_SHOT = "dewey_shot.png";
+    
+    /** The Constant HUEY_DEAD. */
     public static final String HUEY_DEAD = "huey_dead.png";
+    
+    /** The Constant HUEY_SHOT. */
     public static final String HUEY_SHOT = "huey_shot.png";
+    
+    /** The Constant LOUIE_DEAD. */
     public static final String LOUIE_DEAD = "louie_dead.png";
+    
+    /** The Constant LOUIE_SHOT. */
     public static final String LOUIE_SHOT = "louie_shot.png";
 
+    /** The state time. */
     private float stateTime = 0;
 
+    /**
+     * Instantiates a new duck view.
+     *
+     * @param game the game
+     * @param type the type
+     */
     public DuckView(AimOn game, DuckModel.DuckType type) {
         super(game, type);
     }
 
+    /** The animation right. */
     private Animation<TextureRegion> animationRight;
+    
+    /** The animation left. */
     private Animation<TextureRegion> animationLeft;
+    
+    /** The animation dead. */
     private Animation<TextureRegion> animationDead;
+    
+    /** The animation shot. */
     private Animation<TextureRegion> animationShot;
+    
+    /** The texture shot. */
     private Texture textureShot;
+    
+    /** The texture dead. */
     private Texture textureDead;
 
 
+    /* (non-Javadoc)
+     * @see view.game.entities.EntityView#createSprite(AimOn)
+     */
     public Sprite createSprite(AimOn game) {
 
         loadAssets(game);
@@ -85,6 +129,11 @@ public class DuckView extends EntityView {
 
     }
 
+    /**
+     * Load assets.
+     *
+     * @param game the game
+     */
     private void loadAssets(AimOn game) {
 
         switch ((DuckModel.DuckType)argument){
@@ -120,11 +169,21 @@ public class DuckView extends EntityView {
 
     }
 
+    /* (non-Javadoc)
+     * @see view.game.entities.EntityView#draw(SpriteBatch)
+     */
     public void draw(SpriteBatch batch) {
         super.draw(batch);
     }
 
 
+    /**
+     * Update.
+     *
+     * @param model the model
+     * @param delta the delta
+     * @param numberOfDucks the number of ducks
+     */
     public void update(DuckModel model, float delta, int numberOfDucks) {
 
         this.stateTime += delta;

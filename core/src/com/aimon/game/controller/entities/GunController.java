@@ -2,18 +2,30 @@ package com.aimon.game.controller.entities;
 
 import com.aimon.game.model.entities.GunModel;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by joaofurriel on 25/05/17.
  */
 
 public class GunController {
 
+    /** The model. */
     private GunModel model;
 
+    /**
+     * Instantiates a new gun controller.
+     *
+     * @param model the model
+     */
     public GunController(GunModel model) {
         this.model = model;
     }
 
+    /**
+     * Fire.
+     *
+     * @return true, if successful
+     */
     public boolean fire() {
 
         if (model.getState() == GunModel.GunState.IDLE && model.getNumberOfBullets() > 0) {
@@ -27,6 +39,12 @@ public class GunController {
         return false;
     }
 
+    /**
+     * Reload.
+     *
+     * @param numberOfBullets the number of bullets
+     * @return the int
+     */
     public int reload(int numberOfBullets) {
 
         if (model.getState() == GunModel.GunState.IDLE /*&& this.model.getEmptySpaces() > 0*/) {
@@ -43,6 +61,11 @@ public class GunController {
 
     }
 
+    /**
+     * Update status.
+     *
+     * @param time the time
+     */
     public void updateStatus(float time) {
 
         this.model.setGunLifeTime(this.model.getGunLifeTime() + time);
@@ -65,6 +88,11 @@ public class GunController {
 
     }
 
+    /**
+     * Gets the model.
+     *
+     * @return the model
+     */
     public GunModel getModel() {
         return model;
     }

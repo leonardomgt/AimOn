@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector3;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by Leo on 23/05/2017.
  */
@@ -15,10 +16,21 @@ import com.badlogic.gdx.math.Vector3;
 public class DesktopInputProcessor extends GameInputProcessor {
 
 
+    /**
+     * Instantiates a new desktop input processor.
+     *
+     * @param gameScreen the game screen
+     */
     public DesktopInputProcessor(GameScreen gameScreen) {
         super(gameScreen);
     }
 
+    /**
+     * Key down.
+     *
+     * @param keycode the keycode
+     * @return true, if successful
+     */
     @Override
     public boolean keyDown(int keycode) {
 
@@ -35,6 +47,15 @@ public class DesktopInputProcessor extends GameInputProcessor {
         return super.keyDown(keycode);
     }
 
+    /**
+     * Touch down.
+     *
+     * @param screenX the screen X
+     * @param screenY the screen Y
+     * @param pointer the pointer
+     * @param button the button
+     * @return true, if successful
+     */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         switch (button){
@@ -53,6 +74,12 @@ public class DesktopInputProcessor extends GameInputProcessor {
         return false;
     }
 
+    /**
+     * Scrolled.
+     *
+     * @param amount the amount
+     * @return true, if successful
+     */
     @Override
     public boolean scrolled(int amount){
 
@@ -63,6 +90,9 @@ public class DesktopInputProcessor extends GameInputProcessor {
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see view.game.inputprocessors.GameInputProcessor#updateAim()
+     */
     public void updateAim() {
 
       /*  if(Gdx.input.getX() > gameScreen.getController().getControllerWidth()){

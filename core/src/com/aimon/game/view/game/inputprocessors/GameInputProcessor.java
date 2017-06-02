@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by Leo on 30/05/2017.
  */
@@ -24,22 +25,44 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public abstract class GameInputProcessor extends InputAdapter{
 
 
+    /** The game screen. */
     GameScreen gameScreen;
 
+    /** The shot sound effect. */
     protected Sound shotSoundEffect;
+    
+    /** The reload bullet sound effect. */
     protected Sound reloadBulletSoundEffect;
+    
+    /** The slide gun sound effect. */
     protected Sound slideGunSoundEffect;
+    
+    /** The empty gun sound effect. */
     protected Sound emptyGunSoundEffect;
 
+    /** The sound on. */
     private boolean soundOn = true;
 
+    /** The Constant SHOT. */
     private static final String SHOT = "shotgun.wav";
+    
+    /** The Constant RELOAD_BULLET. */
     private static final String RELOAD_BULLET = "load_bullet.wav";
+    
+    /** The Constant SLIDE_GUN. */
     private static final String SLIDE_GUN = "slide_gun.wav";
+    
+    /** The Constant EMPTY_GUN. */
     private static final String EMPTY_GUN = "empty_gun.wav";
 
+    /** The current aim position. */
     private Vector3 currentAimPosition;
 
+    /**
+     * Instantiates a new game input processor.
+     *
+     * @param gameScreen the game screen
+     */
     protected GameInputProcessor(GameScreen gameScreen) {
 
         this.gameScreen = gameScreen;
@@ -55,8 +78,14 @@ public abstract class GameInputProcessor extends InputAdapter{
     }
 
 
+    /**
+     * Update aim.
+     */
     public abstract void updateAim();
 
+    /**
+     * Load assets.
+     */
     public void loadAssets() {
 
         this.gameScreen.game.getAssetManager().load(SHOT, Sound.class);
@@ -72,6 +101,9 @@ public abstract class GameInputProcessor extends InputAdapter{
         this.emptyGunSoundEffect = this.gameScreen.game.getAssetManager().get(EMPTY_GUN);
     }
 
+    /**
+     * Change zoom.
+     */
     public void changeZoom() {
 
         float PIXEL_TO_METER = gameScreen.PIXEL_TO_METER;
@@ -101,6 +133,11 @@ public abstract class GameInputProcessor extends InputAdapter{
 
     }
 
+    /**
+     * Change zoom scroll.
+     *
+     * @param zoom the zoom
+     */
     public void changeZoomScroll(float zoom) {
 
         float PIXEL_TO_METER = gameScreen.PIXEL_TO_METER;
@@ -146,6 +183,9 @@ public abstract class GameInputProcessor extends InputAdapter{
 
     }
 
+    /**
+     * Shot.
+     */
     public void shot() {
 
         if (gameScreen.getController().fireGun(gameScreen.getAimPosition().x, gameScreen.getAimPosition().y)){
@@ -158,6 +198,9 @@ public abstract class GameInputProcessor extends InputAdapter{
 
     }
 
+    /**
+     * Reload gun.
+     */
     public void reloadGun() {
 
         class PlaySoundInThread extends Thread{
@@ -210,6 +253,9 @@ public abstract class GameInputProcessor extends InputAdapter{
 
     }
 
+    /**
+     * Initialize UI elements.
+     */
     public void initializeUIElements() {
 
         float deltaToLimits = 16;
@@ -237,6 +283,11 @@ public abstract class GameInputProcessor extends InputAdapter{
 
     }
 
+    /**
+     * Project aim to camera.
+     *
+     * @param aimPosition the aim position
+     */
     protected void projectAimToCamera(Vector3 aimPosition) {
 
         gameScreen.getAimPosition().set(gameScreen.getAimPosition().x / gameScreen.PIXEL_TO_METER, gameScreen.getAimPosition().y/gameScreen.PIXEL_TO_METER, 0);
@@ -260,6 +311,11 @@ public abstract class GameInputProcessor extends InputAdapter{
     }
 
 
+    /**
+     * Sets the sound on.
+     *
+     * @param soundOn the new sound on
+     */
     public void setSoundOn(boolean soundOn) {
         this.soundOn = soundOn;
     }

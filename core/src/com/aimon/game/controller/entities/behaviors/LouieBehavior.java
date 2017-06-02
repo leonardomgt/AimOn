@@ -4,12 +4,18 @@ import com.aimon.game.controller.entities.DuckBody;
 import com.aimon.game.model.entities.DuckModel;
 import com.badlogic.gdx.math.MathUtils;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by Leo on 16/05/2017.
  */
 
 public class LouieBehavior extends DuckBehavior {
 
+    /**
+     * Instantiates a new louie behavior.
+     *
+     * @param duck the duck
+     */
     public LouieBehavior(DuckBody duck){
         super(duck);
         ((DuckModel) this.duck.getModel()).setNormalVelocity(DuckModel.LOUIE_NORMAL_VELOCITY);
@@ -19,6 +25,9 @@ public class LouieBehavior extends DuckBehavior {
     }
 
 
+    /* (non-Javadoc)
+     * @see controller.entities.behaviors.DuckBehavior#update(float)
+     */
     @Override
     public void update(float delta) {
 

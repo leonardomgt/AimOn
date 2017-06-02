@@ -14,23 +14,36 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by Leo on 30/05/2017.
  */
 
 public class AndroidInputProcessor extends GameInputProcessor {
 
+    /** The touched position. */
     private Vector3 touchedPosition;
+    
+    /** The current aim pos. */
     private Vector3 currentAimPos;
 
+    /** The bar. */
     private Slider bar;
 
 
 
+    /**
+     * Instantiates a new android input processor.
+     *
+     * @param gameScreen the game screen
+     */
     public AndroidInputProcessor(GameScreen gameScreen) {
         super(gameScreen);
     }
 
+    /* (non-Javadoc)
+     * @see view.game.inputprocessors.GameInputProcessor#updateAim()
+     */
     @Override
     public void updateAim() {
 
@@ -44,6 +57,14 @@ public class AndroidInputProcessor extends GameInputProcessor {
 
     }
 
+    /**
+     * Touch dragged.
+     *
+     * @param screenX the screen X
+     * @param screenY the screen Y
+     * @param pointer the pointer
+     * @return true, if successful
+     */
     @Override
     public boolean touchDragged (int screenX, int screenY, int pointer) {
 
@@ -55,6 +76,15 @@ public class AndroidInputProcessor extends GameInputProcessor {
         return true;
     }
 
+    /**
+     * Touch down.
+     *
+     * @param screenX the screen X
+     * @param screenY the screen Y
+     * @param pointer the pointer
+     * @param button the button
+     * @return true, if successful
+     */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button){
 
@@ -67,6 +97,9 @@ public class AndroidInputProcessor extends GameInputProcessor {
         return true;
     }
 
+    /* (non-Javadoc)
+     * @see view.game.inputprocessors.GameInputProcessor#initializeUIElements()
+     */
     public void initializeUIElements() {
 
         super.initializeUIElements();

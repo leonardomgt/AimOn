@@ -12,40 +12,87 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by joaofurriel on 27/05/17.
  */
 
 public class GameStatusView {
 
+    /** The Constant BULLET_BOX. */
     public static final String BULLET_BOX = "bullet_box.png";
+    
+    /** The Constant AMMO. */
     public static final String AMMO = "ammo.png";
+    
+    /** The Constant AMMO_EMPTY. */
     public static final String AMMO_EMPTY = "ammo_empty.png";
+    
+    /** The Constant MISSED_SHOT. */
     public static final String MISSED_SHOT = "missed.png";
+    
+    /** The Constant ALIVE_DUCK. */
     public static final String ALIVE_DUCK = "alive_duck.png";
+    
+    /** The Constant DEAD_DUCK. */
     public static final String DEAD_DUCK = "dewey_shot.png";
 
 
+    /** The player bullets. */
     private int playerBullets;
+    
+    /** The gun bullets. */
     private int gunBullets;
+    
+    /** The player score. */
     private int playerScore;
+    
+    /** The number of alive ducks. */
     private int numberOfAliveDucks;
+    
+    /** The missed shots. */
     private int missedShots;
+    
+    /** The killed ducks. */
     private int killedDucks;
 
+    /** The font. */
     private BitmapFont font;
+    
+    /** The model. */
     private PlayerModel model;
+    
+    /** The game. */
     private AimOn game;
 
+    /** The player bullets sprite. */
     private Sprite playerBulletsSprite;
+    
+    /** The gun bullets sprite. */
     private Sprite gunBulletsSprite;
+    
+    /** The gun bullet empty sprite. */
     private Sprite gunBulletEmptySprite;
+    
+    /** The player score sprite. */
     private Sprite playerScoreSprite;
+    
+    /** The number of ducks sprite. */
     private Sprite numberOfDucksSprite;
+    
+    /** The missed shots sprite. */
     private Sprite missedShotsSprite;
+    
+    /** The killed ducks sprite. */
     private Sprite killedDucksSprite;
 
 
+    /**
+     * Instantiates a new game status view.
+     *
+     * @param game the game
+     * @param mainModel the main model
+     */
     public GameStatusView(AimOn game, MainModel mainModel) {
         this.game = game;
         loadAssets();
@@ -63,6 +110,9 @@ public class GameStatusView {
 
     }
 
+    /**
+     * Load assets.
+     */
     private void loadAssets() {
         this.game.getAssetManager().load(ALIVE_DUCK, Texture.class);
         this.game.getAssetManager().load(DEAD_DUCK, Texture.class);
@@ -75,6 +125,9 @@ public class GameStatusView {
 
     }
 
+    /**
+     * Creates the sprites.
+     */
     private void createSprites() {
 
         //empty ammo
@@ -102,6 +155,15 @@ public class GameStatusView {
 
     }
 
+    /**
+     * Creates the sprite.
+     *
+     * @param texture the texture
+     * @param scale the scale
+     * @param x the x
+     * @param y the y
+     * @return the sprite
+     */
     private Sprite createSprite(Texture texture, float scale, float x, float y) {
 
         Sprite sprite = new Sprite(texture);
@@ -111,6 +173,11 @@ public class GameStatusView {
 
     }
 
+    /**
+     * Draw.
+     *
+     * @param batch the batch
+     */
     public void draw(SpriteBatch batch) {
 
         //gun bullets
@@ -157,6 +224,14 @@ public class GameStatusView {
 
     }
 
+    /**
+     * Draw font.
+     *
+     * @param str the str
+     * @param batch the batch
+     * @param x the x
+     * @param y the y
+     */
     private void drawFont(CharSequence str, SpriteBatch batch, float x, float y) {
 
         font.draw(batch, " x ", (x-0.3f) / PIXEL_TO_METER, y / PIXEL_TO_METER);
@@ -165,6 +240,11 @@ public class GameStatusView {
     }
 
 
+    /**
+     * Update.
+     *
+     * @param model the model
+     */
     public void update(EntityModel model) {
         this.numberOfAliveDucks = game.getGameScreen().getModel().getNumberOfAliveDucks();
         this.killedDucks = ((PlayerModel) model).getKilledDucks();
@@ -172,14 +252,27 @@ public class GameStatusView {
 
     }
 
+    /**
+     * Sets the player bullets string.
+     *
+     * @param playerBullets the new player bullets string
+     */
     public void setPlayerBulletsString(int playerBullets) {
         this.playerBullets = playerBullets;
     }
 
+    /**
+     * Sets the gun bullets.
+     *
+     * @param gunBullets the new gun bullets
+     */
     public void setGunBullets(int gunBullets) {
         this.gunBullets = gunBullets;
     }
 
+    /**
+     * Spend bullet.
+     */
     public void spendBullet() {
         this.gunBullets--;
     }
