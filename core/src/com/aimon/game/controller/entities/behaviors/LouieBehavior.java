@@ -4,9 +4,9 @@ import com.aimon.game.controller.entities.DuckBody;
 import com.aimon.game.model.entities.DuckModel;
 import com.badlogic.gdx.math.MathUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * Created by Leo on 16/05/2017.
+ *  LouieBehavior. Implementation of abstract class DuckBehaviour for Louie
  */
 
 public class LouieBehavior extends DuckBehavior {
@@ -25,8 +25,8 @@ public class LouieBehavior extends DuckBehavior {
     }
 
 
-    /* (non-Javadoc)
-     * @see controller.entities.behaviors.DuckBehavior#update(float)
+    /**
+     * Update. Update the duck, changing direction and go up and down
      */
     @Override
     public void update(float delta) {

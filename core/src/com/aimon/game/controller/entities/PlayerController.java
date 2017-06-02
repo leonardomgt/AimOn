@@ -2,17 +2,16 @@ package com.aimon.game.controller.entities;
 
 import com.aimon.game.model.entities.PlayerModel;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by joaofurriel on 27/05/17.
+ * Player Controller. Operates on the player model, updating the player and his gun status upon the main controller inputs
  */
 
 public class PlayerController {
 
-    /** The player model. */
+    /** The player model object used to store player data. */
     private PlayerModel playerModel;
     
-    /** The gun controller. */
+    /** The gun controller object used to store player gun data. */
     private GunController gunController;
 
     /**
@@ -26,36 +25,38 @@ public class PlayerController {
     }
 
     /**
-     * Fire gun.
+     * Fire gun. This method will try to fire player gun. If it is possible will check if this was the last bullet. If so, will mark the player has
+     * out of bullets
      *
-     * @return true, if successful
+     * @return true, if shot was fired, false otherwise
      */
     public boolean fireGun() {
 
-        if (this.playerModel.getGun().getNumberOfBullets() == 1) {
-            if(this.playerModel.getNumberOfBullets() == 0) {
+        if (this.gunController.fire()) {
+            if (this.playerModel.getGun().getNumberOfBullets() == 0 && this.playerModel.getNumberOfBullets() == 0) {
                 this.playerModel.setOutOfBullets(true);
             }
-        }
+            return true;
 
-        return this.gunController.fire();
+        }
+        return false;
+
     }
 
     /**
-     * Reload gun.
+     * Reload gun. This method will try to reload the gun. First, it calculates the minimum between the free spaces on the gun round
+     * and the bullets the player owns and will pass this number to the reload method of the gun.
      *
-     * @return the int
+     * It also withdraws and returns the bullets reloaded by the gun
+     *
+     * @return the number of bullets reloaded by the gun
      */
     public int reloadGun() {
 
-        int reloadedBullets = Math.min(this.playerModel.getNumberOfBullets(), this.gunController.getModel().getEmptySpaces());
+        int bulletsToReload = Math.min(this.playerModel.getNumberOfBullets(), this.gunController.getModel().getEmptySpaces());
 
-        if (reloadedBullets > 0) {
-            this.playerModel.withdrawBullets(reloadedBullets);
-            return this.gunController.reload(reloadedBullets);
-        }
+        return this.playerModel.withdrawBullets(this.gunController.reload(bulletsToReload));
 
-        return  0;
     }
 
     /**
@@ -77,22 +78,20 @@ public class PlayerController {
     }
 
     /**
-     * Good shot.
+     * Update Score. This method updates the player killed ducks and score or increases the missed shots depending on the goodness of the shot
      *
-     * @param good the good
+     * @param numberOfKilledDucks number of Killed ducks with a gun shot
      */
-    public void goodShot(boolean good) {
+    public void updateScore(int numberOfKilledDucks) {
 
-        if (good) {
-            this.playerModel.increaseDucksKilled();
-            this.playerModel.increaseScore();
+        if (numberOfKilledDucks>0) {
+            this.playerModel.increaseDucksKilled(numberOfKilledDucks);
+            this.playerModel.increaseScore(numberOfKilledDucks);
         }
 
         else
             this.playerModel.increaseMissedShots();
 
     }
-
-
 
 }

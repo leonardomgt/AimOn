@@ -1,10 +1,7 @@
 package com.aimon.game.model.entities;
 
-import com.aimon.game.view.game.GameScreen;
-
-// TODO: Auto-generated Javadoc
 /**
- * Created by joaofurriel on 27/05/17.
+ * PlayerModel. Used to hold data and current status of player
  */
 
 public class PlayerModel  extends EntityModel {
@@ -99,8 +96,9 @@ public class PlayerModel  extends EntityModel {
      *
      * @param numberOfBullets the number of bullets
      */
-    public void withdrawBullets(int numberOfBullets) {
+    public int withdrawBullets(int numberOfBullets) {
         this.numberOfBullets -= numberOfBullets;
+        return numberOfBullets;
     }
 
     /**
@@ -116,8 +114,8 @@ public class PlayerModel  extends EntityModel {
     /**
      * Increase ducks killed.
      */
-    public void increaseDucksKilled() {
-        this.killedDucks++;
+    public void increaseDucksKilled(int ducksKilled) {
+        this.killedDucks+= ducksKilled;
     }
 
     /**
@@ -166,8 +164,8 @@ public class PlayerModel  extends EntityModel {
     /**
      * Increase score.
      */
-    public void increaseScore(){
-        this.score++;
+    public void increaseScore(int score){
+        this.score+=score;
     }
 
 

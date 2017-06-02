@@ -1,12 +1,10 @@
 package com.aimon.game.model.entities;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by Leo on 29/04/2017.
+ * AimModel. Used to hold data and current status of the aim
  */
 
 public class AimModel extends EntityModel {
-
 
     /**
      * Instantiates a new aim model.

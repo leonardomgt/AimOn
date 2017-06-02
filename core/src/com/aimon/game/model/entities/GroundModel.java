@@ -1,11 +1,8 @@
 package com.aimon.game.model.entities;
 
-import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
 
-
-// TODO: Auto-generated Javadoc
 /**
- * Created by joaofurriel on 29/04/17.
+ * Ground Model. Used to hold data of the ground.
  */
 
 public class GroundModel extends EntityModel {

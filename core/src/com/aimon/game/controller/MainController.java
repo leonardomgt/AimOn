@@ -2,13 +2,10 @@ package com.aimon.game.controller;
 
 import com.aimon.game.controller.entities.DuckBody;
 import com.aimon.game.controller.entities.GroundBody;
-import com.aimon.game.controller.entities.GunController;
 import com.aimon.game.controller.entities.PlayerController;
 import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.model.entities.EntityModel;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -21,44 +18,45 @@ import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by joaofurriel on 28/04/17.
+ * MainController class. Used to update the game model and its entities upon updates of the View (GameScreen)
  */
 
 public class MainController {
 
-    /** The Constant FIELD_WIDTH. */
+    /** FIELD_WIDTH. Used to control the action width of the ducks. */
     private static final float FIELD_WIDTH = 25;
-    
-    /** The Constant GROUND_HEIGHT. */
-    //private static final float FIELD_HEIGHT = FIELD_WIDTH*((float) Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth());
-    private static final float GROUND_HEIGHT = 1f;
-    
-    /** The field height. */
+
+    /** The Constant GROUND_HEIGHT. Used to control the action width of the ducks. */
     private static float FIELD_HEIGHT;
+    
+    /** The Constant GROUND_HEIGHT. Used to build the ground body */
+    private static final float GROUND_HEIGHT = 1f;
 
-
-    /** The world. */
+    /** The world. Used to hold the bodies and apply physics */
     private final World world;
     
-    /** The accumulator. */
+    /** The accumulator. Variable to control the world steps*/
     private float accumulator;
 
-    /** The model. */
+    /** The model. The model of the game, used to store the game data. The M of the MVC*/
     private MainModel model;
     
-    /** The duck bodies. */
+    /** The duck bodies. A list with all the duck bodies living in the world */
     private List<DuckBody> duckBodies;
     
-    /** The player controller. */
+    /** The player controller. A specific controller to manage the player*/
     private PlayerController playerController;
 
     /**
-     * Instantiates a new main controller.
+     * Instantiates a new main controller. This method also creates a contact listener between the ground and the duck bodies which when triggered will
+     * increasing the number of
+     * ducks dead on the ground, setting the duck as dead
      *
-     * @param model the model
-     * @param ratio the ratio
+     * Creates also the duck bodies and the player controller instance as long as call the singleton ground body
+     *
+     * @param model the model of the game
+     * @param ratio the ratio between the screen height and the screen width
      */
     public MainController(MainModel model, float ratio) {
 
@@ -100,14 +98,11 @@ public class MainController {
 
     }
 
-    /*public World getWorld() {
-        return world;
-    }*/
-
     /**
-     * Update.
+     * Update the controller. The is the main method of the class. It is responsible for updating all the status of the game based on the time that has
+     * passed since the last update (delta parameter)
      *
-     * @param delta the delta
+     * @param delta time since the last update
      */
     public void update(float delta) {
         float frameTime = Math.min(delta, 0.25f);
@@ -193,51 +188,56 @@ public class MainController {
     }
 
     /**
-     * Fire gun.
+     * Fire gun. This method will fire try to fire the player gun. If it is possible will also check if the player has killed ducks if they are alive
+     * This method will update the model, decreasing the total number of ducks by the number of killed ducks.
      *
-     * @param x the x
-     * @param y the y
-     * @return true, if successful
+     * It also checks if the shot was near of ducks, frighting them
+     *
+     * At last, it will tell the controller if the shot was good (if it killed any ducks) or not.
+     *
+     * @param x the x position of the shot
+     * @param y the y position of the shot
+     * @return true, if gun was fired, false otherwise
      */
     public boolean fireGun(float x, float y) {
 
         if (this.playerController.fireGun()) {
 
-            boolean goodShot = false;
+            int numberOfKilledDucks = 0;
             for (DuckBody duck : duckBodies) {
                 DuckModel model = (DuckModel) duck.getModel();
 
                 if (duck.isInRange(x, y) && model.isAlive()) {
 
                     model.kill();
-                    this.model.decreaseNumberOfDucks();
-                    goodShot = true;
+                    this.model.decreaseNumberOfAliveDucks();
+                    numberOfKilledDucks++;
                 }
                 else {
                     this.frightenDuck(x, y, duck);
                 }
 
             }
-            this.playerController.goodShot(goodShot);
+            this.playerController.updateScore(numberOfKilledDucks);
             return true;
         }
         return false;
     }
 
     /**
-     * Reload gun.
+     * Reload gun. Call the reloadGun method of the player controller
      *
-     * @return the int
+     * @return the number of bullets reloaded
      */
     public int reloadGun() {
         return this.playerController.reloadGun();
     }
 
     /**
-     * Frighten duck.
+     * Frighten duck. This method will frighten the duck passed on the parameter, setting that duck frighten boolean to true
      *
-     * @param x the x
-     * @param y the y
+     * @param x the x of the shot
+     * @param y the y of the shot
      * @param duckBody the duck body
      */
     private void frightenDuck(float x, float y, DuckBody duckBody) {
@@ -249,13 +249,13 @@ public class MainController {
     }
 
     /**
-     * Distance.
+     * Distance. Calculates the cartesian distance between two points on the plane
      *
-     * @param x1 the x 1
-     * @param y1 the y 1
-     * @param x2 the x 2
-     * @param y2 the y 2
-     * @return the float
+     * @param x1 the x position of the first point
+     * @param y1 the y position of the first point
+     * @param x2 the x position of the second point
+     * @param y2 the y position of the second point
+     * @return the distance between the points
      */
     private static float distance(float x1, float y1, float x2, float y2) {
 

@@ -1,8 +1,8 @@
 package com.aimon.game.model.entities;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * Created by joaofurriel on 28/04/17.
+ * MainModel. Used to hold data and current status of a duck
  */
 
 public class DuckModel extends EntityModel implements Comparable<DuckModel>{
@@ -13,9 +13,11 @@ public class DuckModel extends EntityModel implements Comparable<DuckModel>{
     public enum DuckType {
 
         /** The louie. */
-        LOUIE, /** The huey. */
- HUEY, /** The dewey. */
- DEWEY;
+        LOUIE,
+        /** The huey. */
+        HUEY,
+        /** The dewey. */
+        DEWEY;
 
         /** The name. */
         private String name;

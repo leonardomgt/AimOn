@@ -10,20 +10,19 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by joaofurriel on 29/04/17.
+ * Ground Body. Singleton Class responsible to create a body for the ground
  */
 
 public class GroundBody extends EntityBody {
 
-    /** The instance. */
+    /** The singleton. */
     private static GroundBody instance;
     
-    /** The ground category. */
+    /** The ground category. Used in collisions*/
     private final short GROUND_CATEGORY = 0x0002;
     
-    /** The collide everything. */
+    /** The collide everything. Used to put the ground colliding with every other category of bodies  */
     private final short COLLIDE_EVERYTHING = 0xFF;
 
 
@@ -40,7 +39,7 @@ public class GroundBody extends EntityBody {
     }
 
     /**
-     * Instantiates a new ground body.
+     * Instantiates a new ground body which is a single edge which spans all the world width.
      *
      * @param world the world
      * @param groundModel the ground model

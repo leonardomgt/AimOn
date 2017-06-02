@@ -4,9 +4,8 @@ import com.aimon.game.controller.MainController;
 import com.aimon.game.controller.entities.DuckBody;
 import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.DuckModel;
-import com.aimon.game.model.entities.GunModel;
 import com.aimon.game.model.entities.PlayerModel;
-import com.badlogic.gdx.math.MathUtils;
+
 
 import org.junit.Test;
 

@@ -10,9 +10,9 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * Created by joaofurriel on 29/04/17.
+ * Abstract entity body. A class that holds a physics body
  */
 
 public abstract class EntityBody {
@@ -20,7 +20,7 @@ public abstract class EntityBody {
     /** The body. */
     protected final Body body;
     
-    /** The model. */
+    /** The model related to the body. */
     protected EntityModel model;
 
     /**
@@ -73,7 +73,7 @@ public abstract class EntityBody {
     }
 
     /**
-     * Apply force to center.
+     * Apply force to center of the body
      *
      * @param forceX the force X
      * @param forceY the force Y

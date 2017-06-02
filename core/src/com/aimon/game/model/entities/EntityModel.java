@@ -1,8 +1,7 @@
 package com.aimon.game.model.entities;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by joaofurriel on 28/04/17.
+ * EntityModel. Abstract class use to hold data of the entities
  */
 
 public abstract class EntityModel {

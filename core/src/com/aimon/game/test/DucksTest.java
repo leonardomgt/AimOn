@@ -12,16 +12,9 @@ import static com.aimon.game.test.GeneralTest.updateWorld;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-// TODO: Auto-generated Javadoc
-/**
- * Created by joaofurriel on 02/06/17.
- */
 
 public class DucksTest {
 
-    /**
-     * Generate model.
-     */
     @Test
     public void killDuck() {
 
@@ -53,11 +46,8 @@ public class DucksTest {
 
     }
 
-    /**
-     * Associate duck model to duck body.
-     */
-    @Test
 
+    @Test
     public void duckFallingAndDying()  {
 
         MainModel model = new MainModel(5,5,1, new PlayerModel("Name", 1, 0f,0f),1, .5859375f);
@@ -79,9 +69,6 @@ public class DucksTest {
 
     }
 
-    /**
-     * Gun empty round.
-     */
     @Test
     public void sendDuckUp() {
 
@@ -112,9 +99,6 @@ public class DucksTest {
 
     }
 
-    /**
-     * Send duck down.
-     */
     @Test
     public void sendDuckDown() {
 
@@ -147,9 +131,6 @@ public class DucksTest {
 
     }
 
-    /**
-     * Change direction.
-     */
     @Test
     public void changeDirection() {
 
@@ -193,9 +174,6 @@ public class DucksTest {
 
     }
 
-    /**
-     * Frighten duck change velocity.
-     */
     @Test
     public void frightenDuckChangeVelocity() {
 
@@ -236,9 +214,6 @@ public class DucksTest {
 
     }
 
-    /**
-     * Duck frighten time.
-     */
     @Test
     public void duckFrightenTime() {
 
@@ -259,9 +234,6 @@ public class DucksTest {
 
     }
 
-    /**
-     * Frighten duck from front.
-     */
     @Test
     public void frightenDuckFromFront() {
 
@@ -297,9 +269,6 @@ public class DucksTest {
 
     }
 
-    /**
-     * Frighten duck from behind.
-     */
     @Test
     public void frightenDuckFromBehind() {
 
@@ -335,9 +304,6 @@ public class DucksTest {
 
     }
 
-    /**
-     * Frighten duck already frightened.
-     */
     @Test
     public void frightenDuckAlreadyFrightened() {
 
@@ -422,9 +388,6 @@ public class DucksTest {
 
     }
 
-    /**
-     * Duck different movements.
-     */
     @Test(timeout = 300)
     public void duckDifferentMovements() {
 

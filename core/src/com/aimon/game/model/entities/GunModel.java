@@ -1,20 +1,22 @@
 package com.aimon.game.model.entities;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * Created by joaofurriel on 25/05/17.
+ * Gun Model. Used to hold data and current status of the player gun.
  */
 
 public class GunModel extends EntityModel {
-
-
     /**
      * The Enum GunState.
      */
-    public enum GunState {/** The idle. */
-IDLE, /** The firing. */
- FIRING, /** The reloading. */
- RELOADING};
+    public enum GunState {
+        /** The idle. */
+        IDLE,
+        /** The firing. */
+        FIRING,
+        /** The reloading. */
+        RELOADING
+    }
 
     /** The capacity. */
     private int capacity;

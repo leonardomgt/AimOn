@@ -12,9 +12,6 @@ import static com.aimon.game.test.GeneralTest.updateWorld;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by joaofurriel on 02/06/17.
- */
 
 public class GunTest {
 

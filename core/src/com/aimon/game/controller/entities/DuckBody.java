@@ -10,14 +10,13 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import static com.aimon.game.view.game.GameScreen.PIXEL_TO_METER;
 
-// TODO: Auto-generated Javadoc
 /**
- * Created by joaofurriel on 29/04/17.
+ * DuckBody. A duck body class that holds a body related to a duck model
  */
 
 public class DuckBody extends EntityBody{
 
-    /** The Constant THRESHOLD. */
+    /** The Constant THRESHOLD in which the duck floats */
     private static final float THRESHOLD = 0.1f;
     
     /** The Constant DUCK_MASS. */
@@ -26,13 +25,13 @@ public class DuckBody extends EntityBody{
     /** The duck category. */
     private final short DUCK_CATEGORY = 0x0001;
     
-    /** The ignore ducks. */
+    /** The ignore ducks. Used to avoid collisions among ducks */
     private final short IGNORE_DUCKS = ~DUCK_CATEGORY;
     
-    /** The Constant TIME_STUNNED. */
+    /** The Constant TIME_STUNNED. The time that the body is stunned after being shot*/
     private static final float TIME_STUNNED = 0.5f;
 
-    /** The behavior. */
+    /** The behavior. An interface used to set the duck behaviour  */
     private DuckBehavior behavior;
 
     /** The width. */
@@ -79,13 +78,13 @@ public class DuckBody extends EntityBody{
     }
 
     /**
-     * Update duck state.
+     * Update duck state. Increase lifetime, make sure that the duck is always in the world and switches among the state.
+     *
+     * If the duck is shot he will remain stunned for a while (SHOT state), then will fall (FALLING) and collide with the ground and die (DEAD)
      *
      * @param delta the delta
      */
     public void updateDuckState(float delta) {
-
-
 
         DuckModel dm = (DuckModel) this.model;
         dm.updateLifeTime(delta);
@@ -147,7 +146,7 @@ public class DuckBody extends EntityBody{
 
 
     /**
-     * Change direction.
+     * Change direction. Changes horizontal direction of the duck
      */
     public void changeDirection() {
 
@@ -169,7 +168,7 @@ public class DuckBody extends EntityBody{
 
 
     /**
-     * Go up.
+     * Go up. Send the duck up a given amount of meters
      *
      * @param height the height
      */
@@ -186,7 +185,7 @@ public class DuckBody extends EntityBody{
     }
 
     /**
-     * Go down.
+     * Go down. Send the duck down a given amount of meters
      *
      * @param height the height
      */
@@ -206,7 +205,7 @@ public class DuckBody extends EntityBody{
     /**
      * Gets the behavior.
      *
-     * @return the behavior
+     * @return the behavior of the duck
      */
     public DuckBehavior getBehavior() {
         return behavior;
@@ -215,8 +214,8 @@ public class DuckBody extends EntityBody{
     /**
      * Change velocity.
      *
-     * @param x the x
-     * @param y the y
+     * @param x the x velocity
+     * @param y the y velovity
      */
     public void changeVelocity(float x, float y){
 
@@ -228,10 +227,10 @@ public class DuckBody extends EntityBody{
 
 
     /**
-     * Checks if is in range.
+     * Checks if a position is in the range of the duck
      *
-     * @param x the x
-     * @param y the y
+     * @param x the x of the position
+     * @param y the y of the position
      * @return true, if is in range
      */
     public boolean isInRange(float x, float y) {
@@ -248,9 +247,10 @@ public class DuckBody extends EntityBody{
     }
 
     /**
-     * Sets the frighten.
+     * Set Frighten. Frightens the duck, causing the duck to change direction if it was flying towards the shot position and increasing the speed for
+     * a while (class static field)
      *
-     * @param x the new frighten
+     * @param x x position of the shot
      */
     public void setFrighten(float x) {
 

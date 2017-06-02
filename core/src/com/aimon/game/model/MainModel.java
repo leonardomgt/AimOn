@@ -4,9 +4,7 @@ import com.aimon.game.controller.MainController;
 import com.aimon.game.model.entities.AimModel;
 import com.aimon.game.model.entities.DuckModel;
 import com.aimon.game.model.entities.GroundModel;
-import com.aimon.game.model.entities.GunModel;
 import com.aimon.game.model.entities.PlayerModel;
-import com.aimon.game.view.game.GameScreen;
 import com.badlogic.gdx.math.MathUtils;
 
 import java.util.ArrayList;
@@ -15,9 +13,9 @@ import java.util.List;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
-// TODO: Auto-generated Javadoc
+
 /**
- * Created by joaofurriel on 28/04/17.
+ * MainModel. Used to hold data and current status of the game. The M on the MVC
  */
 
 public class MainModel {
@@ -194,7 +192,7 @@ RUNNING, /** The game over. */
     /**
      * Decrease number of ducks.
      */
-    public void decreaseNumberOfDucks() {
+    public void decreaseNumberOfAliveDucks() {
         this.numberOfAliveDucks--;
     }
 
@@ -208,7 +206,7 @@ RUNNING, /** The game over. */
     }
 
     /**
-     * Update state.
+     * Update state of the model. It can go to GAME_OVER in case player is out of bullets, or next level if player killed all ducks
      */
     public void updateState() {
 
