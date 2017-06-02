@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
  * Created by Leo on 23/05/2017.
  */
 
+
 public class DesktopInputProcessor extends GameInputProcessor {
 
 
@@ -94,19 +95,6 @@ public class DesktopInputProcessor extends GameInputProcessor {
      * @see view.game.inputprocessors.GameInputProcessor#updateAim()
      */
     public void updateAim() {
-
-      /*  if(Gdx.input.getX() > gameScreen.getController().getControllerWidth()){
-            gameScreen.getAimPosition().set(gameScreen.getController().getControllerWidth(), gameScreen.getAimPosition().y, 0);
-        }
-        if(gameScreen.getAimPosition().x < 0){
-            gameScreen.getAimPosition().set(0, gameScreen.getAimPosition().y, 0);
-        }
-        if(gameScreen.getAimPosition().y > gameScreen.getController().getControllerHeight()){
-            gameScreen.getAimPosition().set(gameScreen.getAimPosition().x, gameScreen.getController().getControllerHeight(), 0);
-        }
-        if(gameScreen.getAimPosition().y < 0){
-            gameScreen.getAimPosition().set(gameScreen.getAimPosition().x, 0, 0);
-        }*/
 
         projectAimToCamera(gameScreen.getAimPosition());
 

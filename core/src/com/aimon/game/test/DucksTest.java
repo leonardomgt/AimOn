@@ -4,60 +4,40 @@ import com.aimon.game.controller.MainController;
 import com.aimon.game.controller.entities.DuckBody;
 import com.aimon.game.model.MainModel;
 import com.aimon.game.model.entities.DuckModel;
-import com.aimon.game.model.entities.GunModel;
-import com.aimon.game.model.entities.PlayerModel;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.aimon.game.model.entities.PlayerModel;
 
 import org.junit.Test;
-import org.lwjgl.Sys;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
+import static com.aimon.game.test.GeneralTest.updateWorld;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 // TODO: Auto-generated Javadoc
 /**
- * Created by joaofurriel on 01/06/17.
+ * Created by joaofurriel on 02/06/17.
  */
 
-public class TestController {
-
-    /*
-    Test creation of controller of a model with n ducks and a player with m bullets
-     */
+public class DucksTest {
 
     /**
      * Generate model.
      */
     @Test
-    public void generateModel() {
+    public void killDuck() {
 
-        int numberOfDucks = 10;
-        int numberOfBullets = 20;
-
-        MainModel model = new MainModel(5,5,numberOfDucks, new PlayerModel("Name", numberOfBullets, 0f,0f),1, .5859375f);
+        MainModel model = new MainModel(5,5,1, new PlayerModel("Name", 1, 0f,0f),1, .5859375f);
         MainController controller = new MainController(model, .5859375f);
 
-        int controllerNumberOfDuckBodies = controller.getDuckBodies().size();
-        int controllerNumberOfBullets = controller.getPlayerController().getPlayerModel().getNumberOfBullets();
+        DuckBody duckBody = controller.getDuckBodies().get(0);
+        controller.fireGun(duckBody.getX(), duckBody.getY());
 
-        //Test number of ducks and bullets created
-        assertEquals(numberOfDucks, controllerNumberOfDuckBodies);
-        assertEquals(numberOfBullets, controllerNumberOfBullets);
+        DuckModel duckModel = (DuckModel) duckBody.getUserData();
+        DuckModel.DuckState state =  duckModel.getState();
+
+        assertEquals(state, DuckModel.DuckState.SHOT);
+
     }
 
-    /**
-     * Ducks born alive.
-     */
     @Test
     public void ducksBornAlive() {
 
@@ -77,42 +57,7 @@ public class TestController {
      * Associate duck model to duck body.
      */
     @Test
-    public void associateDuckModelToDuckBody() {
 
-        MainModel model = new MainModel(5,5,1, new PlayerModel("Name", 1, 0f,0f),1, .5859375f);
-        MainController controller = new MainController(model, .5859375f);
-
-        DuckBody duckBody = controller.getDuckBodies().get(0);
-        DuckModel duckModelInBodyData = (DuckModel) duckBody.getUserData();
-        DuckModel duckModelInModel = (DuckModel) model.getDucks().get(0);
-
-        assertSame(duckModelInBodyData, duckModelInModel);
-
-    }
-
-    /**
-     * Kill duck.
-     */
-    @Test
-    public void killDuck() {
-
-        MainModel model = new MainModel(5,5,1, new PlayerModel("Name", 1, 0f,0f),1, .5859375f);
-        MainController controller = new MainController(model, .5859375f);
-
-        DuckBody duckBody = controller.getDuckBodies().get(0);
-        controller.fireGun(duckBody.getX(), duckBody.getY());
-
-        DuckModel duckModel = (DuckModel) duckBody.getUserData();
-        DuckModel.DuckState state =  duckModel.getState();
-
-        assertEquals(state, DuckModel.DuckState.SHOT);
-
-    }
-
-    /**
-     * Duck falling and dying.
-     */
-    @Test
     public void duckFallingAndDying()  {
 
         MainModel model = new MainModel(5,5,1, new PlayerModel("Name", 1, 0f,0f),1, .5859375f);
@@ -136,35 +81,6 @@ public class TestController {
 
     /**
      * Gun empty round.
-     */
-    @Test
-    public void gunEmptyRound() {
-
-        MainModel model = new MainModel(5,5,1, new PlayerModel("Name", 0, 0f,0f),1, .5859375f);
-        MainController controller = new MainController(model, .5859375f);
-
-        while(model.getPlayerModel().getGun().getNumberOfBullets() > 0) {
-
-            assertTrue(controller.fireGun(1,1));
-            updateWorld(controller, model.getPlayerModel().getGun().getShotDelay());
-        }
-
-        assertTrue(!controller.fireGun(1,1));
-
-    }
-
-    /**
-     * Reloading logic.
-     */
-    @Test
-    public void reloadingLogic() {
-
-
-
-    }
-
-    /**
-     * Send duck up.
      */
     @Test
     public void sendDuckUp() {
@@ -476,198 +392,6 @@ public class TestController {
     }
 
 
-
-    /**
-     * Update world.
-     *
-     * @param controller the controller
-     * @param max the max
-     */
-    private static void updateWorld(MainController controller, float max) {
-        float delta = 0;
-        while(delta <= max){
-            controller.update(0.2f);
-            delta+=0.2;
-        }
-    }
-
-    /**
-     * Next level.
-     *
-     * @throws InterruptedException the interrupted exception
-     */
-    @Test
-    public void nextLevel() throws InterruptedException {
-
-        int numberOfDucks = 6;
-        int numberOfBullets = 20;
-
-        MainModel model = new MainModel(5,5,numberOfDucks, new PlayerModel("Name", numberOfBullets, 0f,0f),1, .5859375f);
-        MainController controller = new MainController(model, .5859375f);
-
-        assertEquals(numberOfDucks, model.getNumberOfAliveDucks());
-
-        updateWorld(controller, 2f);
-        System.out.println(model.getNumberOfAliveDucks());
-
-
-        for(DuckBody duck : controller.getDuckBodies()){
-
-            controller.fireGun(duck.getX(), duck.getY());
-
-            updateWorld(controller, model.getPlayerModel().getGun().getShotDelay());
-
-            System.out.println(model.getNumberOfAliveDucks());
-
-        }
-
-
-        assertEquals(0, model.getNumberOfAliveDucks());
-
-        while(model.getNumberOfDucksOnGround() != numberOfDucks){
-            updateWorld(controller, 0.5f);
-        }
-
-        assertEquals(MainModel.LevelState.NEXT_LEVEL, model.getLevelState());
-    }
-
-    /**
-     * Game over.
-     */
-    @Test
-    public void gameOver(){
-
-        int numberOfDucks = 6;
-        int numberOfBullets = 12;
-
-        MainModel model = new MainModel(5,5,numberOfDucks, new PlayerModel("Name", numberOfBullets, 0f,0f),1, .5859375f);
-        MainController controller = new MainController(model, .5859375f);
-
-        updateWorld(controller, 2f);
-
-        for (int i = 0; i < numberOfBullets + 6; i++) {
-
-            if(i % 6 == 0 && i != 0){
-                controller.reloadGun();
-                updateWorld(controller, 6*model.getPlayerModel().getGun().getReloadBulletDelay()+ model.getPlayerModel().getGun().getSlideDelay());
-            }
-
-            controller.fireGun(15, 15);
-
-            updateWorld(controller, model.getPlayerModel().getGun().getShotDelay());
-
-        }
-
-        assertTrue(model.getNumberOfAliveDucks() > 0);
-        assertEquals(0, model.getPlayerModel().getNumberOfBullets() + model.getPlayerModel().getGun().getNumberOfBullets());
-        assertEquals(MainModel.LevelState.GAME_OVER, model.getLevelState());
-
-    }
-    
-    /**
-     * Reload ammo test.
-     */
-    @Test
-    public void reloadAmmoTest(){
-
-        int numberOfDucks = 6;
-        int numberOfBullets = 12;
-
-        MainModel model = new MainModel(5,5,numberOfDucks, new PlayerModel("Name", numberOfBullets, 0f,0f),1, .5859375f);
-        MainController controller = new MainController(model, .5859375f);
-
-        updateWorld(controller, 2f);
-
-        assertEquals(0, controller.reloadGun());
-        updateWorld(controller, 6*model.getPlayerModel().getGun().getReloadBulletDelay()+ model.getPlayerModel().getGun().getSlideDelay());
-
-        int shotsFired = MathUtils.random(1, 5);
-        for (int i = 0; i < shotsFired; i++) {
-            controller.fireGun(15, 15);
-
-            updateWorld(controller, model.getPlayerModel().getGun().getShotDelay());
-        }
-
-        assertEquals(shotsFired, 6 - model.getPlayerModel().getGun().getNumberOfBullets());
-
-    }
-
-    /**
-     * Reload while reloading.
-     */
-    @Test
-    public void reloadWhileReloading(){
-        int numberOfDucks = 6;
-        int numberOfBullets = 12;
-
-        MainModel model = new MainModel(5,5,numberOfDucks, new PlayerModel("Name", numberOfBullets, 0f,0f),1, .5859375f);
-        MainController controller = new MainController(model, .5859375f);
-
-        updateWorld(controller, 2f);
-
-        controller.fireGun(15, 15);
-
-        updateWorld(controller, model.getPlayerModel().getGun().getShotDelay()+0.1f);
-
-        controller.reloadGun();
-
-        controller.update(0.1f);
-
-        assertEquals(0, controller.reloadGun());
-
-        assertEquals(GunModel.GunState.RELOADING,model.getPlayerModel().getGun().getState());
-
-
-    }
-
-    /**
-     * Reload while firing.
-     */
-    @Test
-    public void reloadWhileFiring(){
-        int numberOfDucks = 6;
-        int numberOfBullets = 12;
-
-        MainModel model = new MainModel(5,5,numberOfDucks, new PlayerModel("Name", numberOfBullets, 0f,0f),1, .5859375f);
-        MainController controller = new MainController(model, .5859375f);
-
-        updateWorld(controller, 2f);
-
-        controller.fireGun(15, 15);
-
-        controller.update(0.01f);
-
-        assertEquals(GunModel.GunState.FIRING,model.getPlayerModel().getGun().getState());
-
-        assertEquals(0, controller.reloadGun());
-
-
-
-    }
-
-    /**
-     * Reload empty player ammo.
-     */
-    @Test
-    public void reloadEmptyPlayerAmmo(){
-        int numberOfDucks = 6;
-        int numberOfBullets = 0;
-
-        MainModel model = new MainModel(5,5,numberOfDucks, new PlayerModel("Name", numberOfBullets, 0f,0f),1, .5859375f);
-        MainController controller = new MainController(model, .5859375f);
-
-        updateWorld(controller, 2f);
-
-        controller.fireGun(15, 15);
-
-        updateWorld(controller, model.getPlayerModel().getGun().getShotDelay());
-
-        assertEquals(0, controller.reloadGun());
-    }
-
-    /**
-     * Duck different behaviors.
-     */
     @Test
     public void duckDifferentBehaviors(){
 
@@ -729,35 +453,5 @@ public class TestController {
         }
 
     }
-
-    /**
-     * Aim location.
-     */
-    @Test
-    public void aimLocation(){
-
-        int numberOfDucks = 1;
-        int numberOfBullets = 12;
-
-        MainModel model = new MainModel(5, 5, numberOfDucks, new PlayerModel("Name", numberOfBullets, 0f, 0f), 1, .5859375f);
-        MainController controller = new MainController(model, .5859375f);
-
-        updateWorld(controller, 2f);
-
-        controller.updateAimLocation(20, 5);
-
-        assertEquals(20, model.getAim().getX(), 0);
-        assertEquals(5, model.getAim().getY(), 0);
-
-    }
-    /*@Test
-    public void fineForFiveSeconds() {
-        long start = System.nanoTime();
-        long end = start + TimeUnit.SECONDS.toNanos(5);
-        while (System.nanoTime() < end) {
-            assertNotEquals(MathUtils.random(1, 9), 10);
-        }
-    }*/
-
 
 }
