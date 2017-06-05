@@ -13,7 +13,7 @@ LPOO Final Project
 
 * AimOn
 
-Aggregator Class. Responsible for creating the game, render the screens and dispose assets.
+Aggregator Class. Responsible for creating the game.
 
 * MainMenuScreen
 
@@ -31,6 +31,10 @@ Abstract class responsible for rendering specific objects on the screen.
 
 Implementation of EntityView class for rendering ducks on the screen.
 
+* GameStatusView
+
+Class to render several sprites on the screen with game status data
+
 * MainModel
 
 Class to store the game state, the data held by this class is used by game screen to draw the world state.
@@ -46,6 +50,14 @@ Implementation of EntityModel class to store the model of the ground
 * DuckModel
 
 Implementation of EntityModel class to store the duck model
+
+* PlayerModel
+
+Implementation of EntityModel class to store the player model
+
+* GunModel
+
+Implementation of EntityModel class to store the gun model
 
 * MainController
 
@@ -63,6 +75,43 @@ Implementation of EntityBody class to control the physics of the ground
 
 Implementation of EntityBody class to control the physics of ducks
 
+* PlayerController
+
+Class to update the logic of the player
+
+* PlayerController
+
+Class to update the logic of the player gun
+
+* DuckBehaviour
+
+Abstract class of a duck behaviour. 
+
+* DeweyBehaviour
+
+Implementation of DuckBehaviour class to control the behaviour of dewey ducks
+
+* HueyBehaviour
+
+Implementation of DuckBehaviour class to control the behaviour of huey ducks
+
+* LouieBehaviour
+
+Implementation of DuckBehaviour class to control the behaviour of louie ducks
+
+* GameInputProcessor
+
+Abstract class that extends InputAdapter of Libgdx library
+ 
+* AndroidInputProcessor
+
+Implementation of GameInputProcessor to process android input
+
+* AndroidInputProcessor
+
+Implementation of GameInputProcessor to process desktop input
+
+
 ### Print Screens
 
 * Flying Duck
@@ -76,21 +125,50 @@ Implementation of EntityBody class to control the physics of ducks
 
 ### Unit Tests List
 
-## View
+## General
 
-* Test input handles like zoom changes, keys, mouse scroll, etc.
+* Aim Location
+* Associate Duck Model with its Duck Body  
+* Game Over 
+* Generate Main Model
+* Next Level
 
-## Model
+## Ducks
 
-* Test if AimModel position matches the mouse movements
-* Test if the target (ducks) number is the same of the GameModel constructor.
-* Test if the program interrupts when AimModel leaves the world limits.
-* Assert that all the strategies of the targets are implemented (flying routes, speed, etc)
+* Change direction
+* Duck behaviours
+* Duck moves
+* Duck falling and dying
+* Ducks born live
+* Frighten duck from front
+* Frighten duck from behind
+* Frighten duck change velocity
+* Duck frightened time
+* Frighten duck already frightened
+* Kill duck
+* Send duck down
+* Send duck up
 
-## Controller
+## Gun
 
-* Test if the ducks fall onto the ground upon being shot
-* Test if the ducks don't fly over the upper limit of the world
-* Test if the target is hit and killed when the mouse is clicked and the aim is on the target
-* Test if target keeps alive after a failed shot
-* Test if the game ends when all targets are shot
+* Gun empty round
+* Reload ammo
+* Reload empty player ammo
+* Reload while firing
+* Reload when already loading
+
+### Design Patterns
+
+* Singleton: the ground body and model are singletons
+* Strategy: each duck has his own strategy. A little variation from the pure strategy design. Instead of Interface, there is an abstract class.
+
+### Requirements Covered
+
+* Physics
+* Artificial Intelligence (Ducks get scared)
+* Mobile
+
+### Game Rules
+
+Aim the duck, press mouse left button to shoot and scroll (or right button) to zoom. Reload with R. 
+Have fun and kill those bastards. 
