@@ -2,6 +2,7 @@ package com.aimon.game.view.game.inputprocessors;
 
 import com.aimon.game.controller.MainController;
 import com.aimon.game.view.game.GameScreen;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.audio.Sound;
@@ -137,13 +138,13 @@ public abstract class GameInputProcessor extends InputAdapter{
      */
     public void changeZoomScroll(float zoom) {
 
+
+
         float PIXEL_TO_METER = gameScreen.PIXEL_TO_METER;
         OrthographicCamera camera = gameScreen.getCamera();
         Vector3 aimPosition = gameScreen.getAimPosition();
 
-        System.out.println("camera.position: " + camera.position);
         camera.position.set(aimPosition.x /PIXEL_TO_METER, aimPosition.y /PIXEL_TO_METER,0);
-        System.out.println("camera.position2: " + camera.position);
 
         float oldZoom = camera.zoom;
         camera.zoom = zoom;
@@ -152,14 +153,11 @@ public abstract class GameInputProcessor extends InputAdapter{
 
         camera.translate(aimPositionScreen.x, aimPositionScreen.y);
 
-        System.out.println("camera.position3: " + camera.position);
-
-        currentAimPosition.set(camera.position.x*PIXEL_TO_METER, camera.position.y*PIXEL_TO_METER, 0);
         // show only background area
 
-        float maxX = MainController.getControllerWidth()/PIXEL_TO_METER/2f + camera.viewportWidth/2f;
-        float maxY = camera.viewportHeight;
-        float minX = MainController.getControllerWidth()/PIXEL_TO_METER/2f - camera.viewportWidth/2f;
+        float maxX = MainController.getControllerWidth()/PIXEL_TO_METER/2f + Gdx.graphics.getWidth()/2f;
+        float maxY = Gdx.graphics.getHeight();
+        float minX = MainController.getControllerWidth()/PIXEL_TO_METER/2f - Gdx.graphics.getWidth()/2f;
         float minY = 0;
 
         if((camera.position.x + camera.zoom*Gdx.graphics.getWidth()/2f) > maxX){
@@ -174,6 +172,8 @@ public abstract class GameInputProcessor extends InputAdapter{
         if((camera.position.y - camera.zoom*Gdx.graphics.getHeight()/2f) < minY){
             camera.translate(0,minY - (camera.position.y - camera.zoom*Gdx.graphics.getHeight()/2f));
         }
+
+        currentAimPosition.set(camera.position.x*PIXEL_TO_METER, camera.position.y*PIXEL_TO_METER, 0);
 
         camera.update();
 

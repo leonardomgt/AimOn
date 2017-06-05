@@ -27,7 +27,7 @@ public class MainModel {
     public static final float DUCKS_MAX_DEPTH = 15f;
     
     /** The Constant BONUS_TIME. */
-    private static final int BONUS_TIME = 15;
+    private static final int BONUS_TIME = 25;
 
     /**
      * The Enum LevelState.

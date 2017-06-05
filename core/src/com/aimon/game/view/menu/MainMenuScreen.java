@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 /**
  * The Main-Menu screen. Contains all actors in the main-menu stage.
@@ -46,7 +47,7 @@ public class MainMenuScreen extends ScreenAdapter {
     public MainMenuScreen(AimOn game) {
 
         this.game = game;
-        fontTitle = new BitmapFont(game.pineWoodFont.getData(), game.pineWoodFont.getRegion(), game.pineWoodFont.usesIntegerPositions());
+        fontTitle = new BitmapFont(game.getPineWoodFont().getData(), game.getPineWoodFont().getRegion(), game.getPineWoodFont().usesIntegerPositions());
         loadAssets();
         camera = createCamera();
 
@@ -101,12 +102,14 @@ public class MainMenuScreen extends ScreenAdapter {
         // Draw background
         game.getBatch().draw((Texture)game.getAssetManager().get(BACKGROUND_MAIN_MENU),0,0,camera.viewportWidth,camera.viewportHeight);
         game.getBatch().draw((Texture)game.getAssetManager().get(DUCK_MAIN_MENU), 20, 320, 285, 200);
-        game.getBatch().draw((Texture)game.getAssetManager().get(HUNTER_MAIN_MENU), Gdx.graphics.getWidth() - 320, 40, 388, 300);
+        game.getBatch().draw((Texture)game.getAssetManager().get(HUNTER_MAIN_MENU), camera.viewportWidth - 400, 40, 388, 300);
 
         // Draw Title
         fontTitle.setColor(Color.ORANGE);
+        
+        GlyphLayout layout = new GlyphLayout(game.getPineWoodFont(), "AimOn");
 
-        fontTitle.draw(game.getBatch(), "AimOn", Gdx.graphics.getWidth()/2 - 50, 450);
+        fontTitle.draw(game.getBatch(), "AimOn", Gdx.graphics.getWidth()/2f - layout.width*2/3f, 450);
 
         game.getBatch().end();
     }

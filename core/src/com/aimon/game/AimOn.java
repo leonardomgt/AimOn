@@ -42,7 +42,7 @@ public class AimOn extends Game {
 	private ScreenAdapter gameScreen;
 
 	/** The pine wood font. */
-	public BitmapFont pineWoodFont;
+	private BitmapFont pineWoodFont;
 
     /** The skin. */
     private Skin skin;

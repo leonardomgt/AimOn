@@ -9,10 +9,12 @@ import com.aimon.game.view.game.entities.AimView;
 import com.aimon.game.view.game.entities.DuckView;
 import com.aimon.game.view.game.entities.GameStatusView;
 import com.aimon.game.view.game.inputprocessors.*;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -154,6 +156,7 @@ public class GameScreen extends ScreenAdapter {
 
         camera = new OrthographicCamera(VIEWPORT_WIDTH / PIXEL_TO_METER, VIEWPORT_HEIGHT / PIXEL_TO_METER);
         camera.position.set(MainController.getControllerWidth()  / PIXEL_TO_METER / 2f, camera.viewportHeight / 2f, 0);
+        gameInputProcessor.changeZoomScroll(1);
         camera.update();
 
 
@@ -254,6 +257,7 @@ public class GameScreen extends ScreenAdapter {
 
         gameStage.act(delta);
         gameStage.draw();
+
         camera.update();
 
     }
@@ -325,8 +329,12 @@ public class GameScreen extends ScreenAdapter {
 
         else {
 
+            gameInputProcessor.changeZoomScroll(1);
             String gameOver = "Game Over";
             String score = "Total Ducks Killed: " + Integer.toString(this.model.getPlayerModel().getScore());
+            String exit = "Press anywhere to continue.";
+
+            game.getPineWoodFont().setColor(Color.BLACK);
 
             GlyphLayout layout = new GlyphLayout(game.getPineWoodFont(), gameOver);
 
@@ -335,7 +343,9 @@ public class GameScreen extends ScreenAdapter {
             layout.setText(game.getPineWoodFont(), score);
             game.getPineWoodFont().draw(this.game.getBatch(), score, MainController.getControllerWidth()/PIXEL_TO_METER/2 - layout.width/2f, MainController.getControllerHeight()/PIXEL_TO_METER/2 - layout.height/2f);
 
-            
+            layout.setText(game.getPineWoodFont(), exit);
+            game.getPineWoodFont().draw(this.game.getBatch(), exit, MainController.getControllerWidth()/PIXEL_TO_METER/2 - layout.width/2f, MainController.getControllerHeight()/PIXEL_TO_METER/3 - layout.height/2f);
+
             gameMultiplexer.removeProcessor(gameInputProcessor);
             gameMultiplexer.addProcessor(new InputAdapter() {
 
