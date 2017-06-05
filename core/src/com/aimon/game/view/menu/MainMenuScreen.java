@@ -106,7 +106,7 @@ public class MainMenuScreen extends ScreenAdapter {
 
         // Draw Title
         fontTitle.setColor(Color.ORANGE);
-        
+
         GlyphLayout layout = new GlyphLayout(game.getPineWoodFont(), "AimOn");
 
         fontTitle.draw(game.getBatch(), "AimOn", Gdx.graphics.getWidth()/2f - layout.width*2/3f, 450);
