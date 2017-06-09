@@ -139,7 +139,7 @@ Implementation of GameInputProcessor to process desktop input
 * Duck behaviours
 * Duck moves
 * Duck falling and dying
-* Ducks born live
+* Ducks born alive
 * Frighten duck from front
 * Frighten duck from behind
 * Frighten duck change velocity
